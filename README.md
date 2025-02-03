@@ -1,1 +1,0 @@
-# Chang-e-6-spacecraft-simulation
