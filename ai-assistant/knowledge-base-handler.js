@@ -7,7 +7,7 @@ class SpaceKnowledgeBase {
     // 加载知识库数据
     async loadData() {
         try {
-            const response = await fetch('/repository-name/ai-assistant/space-knowledge-base.json');
+            const response = await fetch('/Chang-e-6-spacecraft-simulation/ai-assistant/space-knowledge-base.json');
             this.knowledgeBase = await response.json();
             return true;
         } catch (error) {
