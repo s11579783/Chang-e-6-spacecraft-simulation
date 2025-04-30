@@ -7,7 +7,11 @@ class SpaceKnowledgeBase {
     // 加载知识库数据
     async loadData() {
         try {
-            const response = await fetch('/Chang-e-6-spacecraft-simulation/ai-assistant/space-knowledge-base.json');
+            // 使用相对路径
+            const response = await fetch('./space-knowledge-base.json');
+            if (!response.ok) {
+                throw new Error(`HTTP error! status: ${response.status}`);
+            }
             this.knowledgeBase = await response.json();
             return true;
         } catch (error) {
