@@ -1,0 +1,348 @@
+{
+    "categories": {
+        "lunar_exploration": {
+            "title": {
+                "en": "Chinese Lunar Exploration Program",
+                "zh": "中国探月工程"
+            },
+            "overview": {
+                "en": "The Chinese Lunar Exploration Program (CLEP), also known as the Chang'e Project, is an ongoing series of robotic Moon missions by China National Space Administration (CNSA).",
+                "zh": "中国探月工程（嫦娥工程）是中国国家航天局（CNSA）正在进行的一系列月球探测任务。"
+            },
+            "phases": {
+                "phase_1": {
+                    "name": {
+                        "en": "Phase 1: Orbital Missions",
+                        "zh": "第一阶段：绕月"
+                    },
+                    "missions": {
+                        "change1": {
+                            "name": "Chang'e-1",
+                            "launch_date": "2007-10-24",
+                            "achievements": {
+                                "en": [
+                                    "First Chinese lunar mission",
+                                    "Created 3D images of lunar surface",
+                                    "Analyzed distribution of elements on lunar surface"
+                                ],
+                                "zh": [
+                                    "中国首个月球探测器",
+                                    "创建月球表面三维图像",
+                                    "分析月球表面元素分布"
+                                ]
+                            }
+                        },
+                        "change2": {
+                            "name": "Chang'e-2",
+                            "launch_date": "2010-10-01",
+                            "achievements": {
+                                "en": [
+                                    "Higher resolution mapping of lunar surface",
+                                    "Scouted landing sites for Chang'e-3",
+                                    "Extended mission to asteroid Toutatis"
+                                ],
+                                "zh": [
+                                    "更高分辨率的月球表面测绘",
+                                    "为嫦娥三号勘察着陆点",
+                                    "扩展任务飞往图塔蒂斯小行星"
+                                ]
+                            }
+                        }
+                    }
+                },
+                "phase_2": {
+                    "name": {
+                        "en": "Phase 2: Soft Landing and Roving",
+                        "zh": "第二阶段：落月"
+                    },
+                    "missions": {
+                        "change3": {
+                            "name": "Chang'e-3",
+                            "launch_date": "2013-12-02",
+                            "achievements": {
+                                "en": [
+                                    "First Chinese soft landing on Moon",
+                                    "Deployed Yutu rover",
+                                    "First lunar night survival"
+                                ],
+                                "zh": [
+                                    "中国首次月球软着陆",
+                                    "部署玉兔号月球车",
+                                    "首次实现月夜生存"
+                                ]
+                            }
+                        },
+                        "change4": {
+                            "name": "Chang'e-4",
+                            "launch_date": "2018-12-08",
+                            "achievements": {
+                                "en": [
+                                    "First soft landing on far side of Moon",
+                                    "Deployed Yutu-2 rover",
+                                    "First biological experiment on Moon"
+                                ],
+                                "zh": [
+                                    "首次月球背面软着陆",
+                                    "部署玉兔二号月球车",
+                                    "首次月球生物实验"
+                                ]
+                            }
+                        }
+                    }
+                },
+                "phase_3": {
+                    "name": {
+                        "en": "Phase 3: Sample Return",
+                        "zh": "第三阶段：采样返回"
+                    },
+                    "missions": {
+                        "change5": {
+                            "name": "Chang'e-5",
+                            "launch_date": "2020-11-23",
+                            "achievements": {
+                                "en": [
+                                    "First Chinese lunar sample return mission",
+                                    "Collected 1,731 grams of lunar samples",
+                                    "Demonstrated automated sample collection and return"
+                                ],
+                                "zh": [
+                                    "中国首次月球采样返回任务",
+                                    "采集1,731克月球样本",
+                                    "实现自动采样与返回"
+                                ]
+                            }
+                        },
+                        "change6": {
+                            "name": "Chang'e-6",
+                            "planned_launch": "2024",
+                            "mission_details": {
+                                "landing_site": {
+                                    "en": "South Pole-Aitken Basin on the far side of the Moon",
+                                    "zh": "月球背面南极-艾特肯盆地"
+                                },
+                                "mission_architecture": {
+                                    "components": {
+                                        "en": [
+                                            "Orbiter",
+                                            "Lander",
+                                            "Ascender",
+                                            "Returner",
+                                            "Relay Satellite"
+                                        ],
+                                        "zh": [
+                                            "轨道器",
+                                            "着陆器",
+                                            "上升器",
+                                            "返回器",
+                                            "中继卫星"
+                                        ]
+                                    },
+                                    "description": {
+                                        "en": "The mission uses a relay satellite for communication with Earth, as direct communication is impossible from the far side. The lander will collect samples using both drilling and surface collection methods.",
+                                        "zh": "由于月球背面无法直接与地球通信，任务使用中继卫星进行通信。着陆器将通过钻取和表面采集两种方式收集样本。"
+                                    }
+                                },
+                                "international_cooperation": {
+                                    "payloads": [
+                                        {
+                                            "name": "DORN",
+                                            "country": "France",
+                                            "purpose": {
+                                                "en": "Detecting neutral atoms to study solar wind-surface interactions",
+                                                "zh": "探测中性原子以研究太阳风与月球表面的相互作用"
+                                            }
+                                        },
+                                        {
+                                            "name": "LUVMI-X",
+                                            "country": "ESA",
+                                            "purpose": {
+                                                "en": "Studying lunar volatiles and their interaction with the surface",
+                                                "zh": "研究月球挥发物及其与表面的相互作用"
+                                            }
+                                        }
+                                    ]
+                                }
+                            },
+                            "technical_innovations": {
+                                "sampling_technology": {
+                                    "en": [
+                                        "Automated sampling in complex terrain",
+                                        "Deep drilling capability up to 2 meters",
+                                        "Sealed sample preservation system"
+                                    ],
+                                    "zh": [
+                                        "复杂地形自动采样",
+                                        "最深2米的钻取能力",
+                                        "样品密封保存系统"
+                                    ]
+                                },
+                                "communication_system": {
+                                    "en": [
+                                        "High-bandwidth relay communication",
+                                        "Real-time telemetry and control",
+                                        "Autonomous operation capability"
+                                    ],
+                                    "zh": [
+                                        "高带宽中继通信",
+                                        "实时遥测和控制",
+                                        "自主运行能力"
+                                    ]
+                                }
+                            }
+                        }
+                    }
+                }
+            },
+            "technical_achievements": {
+                "landing_technology": {
+                    "title": {
+                        "en": "Lunar Landing Technology",
+                        "zh": "月球着陆技术"
+                    },
+                    "innovations": {
+                        "en": [
+                            "Autonomous hazard avoidance",
+                            "High-precision landing guidance",
+                            "Adaptive landing control",
+                            "Multi-mode terrain recognition"
+                        ],
+                        "zh": [
+                            "自主避障",
+                            "高精度着陆制导",
+                            "自适应着陆控制",
+                            "多模式地形识别"
+                        ]
+                    }
+                },
+                "sample_return": {
+                    "title": {
+                        "en": "Sample Return Technology",
+                        "zh": "采样返回技术"
+                    },
+                    "innovations": {
+                        "en": [
+                            "Automated sample collection and packaging",
+                            "Lunar orbit rendezvous and docking",
+                            "High-speed Earth reentry protection",
+                            "Sample preservation technology"
+                        ],
+                        "zh": [
+                            "自动采样与封装",
+                            "月球轨道交会对接",
+                            "高速地球再入防护",
+                            "样品保存技术"
+                        ]
+                    }
+                },
+                "survival_technology": {
+                    "title": {
+                        "en": "Lunar Night Survival",
+                        "zh": "月夜生存技术"
+                    },
+                    "innovations": {
+                        "en": [
+                            "Radioisotope heating",
+                            "Multi-layer insulation",
+                            "Temperature control system",
+                            "Power management system"
+                        ],
+                        "zh": [
+                            "放射性同位素加热",
+                            "多层隔热设计",
+                            "温度控制系统",
+                            "电源管理系统"
+                        ]
+                    }
+                }
+            }
+        },
+        "common_questions": {
+            "lunar_exploration": [
+                {
+                    "question": {
+                        "en": "Why explore the far side of the Moon?",
+                        "zh": "为什么要探索月球背面？"
+                    },
+                    "answer": {
+                        "en": "The far side of the Moon has never been explored up close before Chang'e-4. It may contain different minerals and hold clues about the early solar system. Also, it's an ideal location for radio astronomy as it's shielded from Earth's radio interference.",
+                        "zh": "在嫦娥四号之前，月球背面从未被近距离探索过。那里可能蕴含不同的矿物质，保存着太阳系早期的线索。此外，由于不受地球无线电干扰，月球背面是开展射电天文观测的理想地点。"
+                    }
+                },
+                {
+                    "question": {
+                        "en": "What's special about Chang'e-6 mission?",
+                        "zh": "嫦娥六号任务有什么特别之处？"
+                    },
+                    "answer": {
+                        "en": "Chang'e-6 will be the first-ever attempt to collect samples from the far side of the Moon and return them to Earth. This is technically more challenging than Chang'e-5's mission due to communication challenges and the complex terrain of the far side.",
+                        "zh": "嫦娥六号将首次尝试从月球背面采集样本并返回地球。由于通信障碍和月球背面地形复杂，这在技术上比嫦娥五号任务更具挑战性。"
+                    }
+                },
+                {
+                    "question": {
+                        "en": "How does Chang'e-6 communicate from the far side of the Moon?",
+                        "zh": "嫦娥六号如何在月球背面进行通信？"
+                    },
+                    "answer": {
+                        "en": "Chang'e-6 uses a relay satellite positioned at the Earth-Moon Lagrange point L2 to maintain communication with Earth while operating on the far side of the Moon. This relay satellite acts as a bridge, receiving signals from the lander and transmitting them back to Earth.",
+                        "zh": "嫦娥六号通过位于地月拉格朗日L2点的中继卫星与地球保持通信。中继卫星作为桥梁，接收着陆器的信号并转发回地球。"
+                    }
+                },
+                {
+                    "question": {
+                        "en": "What are the main challenges of collecting samples from the far side?",
+                        "zh": "从月球背面采集样本有哪些主要挑战？"
+                    },
+                    "answer": {
+                        "en": "The main challenges include: complex terrain with more craters, communication delays through the relay satellite, different geological composition requiring specialized collection methods, and the need for more autonomous operations due to communication constraints.",
+                        "zh": "主要挑战包括：地形复杂多坑洼、通过中继卫星导致的通信延迟、需要特殊采集方法的不同地质组成，以及由于通信限制需要更多自主操作。"
+                    }
+                }
+            ]
+        }
+    },
+    "en": [
+        {
+            "keywords": ["mission", "chang'e-6", "overview", "what is"],
+            "response": "Chang'e-6 is China's next lunar sample return mission, planned to collect samples from the far side of the Moon for the first time in human history. The mission is scheduled to launch in 2024."
+        },
+        {
+            "keywords": ["landing", "site", "where", "location"],
+            "response": "Chang'e-6 is planned to land in the South Pole-Aitken Basin on the far side of the Moon, one of the oldest and largest impact craters in the solar system."
+        },
+        {
+            "keywords": ["sample", "collect", "return", "bring back"],
+            "response": "The mission aims to collect about 2kg of lunar samples from the far side of the Moon and return them to Earth for scientific analysis."
+        },
+        {
+            "keywords": ["technology", "equipment", "instruments"],
+            "response": "Chang'e-6 carries various scientific instruments including a lander, ascender, sample collection system, and relay satellite for communication with Earth from the far side of the Moon."
+        },
+        {
+            "keywords": ["objective", "goal", "purpose", "why"],
+            "response": "The main objectives include: collecting the first-ever samples from the Moon's far side, advancing lunar exploration technology, and improving our understanding of the Moon's formation and evolution."
+        }
+    ],
+    "zh": [
+        {
+            "keywords": ["任务", "嫦娥六号", "概况", "是什么"],
+            "response": "嫦娥六号是中国下一个月球采样返回任务，计划首次在人类历史上从月球背面采集样本。该任务计划于2024年发射。"
+        },
+        {
+            "keywords": ["着陆", "地点", "在哪里", "位置"],
+            "response": "嫦娥六号计划在月球背面的南极-艾特肯盆地着陆，这是太阳系中最古老和最大的撞击坑之一。"
+        },
+        {
+            "keywords": ["样本", "采集", "返回", "带回"],
+            "response": "该任务旨在从月球背面采集约2公斤月球样本，并将其带回地球进行科学分析。"
+        },
+        {
+            "keywords": ["技术", "设备", "仪器"],
+            "response": "嫦娥六号携带多种科学仪器，包括着陆器、上升器、采样系统，以及用于与地球通信的中继卫星。"
+        },
+        {
+            "keywords": ["目标", "目的", "为什么"],
+            "response": "主要目标包括：采集人类首个月球背面样本、推进月球探测技术发展、增进对月球形成和演化的认识。"
+        }
+    ]
+} 
