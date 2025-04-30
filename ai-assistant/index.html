@@ -93,6 +93,7 @@
             transition: all 0.3s ease;
             position: relative;
             backdrop-filter: blur(10px);
+            animation: fadeIn 0.3s ease forwards;
         }
 
         .message:hover {
@@ -238,10 +239,119 @@
                 transform: translateY(0);
             }
         }
-
-        .message {
-            animation: fadeIn 0.3s ease forwards;
-        }
     </style>
 </head>
-// ... existing code ...
+<body>
+    <div id="assistant-container">
+        <div id="assistant-header">
+            <h2 id="assistant-title">Chang'e-6 Mission Assistant</h2>
+            <div>
+                <button id="language-switch">切换到中文</button>
+                <button id="minimize-button">−</button>
+            </div>
+        </div>
+        <div id="chat-container"></div>
+        <div id="input-container">
+            <input type="text" id="user-input" placeholder="Ask me about the Chang'e-6 mission...">
+            <button id="send-button">Send</button>
+        </div>
+    </div>
+
+    <script type="module">
+        import SpaceKnowledgeBase from './knowledge-base-handler.js';
+        import config from './config.js';
+
+        const knowledgeBase = new SpaceKnowledgeBase();
+        let currentLang = 'en';
+
+        // Initialize UI elements
+        const assistantContainer = document.getElementById('assistant-container');
+        const chatContainer = document.getElementById('chat-container');
+        const userInput = document.getElementById('user-input');
+        const sendButton = document.getElementById('send-button');
+        const minimizeButton = document.getElementById('minimize-button');
+        const languageSwitch = document.getElementById('language-switch');
+        const assistantTitle = document.getElementById('assistant-title');
+
+        // Load knowledge base data
+        async function initialize() {
+            try {
+                const loaded = await knowledgeBase.loadData();
+                if (loaded) {
+                    addMessage(config[currentLang].welcomeMessage, 'assistant');
+                } else {
+                    addMessage('Error loading knowledge base.', 'assistant');
+                }
+            } catch (error) {
+                console.error('Initialization error:', error);
+                addMessage('Error initializing the assistant.', 'assistant');
+            }
+        }
+
+        // Add message to chat
+        function addMessage(text, type) {
+            const messageDiv = document.createElement('div');
+            messageDiv.className = `message ${type}-message`;
+            messageDiv.textContent = text;
+            chatContainer.appendChild(messageDiv);
+            chatContainer.scrollTop = chatContainer.scrollHeight;
+        }
+
+        // Handle user input
+        async function handleUserInput() {
+            const query = userInput.value.trim();
+            if (!query) return;
+
+            addMessage(query, 'user');
+            userInput.value = '';
+
+            try {
+                const response = await knowledgeBase.generateResponse(query);
+                addMessage(response, 'assistant');
+            } catch (error) {
+                console.error('Error generating response:', error);
+                addMessage(config[currentLang].errorMessage, 'assistant');
+            }
+        }
+
+        // Switch language
+        function switchLanguage() {
+            currentLang = currentLang === 'en' ? 'zh' : 'en';
+            knowledgeBase.setLanguage(currentLang);
+            
+            // Update UI text
+            assistantTitle.textContent = config[currentLang].title;
+            userInput.placeholder = config[currentLang].placeholder;
+            languageSwitch.textContent = config[currentLang].languageSwitch;
+        }
+
+        // Event listeners
+        sendButton.addEventListener('click', handleUserInput);
+        userInput.addEventListener('keypress', (e) => {
+            if (e.key === 'Enter') handleUserInput();
+        });
+
+        minimizeButton.addEventListener('click', () => {
+            window.parent.postMessage({ type: 'minimize' }, '*');
+        });
+
+        languageSwitch.addEventListener('click', switchLanguage);
+
+        // Listen for language change messages from parent
+        window.addEventListener('message', (event) => {
+            if (event.data.type === 'language') {
+                currentLang = event.data.lang;
+                knowledgeBase.setLanguage(currentLang);
+                
+                // Update UI text
+                assistantTitle.textContent = config[currentLang].title;
+                userInput.placeholder = config[currentLang].placeholder;
+                languageSwitch.textContent = config[currentLang].languageSwitch;
+            }
+        });
+
+        // Initialize the assistant
+        initialize();
+    </script>
+</body>
+</html> 
