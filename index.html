@@ -1,798 +1,276 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Chang'e-6 Assembly Game</title>
-<style>
-body {
-    font-family: Arial, sans-serif;
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    margin: 50px;
-    perspective: 1000px; /* Add perspective for 3D effect */
-    background: #000;
-}
-body.rotating {
-    cursor: grab;
-}
-
-body.rotating:active {
-    cursor: grabbing;
-}
-h1 {
-    color: white;
-}
-
-#cubeContainer {
-    width: 100%; /* Full width for the dotted box */
-    height: 250px;
-    border: 2px dotted #666;
-    padding: 10px; /* Padding inside the box */
-    display: flex; /* Flexbox to arrange cubes in a row */
-    justify-content: space-around; /* Space the cubes equally */
-    align-items: center; /* Center the cubes vertically */
-    margin-bottom: 20px; /* Space below the dotted box */
-}
-#assemblyArea {
-    width: 150px; /* Width of the assembly area */
-    height: 650px; /* Height of the assembly area */
-    display: flex;
-    flex-direction: column; /* Align children vertically */
-    align-items: center; /* Center children horizontally */
-    justify-content: flex-start; /* Align children to the top */
-    margin-bottom: 20px; /* Space below the assembly area */
-    transform-style: preserve-3d; /* Enable 3D transformations */
-    transform-origin: center center;
-    border: 2px dashed #666; /* 组装成功时显示边框 */
-    will-change: transform; /* 提示浏览器优化性能 */
-    transition: transform 0.1s linear; /* 添加平滑过渡 */
-}
-
-/* Cuboid styles */
-.ascender {
-    width: 150px;
-    height: 130px; /* Cuboid height */
-    transform-style: preserve-3d; /* Preserve 3D effect */
-    transition: transform 0.3s; /* Smooth transition */
-    cursor: pointer;
-    position: relative; /* Positioning for 3D */
-    box-sizing: border-box; /* Include padding and border in element's total width and height */
-}
-.ascender .face {
-    position: absolute;
-    width: 150px;
-    height: 100px;
-    background-color: #EEEEE0;
-    border: 1px solid #666;
-}
-.ascender .front {
-    width: 150px;
-    height: 100px;
-    transform: translateZ(50px);
-}
-.ascender .back {
-    width: 150px;
-    height: 100px;
-    transform: rotateY(180deg) translateZ(50px);
-}
-.ascender .left {
-    width: 100px;
-    height: 100px;
-    transform: rotateY(-90deg) translateZ(50px);
-}
-.ascender .right {
-    width: 100px;
-    height: 100px;
-    transform: rotateY(90deg) translateZ(100px);
-}
-.ascender .top {
-    width: 150px;
-    height: 100px;
-    transform: rotateX(90deg) translateZ(50px);
-}
-.ascender .bottom {
-    width: 150px;
-    height: 100px;
-    transform: rotateX(-90deg) translateZ(50px);
-}
-
-.sphere {
-    position: absolute;
-    transition: transform 0.3s; /* Smooth transition */
-    transform-style: preserve-3d;
-    cursor: pointer;
-}
-.sphere .segment {
-    position: absolute;
-    transition: transform 0.3s; /* Smooth transition */
-    transform-style: preserve-3d;
-}
-.sphere .face {
-    position: absolute;
-    width: 35px;
-    height: 35px;
-    margin: -5px 0 0 -10px;
-    background: radial-gradient(circle at 20% 20%, #FFD700 10%, #c59f16 100%);
-    border-radius: 50%;
-    box-shadow: inset -20px -20px 40px rgba(0,0,0,0.3);
-}
-/* Position the spheres at the corners of the bottom of the cuboid */
-.sphere1 { left: -10px; bottom: 25px; transform: translatex(50px) translatez(30px); } /* Front-left corner */
-.sphere2 { right: 10px; bottom: 25px; transform: translatex(-30px) translatez(30px); } /* Front-right corner */
-.sphere3 { left: -10px; bottom: 25px; transform: translatex(50px) translatez(-30px); } /* Back-left corner */
-.sphere4 { right: 10px; bottom: 25px; transform: translatex(-30px) translatez(-30px);} /* Back-right corner */
-
-.lander {
-    width: 200px;
-    height: 230px; /* Cuboid height */
-    transform-style: preserve-3d; /* Preserve 3D effect */
-    transition: transform 0.3s; /* Smooth transition */
-    cursor: pointer;
-    position: relative; /* Positioning for 3D */
-    box-sizing: border-box; /* Include padding and border in element's total width and height */
-}
-.lander .face {
-    position: absolute;
-    width: 200px;
-    height: 150px;
-    background-color: #EEEEE0;
-    border: 1px solid #666;
-}
-.lander .front {
-    width: 200px;
-    height: 150px;
-    transform: rotateY(0deg) translateZ(75px); }
-.lander .right {
-    width: 150px;
-    height: 150px;
-    transform: rotateY(90deg) translateZ(125px); }
-.lander .back {
-    width: 200px;
-    height: 150px;
-    transform: rotateY(180deg) translateZ(75px); }
-.lander .left {
-    width: 150px;
-    height: 150px;
-    transform: rotateY(-90deg) translateZ(75px); }
-.lander .top {
-    width: 200px;
-    height: 150px;
-    transform: rotateX(90deg) translateZ(75px); }
-.lander .bottom {
-    width: 200px;
-    height: 150px;
-    transform: rotateX(-90deg) translateZ(75px); }
-
-.cylinder {
-    position: absolute;
-    width: 10px; /* Cylinder diameter */
-    height: 30px; /* Cylinder height */
-    transform-style: preserve-3d;
-    transform-origin: center;
-}
-.cylinder .side {
-    position: absolute;
-    width: 10px;
-    height: 30px;
-    background-color: #c59f16; 
-    transform-origin: center;
-    transition: transform 0.3s;
-    border: 1px solid #333; / Border for visibility /
-}
-.cylinder .front {
-    transform: rotateY(0deg) translateZ(5px);
-    width: 20px;
-    height: 80px;
-}
-.cylinder .back {
-    transform: rotateY(180deg) translateZ(5px);
-    width: 20px;
-    height: 80px;
-}
-.cylinder .left {
-    transform: rotateY(-90deg) translateZ(5px);
-    width: 10px;
-    height: 80px;
-}
-.cylinder .right {
-    transform: rotateY(90deg) translateZ(15px);
-    width: 10px;
-    height: 80px;
-}
-.cylinder .top {
-    width: 20px;
-    height: 10px;
-    transform: rotateX(90deg) translateZ(5px);
-}
-.cylinder .bottom {
-    width: 20px;
-    height: 10px;
-    transform: rotateX(-90deg) translateZ(75px);
-}
-
-.cylinder1 {
-    bottom: 50px;
-    left: 20px;
-    transform: translateZ(50px);
-}
-.cylinder2 {
-    bottom: 50px;
-    right: 30px;
-    transform: translateZ(50px);
-}
-.cylinder3 {
-    bottom: 50px;
-    left: 20px;
-    transform: translateZ(-50px);
-}
-.cylinder4 {
-    bottom: 50px;
-    right: 30px;
-    transform: translateZ(-50px);
-}
-
-.returner {
-    width: 10px; /* Cylinder diameter */
-    height: 150px; /* Cylinder height */
-    transform-style: preserve-3d; /* Preserve 3D effect */
-    transition: transform 0.3s; /* Smooth transition */
-    cursor: pointer;
-    position: relative; /* Positioning for 3D */
-    box-sizing: border-box; /* Include padding and border in element's total width and height */
-}
-.returner .top {
-    position: absolute;
-    width: 130px; 
-    height: 130px;
-    border-radius: 100%;
-    background-color: #c59f16; 
-    transform: rotateX(90deg) translateX(-60px) translateZ(60px);
-}
-.returner .bottom {
-    position: absolute;
-    width: 190px; 
-    height: 190px;
-    border-radius: 100%;
-    background-color: #c59f16; 
-    transform: rotateX(-90deg) translateX(-88px) translateZ(55px);
-}
-.returner .side {
-    position: absolute;
-    height: 150px;
-    border: 1px solid #333; /* Border for visibility */
-    transform-origin: center;
-    transform-style: preserve-3d; /* Preserve 3D effect */
-    transition: transform 0.3s; /* Smooth transition */
-    cursor: pointer;
-    transition: transform 0.3s;
-    background-color: #c59f16; 
-    transform-origin: 50% 50%;
-}
-
-.orbiter {
-    position: relative;
-    width: 35px;
-    height: 150px;
-    transform-style: preserve-3d; /* Preserve 3D effect */
-    transition: transform 0.3s; /* Smooth transition */
-    cursor: pointer;
-    box-sizing: border-box; /* Include padding and border in element's total width and height */
-    }
-.orbiter .top {
-    position: absolute;
-    width: 180px;
-    height: 180px;
-    border-radius: 100%;
-    background-color: #EEEEE0;
-    border: 1px solid #333; /* Border for visibility */
-    transform: rotateX(90deg) translateX(-75px) translateZ(90px);
-    }
-.orbiter .bottom {
-    position: absolute;
-    width: 180px;
-    height: 180px;
-    border-radius: 100%;
-    background-color: #EEEEE0;
-    border: 1px solid #333; /* Border for visibility */
-    transform: rotateX(-90deg) translateX(-75px) translateZ(60px);
-    }
-.orbiter .side {
-    position: absolute;
-    width: 31.4px; 
-    height: 150px;
-    background-color: #EEEEE0;
-    border: 1px solid white; /* Border for visibility */
-    transform-origin: center;
-    transition: transform 0.3s;
+    <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700&family=Roboto:wght@400;700&display=swap" rel="stylesheet">
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Chang'e-6 Assembly Game</title>
+    <style>
+    /* 通用样式 */
+    body {
+        font-family: 'Roboto', sans-serif;
+        background: #000;
+        color: white;
+        margin: 0;
+        padding: 0;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
     }
 
-.grid-rectangle{
-    position: absolute;
-    width: 60px;
-    height: 100px;
-    transform-style: preserve-3d;
-    display: grid;
-    grid-template-columns: repeat(5, 1fr);
-    grid-template-rows: repeat(5, 1fr);
-}
-.grid-rectangle div {
-    border: 1px solid #444;
-    transform-style: preserve-3d;
-    background:  rgba(0, 0, 139, 0.8);
-    position: relative;
-    transform: translateX(-3px);
-}
-/* Add depth to grid cells */
-.grid-rectangle div::after {
-    content: '';
-    position: absolute;
-    width: 100%;
-    height: 100%;
-    background: #00008B;
-    transform: translateZ(-10px);
-    box-shadow: 0 0 10px rgba(0, 0, 0, 0.2);
-}
-/* Side walls for depth */
-.grid-rectangle div::before {
-    content: '';
-    position: absolute;
-    width: 10px;
-    height: 100%;
-    background: #00008B;
-    right: -5px;
-    top: 0;
-    transform: rotateY(90deg);
-    transform-origin: left;
-}
-/* Position the grid rectangles */
-.grid-left {
-    transform: rotateY(-90deg) rotateX(90deg) translateZ(-20px) translateX(-10px) translateY(80px);
-}
-.grid-right {
-    transform: rotateY(90deg) rotateX(90deg) translateZ(-20px) translateX(-10px) translateY(220px);
-}
-/* Add lighting effect */
-.grid-rectangle {
-    background: linear-gradient(
-        45deg,
-        rgba(255, 255, 255, 0.1),
-        rgba(255, 255, 255, 0.3)
-    );
-}
+    h1 {
+        font-family: 'Orbitron', sans-serif;
+        color: white;
+        text-shadow: 0 2px 5px rgba(255, 255, 255, 0.8);
+        margin: 20px 0;
+    }
 
-.ascender:hover, .lander:hover, .returner:hover, .orbiter:hover {
-    transform: rotateY(20deg) rotateX(20deg); /* Rotate on hover for effect */
+    /* 语言切换按钮 */
+    #languageButtons {
+        position: fixed;
+        top: 10px;
+        right: 10px;
+        z-index: 1001;
+        display: flex;
+        gap: 10px;
+    }
 
-}
+    #languageButtons button {
+        padding: 8px 16px;
+        font-size: 14px;
+        text-shadow: 0 2px 2px rgba(255, 255, 255, 0.5);
+        cursor: pointer;
+        background-color: #1a73e8;
+        color: white;
+        border: none;
+        border-radius: 5px;
+        min-width: 100px;
+        height: 40px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        text-align: center;
+        box-shadow: 0 4px 6px rgba(0, 100, 255, 0.8);
+        transition: transform 0.2s, box-shadow 0.2s;
+    }
 
-#resultMessage {
-    position: fixed;
-    top: 60px; /* 下移提示，避免与标题重合 */
-    left: 50%;
-    transform: translateX(-50%);
-    padding: 10px 20px;
-    border-radius: 5px;
-    font-size: 18px;
-    font-weight: bold;
-    background-color: rgba(255, 255, 255, 0.9); /* 白色半透明背景 */
-    color: #333; /* 深色文字 */
-    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2); /* 添加阴影 */
-    z-index: 1000;
-    opacity: 0;
-    transition: opacity 0.5s ease;
-}
-#resultMessage.visible {
-    opacity: 1; /* 显示提示 */
-}
-/* 成功和失败的提示颜色 */
-#resultMessage.correct {
-    background-color: rgba(40, 167, 69, 0.9); /* 绿色背景 */
-    color: white;
-}
+    #languageButtons button:hover {
+        text-shadow: 0 2px 2px rgba(153, 153, 153, 0.8);
+        background-color: #1557b0;
+        transform: scale(1.05);
+        box-shadow: 0 6px 8px rgba(0, 135, 255, 0.6);
+    }
 
-#resultMessage.incorrect {
-    background-color: rgba(220, 53, 69, 0.9); /* 红色背景 */
-    color: white;
-}
+    /* 功能按钮容器 */
+    #functionButtons {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 10px;
+        justify-content: center;
+        margin: 20px 0;
+    }
 
-#resetButton {
-    margin-top: 20px;
-    padding: 10px 20px;
-    font-size: 16px;
-    cursor: pointer;
-    background-color: #1a73e8;
-    box-shadow: 0 2px 4px rgba(255,255,255,0.1);
-    border-radius: 5px;
-}
-#resetButton:hover {
-    background-color: #1557b0;
-}
+    #functionButtons button {
+        padding: 10px 20px;
+        font-size: 16px;
+        text-shadow: 0 2px 2px rgba(255, 255, 255, 0.5);
+        cursor: pointer;
+        background-color: #1a73e8;
+        color: white;
+        border: none;
+        border-radius: 5px;
+        min-width: 150px;
+        height: 50px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        text-align: center;
+        box-shadow: 0 4px 6px rgba(0, 100, 255, 0.8);
+        transition: transform 0.2s, box-shadow 0.2s;
+    }
 
-</style>
+    #functionButtons button:hover {
+        text-shadow: 0 2px 2px rgba(153, 153, 153, 0.8);
+        background-color: #1557b0;
+        transform: scale(1.05);
+        box-shadow: 0 6px 8px rgba(0, 135, 255, 0.6);
+    }
+
+    /* iframe 容器 */
+    #iframeContainer {
+        width: 80%;
+        height: 700px;
+        border: 2px solid #1a73e8;
+        border-radius: 10px;
+        margin: 20px 0;
+        overflow: hidden;
+    }
+
+    iframe {
+        width: 100%;
+        height: 100%;
+        border: none;
+    }
+
+    /* AI助手iframe样式 */
+    #aiAssistantFrame {
+        position: fixed;
+        bottom: 10px;
+        right: 20px;
+        width: 350px;
+        height: 600px;
+        border: none;
+        z-index: 1002;
+        display: none;
+        background: white;
+        border-radius: 10px;
+        box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+    }
+
+    #chatToggle {
+        position: fixed;
+        bottom: 20px;
+        right: 20px;
+        width: 60px;
+        height: 60px;
+        border-radius: 30px;
+        background: #1a73e8;
+        border: none;
+        color: white;
+        font-size: 24px;
+        cursor: pointer;
+        box-shadow: 0 4px 6px rgba(0, 100, 255, 0.8);
+        z-index: 1001;
+    }
+
+    #chatToggle:hover {
+        background: #1557b0;
+    }
+    </style>
 </head>
 <body>
+    <!-- 标题 -->
+    <h1>Chang'e-6: Journey to the far side of the moon</h1>
 
-<h1>Assemble the Chang'e-6 Spacecraft</h1>
-
-<!-- Dotted box for random cubes -->
-<div id="cubeContainer"></div>
-
-<div id="assemblyArea"></div>
-
-<!-- Result message area -->
-<div id="resultMessage"></div>
-
-<!-- Reset Button -->
-<button id="resetButton">Reset Game</button>
-
-<!-- Updated Ascender Module -->
-<div class="ascender" id="ascender" draggable="true">
-    <div class="face front"></div>
-    <div class="face back"></div>
-    <div class="face left"></div>
-    <div class="face right"></div>
-    <div class="face top"></div>
-    <div class="face bottom"></div>
-
-    <!-- Left grid rectangle -->
-    <div class="grid-rectangle grid-left" style="transform: rotateY(-90deg) rotateZ(-90deg) translateZ(41px);">
-        <div></div><div></div><div></div><div></div><div></div>
-        <div></div><div></div><div></div><div></div><div></div>
-        <div></div><div></div><div></div><div></div><div></div>
-        <div></div><div></div><div></div><div></div><div></div>
-        <div></div><div></div><div></div><div></div><div></div>
-
-        <!-- Grid sides -->
-        <div class="grid-front-side" style="position: absolute; width: 10px; height: 100%; background: rgba(180, 180, 180, 0.4); left: -5px; transform: rotateY(90deg) translateZ(50px) translateX(10px) translateY(-1px); transform-origin: right;"></div>
-        <div class="grid-back-side" style="position: absolute; width: 10px; height: 100%; background: rgba(180, 180, 180, 0.4); left: -5px; transform: rotateY(-90deg) translateZ(10px) translateY(-1px); transform-origin: right;"></div>
-        <div class="grid-right-side" style="position: absolute; width: 100%; height: 10px; background: rgba(180, 180, 180, 0.4); left: -5px; transform: rotateX(-90deg) translateZ(95px) translateY(5px); transform-origin: right;"></div>
-        <div class="grid-left-side" style="position: absolute; width: 100%; height: 10px; background-color: rgba(180, 180, 180, 0.4); left: -5px; transform: rotateX(90deg) translateZ(95px) translateY(-5px) translateZ(-88px); transform-origin: right;"></div>
+    <!-- 语言切换按钮 -->
+    <div id="languageButtons">
+        <button id="englishButton">English</button>
+        <button id="chineseButton">繁體中文</button>
     </div>
 
-    <!-- Right grid rectangle -->
-    <div class="grid-rectangle grid-left" style="transform: rotateY(90deg) rotateZ(-90deg) translateZ(90px) translateZ(41px);">
-        <div></div><div></div><div></div><div></div><div></div>
-        <div></div><div></div><div></div><div></div><div></div>
-        <div></div><div></div><div></div><div></div><div></div>
-        <div></div><div></div><div></div><div></div><div></div>
-        <div></div><div></div><div></div><div></div><div></div>
-
-        <!-- Grid sides -->
-        <div class="grid-front-side" style="position: absolute; width: 10px; height: 100%; background: rgba(180, 180, 180, 0.4); left: -5px; transform: rotateY(90deg) translateZ(50px) translateX(10px) translateY(-1px); transform-origin: right;"></div>
-        <div class="grid-back-side" style="position: absolute; width: 10px; height: 100%; background: rgba(180, 180, 180, 0.4); left: -5px; transform: rotateY(-90deg) translateZ(10px) translateY(-1px); transform-origin: right;"></div>
-        <div class="grid-right-side" style="position: absolute; width: 100%; height: 10px; background: rgba(180, 180, 180, 0.4); left: -5px; transform: rotateX(-90deg) translateZ(95px) translateY(5px); transform-origin: right;"></div>
-        <div class="grid-left-side" style="position: absolute; width: 100%; height: 10px; background-color: rgba(180, 180, 180, 0.4); left: -5px; transform: rotateX(90deg) translateZ(95px) translateY(-5px) translateZ(-88px); transform-origin: right;"></div>
+    <!-- 功能按钮 -->
+    <div id="functionButtons">
+        <button id="function1">功能 1</button>
+        <button id="function2">功能 2</button>
+        <button id="function3">功能 3</button>
+        <button id="function4">功能 4</button>
+        <button id="function5">功能 5</button>
+        <button id="function6">功能 6</button>
     </div>
 
-    <div class="sphere sphere1" id="sphere1"></div>
-    <div class="sphere sphere2" id="sphere2"></div>
-    <div class="sphere sphere3" id="sphere3"></div>
-    <div class="sphere sphere4" id="sphere4"></div>
-</div>
-
-<div class="lander" id="lander" draggable="true">
-    <div class="face front"></div>
-    <div class="face back"></div>
-    <div class="face left"></div>
-    <div class="face right"></div>
-    <div class="face top"></div>
-    <div class="face bottom"></div>
-
-    <!-- Add rectangles with grids to the left and right sides -->
-<div class="grid-rectangle grid-left">
-    <div></div><div></div><div></div><div></div><div></div>
-    <div></div><div></div><div></div><div></div><div></div>
-    <div></div><div></div><div></div><div></div><div></div>
-    <div></div><div></div><div></div><div></div><div></div>
-    <div></div><div></div><div></div><div></div><div></div>
-
-        <!-- Grid sides -->
-        <div class="grid-front-side" style="position: absolute; width: 10px; height: 100%; background: rgba(180, 180, 180, 0.4); left: -5px; transform: rotateY(90deg) translateZ(60px) translateX(10px) translateY(-1px); transform-origin: right;"></div>
-        <div class="grid-back-side" style="position: absolute; width: 10px; height: 100%; background: rgba(180, 180, 180, 0.4); left: -5px; transform: rotateY(-90deg) translateZ(10px) translateY(-1px); transform-origin: right;"></div>
-        <div class="grid-right-side" style="position: absolute; width: 100%; height: 10px; background: rgba(180, 180, 180, 0.4); left: -5px; transform: rotateX(-90deg) translateZ(95px) translateY(5px); transform-origin: right;"></div>
-        <div class="grid-left-side" style="position: absolute; width: 100%; height: 10px; background-color: rgba(180, 180, 180, 0.4); left: -5px; transform: rotateX(90deg) translateZ(95px) translateY(-5px) translateZ(-88px); transform-origin: right;"></div>
-
-</div>
-
-<div class="grid-rectangle grid-left" style="transform: rotateX(90deg) rotateZ(90deg) translateY(-222px) translateZ(-15px);">
-        <div></div><div></div><div></div><div></div><div></div>
-        <div></div><div></div><div></div><div></div><div></div>
-        <div></div><div></div><div></div><div></div><div></div>
-        <div></div><div></div><div></div><div></div><div></div>
-        <div></div><div></div><div></div><div></div><div></div>
-
-        <!-- Grid sides -->
-        <div class="grid-front-side" style="position: absolute; width: 10px; height: 100%; background: rgba(180, 180, 180, 0.4); left: -5px; transform: rotateY(90deg) translateZ(50px) translateX(10px) translateY(-1px); transform-origin: right;"></div>
-        <div class="grid-back-side" style="position: absolute; width: 10px; height: 100%; background: rgba(180, 180, 180, 0.4); left: -5px; transform: rotateY(-90deg) translateZ(10px) translateY(-1px); transform-origin: right;"></div>
-        <div class="grid-right-side" style="position: absolute; width: 100%; height: 10px; background: rgba(180, 180, 180, 0.4); left: -5px; transform: rotateX(-90deg) translateZ(95px) translateY(5px); transform-origin: right;"></div>
-        <div class="grid-left-side" style="position: absolute; width: 100%; height: 10px; background-color: rgba(180, 180, 180, 0.4); left: -5px; transform: rotateX(90deg) translateZ(95px) translateY(-5px) translateZ(-88px); transform-origin: right;"></div>
-
-</div>
-
-    <!-- Add cylinders for the landing gear -->
-    <div class="cylinder cylinder1">
-        <div class="side front"></div>
-        <div class="side back"></div>
-        <div class="side left"></div>
-        <div class="side right"></div>
-        <div class="side top"></div>
-        <div class="side bottom"></div>
+    <!-- iframe 容器 -->
+    <div id="iframeContainer">
+        <iframe id="contentFrame" src=""></iframe>
     </div>
-    <div class="cylinder cylinder2">
-        <div class="side front"></div>
-        <div class="side back"></div>
-        <div class="side left"></div>
-        <div class="side right"></div>
-        <div class="side top"></div>
-        <div class="side bottom"></div>
-    </div>
-    <div class="cylinder cylinder3">
-        <div class="side front"></div>
-        <div class="side back"></div>
-        <div class="side left"></div>
-        <div class="side right"></div>
-        <div class="side top"></div>
-        <div class="side bottom"></div>
-    </div>
-    <div class="cylinder cylinder4">
-        <div class="side front"></div>
-        <div class="side back"></div>
-        <div class="side left"></div>
-        <div class="side right"></div>
-        <div class="side top"></div>
-        <div class="side bottom"></div>
-    </div>
-</div>
 
-<div class="returner" id="returner" draggable="true">
-     <div class="top"></div>
-     <div class="bottom"></div>
-</div>
+    <!-- AI助手iframe和控制按钮 -->
+    <iframe id="aiAssistantFrame" src="/Chang-e-6-spacecraft-simulation/ai-assistant/index.html" frameborder="0"></iframe>
+    <button id="chatToggle">💬</button>
 
-<div class="orbiter" id="orbiter" draggable="true">
-     <div class="top"></div>
-     <div class="bottom"></div>
-
-    <!-- Add rectangles with grids to the left and right sides -->
-<div class="grid-rectangle grid-left" style="transform: rotateZ(90deg) translateY(155px) translateX(20px);">
-    <div></div><div></div><div></div><div></div><div></div>
-    <div></div><div></div><div></div><div></div><div></div>
-    <div></div><div></div><div></div><div></div><div></div>
-    <div></div><div></div><div></div><div></div><div></div>
-    <div></div><div></div><div></div><div></div><div></div>
-
-        <!-- Grid sides -->
-        <div class="grid-front-side" style="position: absolute; width: 10px; height: 100%; background: rgba(180, 180, 180, 0.4); left: -5px; transform: rotateY(90deg) translateZ(50px) translateX(10px) translateY(-1px); transform-origin: right;"></div>
-        <div class="grid-back-side" style="position: absolute; width: 10px; height: 100%; background: rgba(180, 180, 180, 0.4); left: -5px; transform: rotateY(-90deg) translateZ(10px) translateY(-1px); transform-origin: right;"></div>
-        <div class="grid-right-side" style="position: absolute; width: 100%; height: 10px; background: rgba(180, 180, 180, 0.4); left: -5px; transform: rotateX(-90deg) translateZ(95px) translateY(5px); transform-origin: right;"></div>
-        <div class="grid-left-side" style="position: absolute; width: 100%; height: 10px; background-color: rgba(180, 180, 180, 0.4); left: -5px; transform: rotateX(90deg) translateZ(95px) translateY(-5px) translateZ(-88px); transform-origin: right;"></div>
-
-</div>
-
-<div class="grid-rectangle grid-left" style="transform: rotateZ(90deg) translateY(-125px) translateX(20px);">
-        <div></div><div></div><div></div><div></div><div></div>
-        <div></div><div></div><div></div><div></div><div></div>
-        <div></div><div></div><div></div><div></div><div></div>
-        <div></div><div></div><div></div><div></div><div></div>
-        <div></div><div></div><div></div><div></div><div></div>
-
-        <!-- Grid sides -->
-        <div class="grid-front-side" style="position: absolute; width: 10px; height: 100%; background: rgba(180, 180, 180, 0.4); left: -5px; transform: rotateY(90deg) translateZ(50px) translateX(10px) translateY(-1px); transform-origin: right;"></div>
-        <div class="grid-back-side" style="position: absolute; width: 10px; height: 100%; background: rgba(180, 180, 180, 0.4); left: -5px; transform: rotateY(-90deg) translateZ(10px) translateY(-1px); transform-origin: right;"></div>
-        <div class="grid-right-side" style="position: absolute; width: 100%; height: 10px; background: rgba(180, 180, 180, 0.4); left: -5px; transform: rotateX(-90deg) translateZ(95px) translateY(5px); transform-origin: right;"></div>
-        <div class="grid-left-side" style="position: absolute; width: 100%; height: 10px; background-color: rgba(180, 180, 180, 0.4); left: -5px; transform: rotateX(90deg) translateZ(95px) translateY(-5px) translateZ(-88px); transform-origin: right;"></div>
-</div>
-
-</div>
-
-<script>
-const cubeContainer = document.getElementById('cubeContainer');
-const assemblyArea = document.getElementById('assemblyArea');
-const resultMessage = document.getElementById('resultMessage');
-const resetButton = document.getElementById('resetButton');
-const cubes = Array.from(document.querySelectorAll('.ascender, .lander, .returner, .orbiter'));
-const segments = 20; // Number of segments for the sphere
-const ringsPerSegment = 1; // Number of rings per segment
-const returner = document.querySelector('.returner');
-const sides = 40; // 增加面数使表面更平滑
-const topRadius = 60;  // 上底半径
-const bottomRadius = 80;  // 下底半径
-const height = 100;  // 高度
-
-
-// Create sphere segments
-for (let i = 0; i < segments; i++) {
-    for (let sphereId = 1; sphereId <= 4; sphereId++) {
-        const segment = document.createElement('div');
-        segment.className = 'segment';
-        segment.style.transform = `rotateY(${(i * 360) / segments}deg)`;
-        const face = document.createElement('div');
-        face.className = 'face';
-        segment.appendChild(face);
-        document.getElementById(`sphere${sphereId}`).appendChild(segment);
-    }
-}
-
-for (let i = 0; i < sides; i++) {
-        const side = document.createElement('div');
-        side.className = 'side';
-            
-        const angle = (i / sides) * Math.PI * 2;
-        const nextAngle = ((i + 1) / sides) * Math.PI * 2;
-        const topWidth = 2 * Math.PI * topRadius / sides;
-        const bottomWidth = 2 * Math.PI * bottomRadius / sides;
-        const slantAngle = Math.atan2(bottomRadius - topRadius, height);
-        side.style.width = `${bottomWidth}px`;
-        side.style.clipPath = `polygon(
-            ${(bottomWidth - topWidth) / 2}px 0,
-            ${bottomWidth - (bottomWidth - topWidth) / 2}px 0,
-            ${bottomWidth}px 100%,
-            0 100%
-        )`;
-        side.style.transform = `
-        rotateY(${i * (360 / sides)}deg) 
-        translateZ(${bottomRadius}px)
-        rotateX(${slantAngle * (180 / Math.PI)}deg)
-        `;
-        returner.appendChild(side);
-}
-
-const orbiter = document.querySelector('.orbiter');
-const sidess = 20; // 圆柱体的面数
-
-        // 创建圆柱体的侧面
-for (let i = 0; i < sides; i++) {
-        const side = document.createElement('div');
-        side.className = 'side';
-        side.style.transform = `rotateY(${i * (360 / sidess)}deg) translateZ(90px)`;
-        orbiter.appendChild(side);
+    <script>
+    // 语言切换功能
+    const texts = {
+        en: {
+            title: "Chang'e-6: Journey to the far side of the moon",
+            function1: "Function 1",
+            function2: "Function 2",
+            function3: "Function 3",
+            function4: "Function 4",
+            function5: "Function 5",
+            function6: "Function 6"
+        },
+        zh: {
+            title: "嫦娥六號：月球背面的旅程",
+            function1: "功能 1",
+            function2: "功能 2",
+            function3: "功能 3",
+            function4: "功能 4",
+            function5: "功能 5",
+            function6: "功能 6"
         }
+    };
 
+    let currentLanguage = 'en';
 
-// Function to shuffle the cubes
-function shuffle(array) {
-    for (let i = array.length - 1; i > 0; i--) {
-        const j = Math.floor(Math.random() * (i + 1));
-        [array[i], array[j]] = [array[j], array[i]];
+    function changeLanguage(lang) {
+        currentLanguage = lang;
+        document.documentElement.lang = lang;
+        document.querySelector('h1').textContent = texts[lang].title;
+        document.getElementById('function1').textContent = texts[lang].function1;
+        document.getElementById('function2').textContent = texts[lang].function2;
+        document.getElementById('function3').textContent = texts[lang].function3;
+        document.getElementById('function4').textContent = texts[lang].function4;
+        document.getElementById('function5').textContent = texts[lang].function5;
+        document.getElementById('function6').textContent = texts[lang].function6;
+        
+        // 通知AI助手iframe切换语言
+        aiAssistantFrame.contentWindow.postMessage({ type: 'language', lang: lang }, '*');
     }
-}
 
-// Shuffle the cubes and append them to the cube container
-function initializeGame() {
-    shuffle(cubes);
-    cubes.forEach(cube => {
-        cubeContainer.appendChild(cube);
-        cube.setAttribute('draggable', 'true');
-    });
-    assemblyArea.innerHTML = '';
-    resultMessage.textContent = '';
-    assemblyArea.style.transform = 'rotateY(0deg)'; // 重置旋转角度
-    document.body.classList.remove('rotating'); // 移除旋转样式
-    assemblyArea.classList.remove('assembled'); // 移除组装成功样式
-    document.removeEventListener('mousedown', startDrag); // 移除事件监听
-    document.removeEventListener('mousemove', rotate);
-    document.removeEventListener('mouseup', endDrag);
-    // 恢复鼠标状态
-    document.body.classList.remove('rotating');
-    document.body.style.cursor = 'default'; // 恢复默认鼠标状态
-}
-
-// Initial game setup
-initializeGame();
-
-// Add drag and drop event listeners
-cubes.forEach(cube => {
-    cube.addEventListener('dragstart', dragStart);
-    cube.addEventListener('dragend', dragEnd);
-});
-
-assemblyArea.addEventListener('dragover', dragOver);
-assemblyArea.addEventListener('drop', drop);
-
-function dragStart(e) {
-    e.dataTransfer.setData('text/plain', e.target.id);
-    setTimeout(() => {
-        e.target.style.display = 'none';
-    }, 0);
-}
-
-function dragEnd(e) {
-    e.target.style.display = 'block';
-}
-
-function dragOver(e) {
-    e.preventDefault();
-}
-
-function drop(e) {
-    e.preventDefault();
-    const id = e.dataTransfer.getData('text/plain');
-    const droppedCube = document.getElementById(id);
-    assemblyArea.appendChild(droppedCube);
-    disableDragging(); // Disable dragging immediately after drop
-    checkAssembly();
-}
-
-function checkAssembly() {
-    const children = assemblyArea.children;
-    if (children.length === 4) {
-        const correctOrder = ['ascender', 'lander', 'returner', 'orbiter'];
-        let assembledOrder = [];
-        for (let i = 0; i < children.length; i++) {
-            assembledOrder.push(children[i].id);
-        }
-        if (JSON.stringify(assembledOrder) === JSON.stringify(correctOrder)) {
-            showMessage('Correct! You have assembled the Chang\e-6 spacecraft correctly!', true);
-            enableRotation(); // Enable rotation on correct assembly
-        } else {
-            showMessage('Incorrect! Please try again.', false);
-        }
-    }
-}
-
-// Disable dragging on modules in the assembly area
-function disableDragging() {
-    const children = assemblyArea.children;
-    for (let i = 0; i < children.length; i++) {
-        children[i].setAttribute('draggable', 'false');
-    }
-}
-
-// Rotation functionality
-let isRotating = false;
-let startX = 0;
-let currentRotation = 0; // 记录当前旋转角度
-
-function enableRotation() {
-    document.body.classList.add('rotating'); // 添加旋转样式
-    assemblyArea.classList.add('assembled'); // 添加组装成功样式
-
-    // 添加事件监听
-    document.addEventListener('mousedown', startDrag);
-    document.addEventListener('mousemove', rotate);
-    document.addEventListener('mouseup', endDrag);
-}
-
-function startDrag(e) {
-    isRotating = true;
-    startX = e.clientX;
-    document.body.style.cursor = 'grabbing'; // 拖动时显示抓取光标
-}
-
-function endDrag() {
-    isRotating = false;
-    document.body.style.cursor = 'grab'; // 恢复抓手光标
-}
-
-function rotate(e) {
-    if (!isRotating) return;
-
-    const deltaX = e.clientX - startX;
-    currentRotation += deltaX * 0.2; // 调整旋转灵敏度
-
-    // 使用 requestAnimationFrame 优化性能
-    requestAnimationFrame(() => {
-        assemblyArea.style.transform = `rotateY(${currentRotation}deg)`;
+    document.getElementById('englishButton').addEventListener('click', () => {
+        changeLanguage('en');
     });
 
-    startX = e.clientX; // 更新起始位置
-}
+    document.getElementById('chineseButton').addEventListener('click', () => {
+        changeLanguage('zh');
+    });
 
-function showMessage(message, isCorrect) {
-    resultMessage.textContent = message;
-    resultMessage.className = isCorrect ? 'correct visible' : 'incorrect visible';
+    // 功能按钮点击事件
+    const functionButtons = document.querySelectorAll('#functionButtons button');
+    const contentFrame = document.getElementById('contentFrame');
 
-    // 3 秒后隐藏提示
-    setTimeout(() => {
-        resultMessage.classList.remove('visible');
-    }, 3000);
-}
+    functionButtons.forEach((button, index) => {
+        button.addEventListener('click', () => {
+            const functionNumber = index + 1;
+            const urls = [
+                'https://www.baidu.com',
+                'https://www.bilibili.com/video/BV1Li421D7Q5?t=12.6',
+                'https://s11579783.github.io/news-damin/daminzhencaomei.html',
+                'https://www.weixin.qq.com',
+                'https://www.eduhk.hk',
+                'https://www.szu.edu.cn'
+            ];
+            // 检查索引是否在数组范围内
+            if(index >= 0 && index < urls.length) {
+                contentFrame.src = urls[index];
+            } else {
+                console.error('无效的功能索引:', index);
+            }
+        });
+    });
 
-// Reset button functionality
-resetButton.addEventListener('click', initializeGame);
-</script>
+    // AI助手控制
+    const aiAssistantFrame = document.getElementById('aiAssistantFrame');
+    const chatToggle = document.getElementById('chatToggle');
+    let isAssistantVisible = false;
 
+    chatToggle.addEventListener('click', () => {
+        if (!isAssistantVisible) {
+            aiAssistantFrame.style.display = 'block';
+            isAssistantVisible = true;
+        }
+    });
+
+    // 监听来自iframe的消息
+    window.addEventListener('message', (event) => {
+        if (event.data.type === 'minimize') {
+            aiAssistantFrame.style.display = 'none';
+            isAssistantVisible = false;
+        }
+    });
+
+    // 设置默认语言为英语
+    changeLanguage('en');
+    </script>
 </body>
-</html>
+</html> 
