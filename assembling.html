@@ -1008,6 +1008,8 @@ const partNames = {
     zh: ['上升器', '着陆器', '返回器', '轨道器']
 };
 
+let mistakeCount = 0;
+
 document.addEventListener('DOMContentLoaded', () => {
     const cubeContainer = document.getElementById('cubeContainer');
     const assemblyArea = document.getElementById('assemblyArea');
@@ -1017,6 +1019,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
     // Shuffle the cubes and append them to the cube container
 function initializeGame() {
+    mistakeCount = 0;
     shuffle(cubes);
     cubes.forEach(cube => {
         cubeContainer.appendChild(cube);
@@ -1119,6 +1122,7 @@ function initializeGame() {
         if (launchArrowButton) {
             launchArrowButton.innerHTML = lang === 'zh' ? '進入發射 <span style="font-size:32px;">🚀</span>' : 'Go to Launch <span style="font-size:32px;">🚀</span>';
         }
+        updateLaunchButtonText(lang);
     }
     // 监听父页面的语言切换消息
     window.addEventListener('message', (event) => {
@@ -1261,6 +1265,7 @@ function drop(e) {
     // 只要有顺序错误，立即提示并回位
     for (let i = 0; i < assembledOrder.length; i++) {
         if (assembledOrder[i] !== correctOrder[i]) {
+            mistakeCount++;
             const partIndex = correctOrder.indexOf(id);
             const partName = partNames[lang][partIndex];
             const msg = lang === 'zh'
@@ -1377,12 +1382,11 @@ function showCompletionDialog() {
         : 'Awesome! You have successfully assembled the Chang\'e-6 spacecraft, which is the first step in our lunar exploration project. This is the structural diagram of Chang\'e-6. You can also return to the homepage and drag your mouse to view the 3D version.';
     completionButton.textContent = lang === 'zh' ? '确定' : 'OK';
 
-    // 根据用户操作点亮星星
-    const totalMistakes = (typeof hintCount !== 'undefined' ? hintCount : 0) + (typeof resetCount !== 'undefined' ? resetCount : 0);
+    // 根据mistakeCount点亮星星
     stars.forEach((star, idx) => star.classList.remove('active'));
-    if (totalMistakes === 0) {
+    if (mistakeCount === 0) {
         stars.forEach(star => star.classList.add('active'));
-    } else if (totalMistakes === 1) {
+    } else if (mistakeCount === 1 || mistakeCount === 2) {
         stars[0].classList.add('active');
         stars[1].classList.add('active');
     } else {
@@ -1443,7 +1447,14 @@ function hideNameLabels() {
 const launchButton = document.createElement('button');
 launchButton.id = 'launchButton';
 launchButton.style.display = 'none';
-launchButton.innerHTML = document.documentElement.lang === 'zh' ? '進入發射 <span style="font-size:32px;">🚀</span>' : 'Go to Launch <span style="font-size:32px;">🚀</span>';
+launchButton.style.position = 'fixed';
+launchButton.style.bottom = '40px';
+launchButton.style.right = '40px';
+launchButton.style.zIndex = '10010';
+function updateLaunchButtonText(lang) {
+    launchButton.innerHTML = lang === 'zh' ? '進入發射 <span style="font-size:32px;">🚀</span>' : 'Go to Launch <span style="font-size:32px;">🚀</span>';
+}
+updateLaunchButtonText(document.documentElement.lang || 'en');
 launchButton.onclick = function() {
     window.location.href = 'launching.html';
 };
