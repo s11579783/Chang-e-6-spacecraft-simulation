@@ -149,21 +149,21 @@ const DEFAULT_LANGUAGE = 'en';  // Set default language to English
 const texts = {
     en: {
         title: "Chang'e-6: Journey to the far side of the moon",
-        function1: "Mission Overview",
-        function2: "Chang'e-6 Assembly",
-        function3: "Technical Details",
-        function4: "Live Updates",
-        function5: "About",
-        function6: "Contact"
+        function1: "Function 1",
+        function2: "Function 2",
+        function3: "Function 3",
+        function4: "Function 4",
+        function5: "Function 5",
+        function6: "Function 6"
     },
     zh: {
         title: "嫦娥六號：月球背面的旅程",
-        function1: "任務概覽",
-        function2: "嫦娥六號組裝",
-        function3: "技術細節",
-        function4: "實時動態",
-        function5: "關於我們",
-        function6: "聯繫我們"
+        function1: "功能 1",
+        function2: "功能 2",
+        function3: "功能 3",
+        function4: "功能 4",
+        function5: "功能 5",
+        function6: "功能 6"
     }
 };
 
@@ -236,12 +236,12 @@ functionButtons.forEach((button, index) => {
     button.addEventListener('click', () => {
         const functionNumber = index + 1;
         const urls = [
+            'https://www.baidu.com',
+            'assembling.html', // function2
             'https://s11579783.github.io/news-damin/daminzhencaomei.html',
-            'assembling.html',
             'https://www.weixin.qq.com',
             'https://www.eduhk.hk',
-            'https://www.szu.edu.cn',
-            '#'
+            'https://www.szu.edu.cn'
         ];
         // 检查索引是否在数组范围内
         if(index >= 0 && index < urls.length) {
