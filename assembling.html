@@ -1227,8 +1227,23 @@ function drop(e) {
     e.preventDefault();
     const id = e.dataTransfer.getData('text/plain');
     const droppedCube = document.getElementById(id);
+    // 先临时放入assemblyArea
     assemblyArea.appendChild(droppedCube);
-    droppedCube.style.display = 'block'; // 确保在放置后显示
+    droppedCube.style.display = 'block';
+    // 检查当前顺序
+    const children = Array.from(assemblyArea.children);
+    const correctOrder = ['ascender', 'lander', 'returner', 'orbiter'];
+    let assembledOrder = children.map(child => child.id);
+    // 只要有顺序错误，立即提示并回位
+    for (let i = 0; i < assembledOrder.length; i++) {
+        if (assembledOrder[i] !== correctOrder[i]) {
+            showMessage(false);
+            // 回到原位
+            cubeContainer.appendChild(droppedCube);
+            return;
+        }
+    }
+    // 如果没错，继续正常流程
     checkAssembly();
 }
 function checkAssembly() {
