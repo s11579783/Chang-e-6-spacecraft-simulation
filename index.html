@@ -88,9 +88,17 @@
         <button onclick="sendMessage()">发送</button>
     </div>
 
-    <!-- 先加载配置文件 -->
-    <script src="config.js"></script>
-    <!-- 再加载助手脚本 -->
+    <!-- 内嵌配置 -->
+    <script>
+        window.env = {
+            DEEPSEEK_API_KEY: 'sk-4bd30523b64d44d6bb390f62d861538b',
+            DEFAULT_LANGUAGE: 'zh',
+            DEBUG_MODE: true,
+            FALLBACK_TO_LOCAL: true
+        };
+    </script>
+    
+    <!-- 加载助手脚本 -->
     <script src="ai-assistant/assistant.js"></script>
     <script>
         // 初始化助手
