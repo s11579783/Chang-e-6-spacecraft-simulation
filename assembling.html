@@ -1049,6 +1049,8 @@ function initializeGame() {
     // 页面加载时显示欢迎页面
     window.onload = () => {
         welcomePage.style.display = 'flex';
+        // 请求父页面发送当前语言
+        window.parent.postMessage({ type: 'requestLanguage' }, '*');
     };
     // 点击开始按钮后隐藏欢迎页面并开始游戏
     startButton.addEventListener('click', () => {
