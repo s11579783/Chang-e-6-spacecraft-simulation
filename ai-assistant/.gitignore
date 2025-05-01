@@ -1,0 +1,3 @@
+# 在 PowerShell 中
+cd path\to\ai-assistant
+echo "" > .gitignore
