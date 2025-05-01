@@ -1237,12 +1237,27 @@ function drop(e) {
     // 只要有顺序错误，立即提示并回位
     for (let i = 0; i < assembledOrder.length; i++) {
         if (assembledOrder[i] !== correctOrder[i]) {
-            showMessage(false);
+            // 错误提示
+            const lang = document.documentElement.lang || 'en';
+            const partIndex = correctOrder.indexOf(id);
+            const partName = partNames[lang][partIndex];
+            const msg = lang === 'zh'
+                ? `錯誤，${partName}應該放在第${partIndex+1}位。`
+                : `Incorrect, ${partName} should be at position ${partIndex+1}.`;
+            showMessage(false, msg);
             // 回到原位
             cubeContainer.appendChild(droppedCube);
             return;
         }
     }
+    // 正确提示
+    const lang = document.documentElement.lang || 'en';
+    const partIndex = correctOrder.indexOf(id);
+    const partName = partNames[lang][partIndex];
+    const msg = lang === 'zh'
+        ? `正確，${partName}已放在第${children.length}位。`
+        : `Correct, ${partName} is placed at position ${children.length}.`;
+    showMessage(true, msg);
     // 如果没错，继续正常流程
     checkAssembly();
 }
@@ -1305,14 +1320,12 @@ function checkAssembly() {
         });
         startX = e.clientX; // 更新起始位置
     }
-    function showMessage(isCorrect) {
-        const lang = document.documentElement.lang || 'en'; // 获取当前语言，默认为 'en'
-        const messages = texts[lang] || texts.en; // 如果当前语言未定义，则使用英语
-        const message = isCorrect ? messages.correctMessage : messages.incorrectMessage; // 根据语言选择消息
+    function showMessage(isCorrect, customMsg) {
+        const lang = document.documentElement.lang || 'en';
+        const messages = texts[lang] || texts.en;
+        const message = customMsg !== undefined ? customMsg : (isCorrect ? messages.correctMessage : messages.incorrectMessage);
         resultMessage.textContent = message;
         resultMessage.className = isCorrect ? 'correct visible' : 'incorrect visible';
-
-        // 3 秒后隐藏提示
         setTimeout(() => {
             resultMessage.classList.remove('visible');
         }, 3000);
@@ -1342,7 +1355,8 @@ function showCompletionDialog() {
     launchArrowButton.style.display = 'inline-block';
 
     // 根据用户操作点亮星星
-    const totalMistakes = hintCount + resetCount;
+    const totalMistakes = (typeof hintCount !== 'undefined' ? hintCount : 0) + (typeof resetCount !== 'undefined' ? resetCount : 0);
+    stars.forEach((star, idx) => star.classList.remove('active'));
     if (totalMistakes === 0) {
         stars.forEach(star => star.classList.add('active'));
     } else if (totalMistakes === 1) {
@@ -1355,14 +1369,19 @@ function showCompletionDialog() {
     // 显示对话框
     completionDialog.style.display = 'flex';
 
-    // 点击确定按钮后关闭对话框
-    completionButton.addEventListener('click', () => {
-        completionDialog.style.display = 'none';
-    });
-    // 跳转按钮事件
-    launchArrowButton.onclick = function() {
-        window.location.href = 'launching.html';
-    };
+    // 只绑定一次
+    if (!completionButton._binded) {
+        completionButton.addEventListener('click', () => {
+            completionDialog.style.display = 'none';
+        });
+        completionButton._binded = true;
+    }
+    if (!launchArrowButton._binded) {
+        launchArrowButton.onclick = function() {
+            window.location.href = 'launching.html';
+        };
+        launchArrowButton._binded = true;
+    }
 }
 function showNameLabels() {
     const nameContainers = document.querySelectorAll('.name-container');
