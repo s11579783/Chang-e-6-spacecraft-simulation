@@ -823,6 +823,34 @@ body.rotating:active {
     vertical-align: middle;
 }
 
+/* 讓cubeContainer和assemblyArea居中 */
+#cubeContainer, #assemblyArea {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    margin-left: auto;
+    margin-right: auto;
+}
+
+/* resultMessage動畫效果 */
+#resultMessage.incorrect {
+    background-color: rgba(220, 53, 69, 0.95);
+    color: white;
+    animation: shake 0.5s, flashRed 1s;
+}
+@keyframes shake {
+    0% { transform: translateX(0); }
+    20% { transform: translateX(-10px); }
+    40% { transform: translateX(10px); }
+    60% { transform: translateX(-10px); }
+    80% { transform: translateX(10px); }
+    100% { transform: translateX(0); }
+}
+@keyframes flashRed {
+    0% { box-shadow: 0 0 20px 5px #ff0000; }
+    100% { box-shadow: none; }
+}
+
 </style>
 </head>
 <body>
@@ -846,20 +874,6 @@ body.rotating:active {
 
     <!-- 主体 -->
     <h1>Assemble the Chang'e-6 Spacecraft</h1>
-    <div id="languageButtons">
-        <button id="englishButton">English</button>
-        <button id="chineseButton">繁體中文</button>
-    </div>
-    <!-- 提示按钮 -->
-    <button id="hintButton">💡 提示</button>
-    <!-- 提示框 -->
-    <div id="hintModal" class="hint-modal">
-        <div class="hint-content">
-            <span id="closeHint">&times;</span>
-            <p id="hintText"></p>
-        </div>
-    </div>
-
     <!-- 任务一 -->
     <div id="cubeContainer"></div>
     <div id="assemblyArea"></div>
@@ -1416,8 +1430,12 @@ function checkAssembly() {
         const message = isCorrect ? messages.correctMessage : messages.incorrectMessage; // 根据语言选择消息
         resultMessage.textContent = message;
         resultMessage.className = isCorrect ? 'correct visible' : 'incorrect visible';
-
-        // 3 秒后隐藏提示
+        if (!isCorrect) {
+            // 重新觸發動畫
+            resultMessage.style.animation = 'none';
+            void resultMessage.offsetWidth;
+            resultMessage.style.animation = '';
+        }
         setTimeout(() => {
             resultMessage.classList.remove('visible');
         }, 3000);
