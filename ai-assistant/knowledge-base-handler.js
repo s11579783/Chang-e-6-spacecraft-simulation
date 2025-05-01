@@ -148,25 +148,104 @@ class SpaceKnowledgeBase {
                 : '抱歉，知识库尚未加载。';
         }
 
-        // Convert query to lowercase for case-insensitive matching
-        query = query.toLowerCase();
+        // 将查询转换为小写以进行不区分大小写的匹配
+        const lowerQuery = query.toLowerCase();
+
+        // 首先尝试搜索关键词
+        const searchResults = this.searchByKeyword(lowerQuery);
         
-        // Get the appropriate language data
-        const data = this.knowledgeBase[this.currentLang];
-        
-        // Search through the knowledge base
-        for (const entry of data) {
-            for (const keyword of entry.keywords) {
-                if (query.includes(keyword.toLowerCase())) {
-                    return entry.response;
-                }
+        if (searchResults.length > 0) {
+            // 根据结果类型生成回答
+            const result = searchResults[0]; // 取第一个最相关的结果
+            switch (result.type) {
+                case 'qa':
+                    return result.content.answer;
+                case 'mission':
+                    return this.formatMissionInfo(result.content);
+                case 'technology':
+                    return this.formatTechnologyInfo(result.content);
             }
         }
 
-        // Default response if no match is found
+        // 如果没有直接匹配，检查是否是关于嫦娥六号的查询
+        if (lowerQuery.includes('chang\'e-6') || lowerQuery.includes('嫦娥六号')) {
+            const ce6Info = this.getMissionInfo('Chang\'e-6');
+            if (ce6Info) {
+                return this.formatMissionInfo(ce6Info);
+            }
+        }
+
+        // 尝试获取相关问题
+        const relatedQuestions = this.getRelatedQuestions(lowerQuery);
+        if (relatedQuestions.length > 0) {
+            return relatedQuestions[0].answer;
+        }
+
+        // 默认回答
         return this.currentLang === 'en'
-            ? "I'm sorry, I don't have specific information about that. Please try asking about the Chang'e-6 mission, its objectives, or its landing site."
-            : "抱歉，我没有相关的具体信息。请尝试询问有关嫦娥六号任务、其目标或着陆点的问题。";
+            ? "I can help you with information about the Chang'e-6 mission and China's lunar exploration program. You can ask about mission objectives, landing sites, technical details, or previous Chang'e missions."
+            : "我可以为您提供有关嫦娥六号任务和中国探月工程的信息。您可以询问任务目标、着陆点、技术细节或之前的嫦娥任务。";
+    }
+
+    // 格式化任务信息
+    formatMissionInfo(missionInfo) {
+        if (!missionInfo) return '';
+
+        const lang = this.currentLang;
+        const texts = {
+            en: {
+                phase: 'Phase',
+                launch: 'Launch Date',
+                planned: 'Planned Launch',
+                achievements: 'Achievements',
+                objectives: 'Objectives',
+                landingSite: 'Landing Site',
+                components: 'Mission Components',
+                architecture: 'Mission Architecture'
+            },
+            zh: {
+                phase: '阶段',
+                launch: '发射日期',
+                planned: '计划发射',
+                achievements: '成就',
+                objectives: '目标',
+                landingSite: '着陆点',
+                components: '任务组成',
+                architecture: '任务架构'
+            }
+        };
+
+        const t = texts[lang];
+        let response = `${missionInfo.name}\n`;
+        response += `${t.phase}: ${missionInfo.phase}\n`;
+        
+        if (missionInfo.date) {
+            response += `${t.launch}: ${missionInfo.date}\n`;
+        } else if (missionInfo.planned_launch) {
+            response += `${t.planned}: ${missionInfo.planned_launch}\n`;
+        }
+
+        if (missionInfo.achievements) {
+            response += `${t.achievements}:\n- ${missionInfo.achievements.join('\n- ')}\n`;
+        }
+
+        if (missionInfo.objectives) {
+            response += `${t.objectives}:\n- ${missionInfo.objectives.join('\n- ')}\n`;
+        }
+
+        if (missionInfo.details) {
+            response += `${t.landingSite}: ${missionInfo.details.landing_site}\n`;
+            response += `${t.components}: ${missionInfo.details.components.join(', ')}\n`;
+            response += `${t.architecture}: ${missionInfo.details.architecture}\n`;
+        }
+
+        return response;
+    }
+
+    // 格式化技术信息
+    formatTechnologyInfo(techInfo) {
+        const response = `${techInfo.title}\n\n`;
+        return response + techInfo.innovations.map(innovation => `- ${innovation}`).join('\n');
     }
 }
 
