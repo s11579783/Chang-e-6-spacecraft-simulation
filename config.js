@@ -1,6 +1,6 @@
 // AI Assistant Configuration
 window.assistantConfig = {
-    "language": "zh",
+    "language": "en",
     "apiEnabled": false,
     "debugMode": false,
     "fallbackToLocal": true,
