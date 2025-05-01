@@ -348,7 +348,7 @@ body.rotating:active {
     background-color: #c59f16; 
     transform-origin: center;
     transition: transform 0.3s;
-    border: 1px solid #333; / Border for visibility /
+    border: 1px solid #333; /* Border for visibility */
 }
 .cylinder .front {
     transform: rotateY(0deg) translateZ(5px);
@@ -793,23 +793,12 @@ body.rotating:active {
     <div class="welcome-dialog">
         <h2>嫦娥六号探月工程</h2>
         <p>亲爱的小工程师们，我们的探月工程已经来到了第四期，这次的任务是帮助嫦娥六号完成探月之旅，准备好开启这次的探险了吗！</p>
-        <div class="language-select-container">
-            <span id="languageLabel">语言：</span>
-            <select id="languageSelect">
-                <option value="en">English</option>
-                <option value="zh">繁體中文</option>
-            </select>
-        </div>
         <button id="startButton">开始游戏</button>
     </div>
 </div>
 
 <!-- 主体 -->
 <h1>Assemble the Chang'e-6 Spacecraft</h1>
-<div id="languageButtons">
-    <button id="englishButton">English</button>
-    <button id="chineseButton">繁體中文</button>
-</div>
 <!-- 提示按钮 -->
 <button id="hintButton">💡 提示</button>
 <!-- 提示框 -->
@@ -1059,31 +1048,18 @@ function initializeGame() {
     // 获取欢迎页面和开始按钮
     const welcomePage = document.getElementById('welcomePage');
     const startButton = document.getElementById('startButton');
-    // 获取下拉框
-    const languageSelect = document.getElementById('languageSelect');
-    // 下拉框事件监听
-    languageSelect.addEventListener('change', (event) => {
-        const lang = event.target.value; // 获取选中的语言值
-        changeLanguage(lang); // 切换语言
-    });
-    // 页面加载时设置默认语言
+    // 页面加载时显示欢迎页面
     window.onload = () => {
-        welcomePage.style.display = 'flex'; // 显示欢迎页面
-        changeLanguage('en'); // 设置默认语言为英语
-        languageSelect.value = 'en'; // 设置下拉框默认选中项
+        welcomePage.style.display = 'flex';
     };
     // 点击开始按钮后隐藏欢迎页面并开始游戏
     startButton.addEventListener('click', () => {
-        welcomePage.style.display = 'none'; // 隐藏欢迎页面
+        welcomePage.style.display = 'none';
     });
 
 // ====================
-// 主体
+// 语言同步逻辑
 // ====================
-
-// ----------
-// 语言切换
-// ----------
     const texts = {
         en: {
             welcomeTitle: "Chang'e-6 Lunar Mission",
@@ -1108,21 +1084,22 @@ function initializeGame() {
             hintButton: "💡 提示"
         }
     };
-    // Function to change language
+    // 当前语言
+    let currentLang = 'en';
+    // 语言切换函数
     function changeLanguage(lang) {
-        document.documentElement.lang = lang; // 设置 HTML 的 lang 属性
-
+        currentLang = lang;
+        document.documentElement.lang = lang;
         // 更新欢迎页面内容
         if (welcomePage.style.display !== 'none') {
             document.querySelector('.welcome-dialog h2').textContent = texts[lang].welcomeTitle;
             document.querySelector('.welcome-dialog p').textContent = texts[lang].welcomeMessage;
             document.getElementById('startButton').textContent = texts[lang].startButton;
-            document.getElementById('languageLabel').textContent = texts[lang].languageLabel; // 更新"语言："文字
         }
         // 更新游戏页面内容
         document.querySelector('h1').textContent = texts[lang].title;
         document.getElementById('resetButton').textContent = texts[lang].resetButton;
-        document.getElementById('hintButton').textContent = texts[lang].hintButton;    // Update task names
+        document.getElementById('hintButton').textContent = texts[lang].hintButton;
         updateNameLabels();
         // 更新箭头按钮文本
         const launchArrowButton = document.getElementById('launchArrowButton');
@@ -1130,14 +1107,14 @@ function initializeGame() {
             launchArrowButton.innerHTML = lang === 'zh' ? '進入發射 <span style="font-size:32px;">🚀</span>' : 'Go to Launch <span style="font-size:32px;">🚀</span>';
         }
     }
-    // Event listeners for language buttons
-    document.getElementById('englishButton').addEventListener('click', () => {
-        changeLanguage('en');
+    // 监听父页面的语言切换消息
+    window.addEventListener('message', (event) => {
+        if (event.data && event.data.type === 'setLanguage' && event.data.lang) {
+            changeLanguage(event.data.lang);
+        }
     });
-    document.getElementById('chineseButton').addEventListener('click', () => {
-        changeLanguage('zh');
-    });
-
+    // 页面加载时请求父页面发送当前语言
+    window.parent.postMessage({ type: 'requestLanguage' }, '*');
 
 // ====================
 // 任务一：组装模块
