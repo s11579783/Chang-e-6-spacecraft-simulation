@@ -106,6 +106,16 @@ body {
     background: #000;
     transform: scale(0.2);
 }
+
+/* 添加包裝容器 */
+#wrapper {
+    transform: scale(0.2);
+    transform-origin: center top;
+    width: 500%; /* 補償縮放後的寬度 */
+    height: 500%; /* 補償縮放後的高度 */
+    position: relative;
+}
+
 body.rotating {
     cursor: grab;
 }
@@ -349,7 +359,7 @@ body.rotating:active {
     background-color: #c59f16; 
     transform-origin: center;
     transition: transform 0.3s;
-    border: 1px solid #333; / Border for visibility /
+    border: 1px solid #333; /* Border for visibility */
 }
 .cylinder .front {
     transform: rotateY(0deg) translateZ(5px);
@@ -788,222 +798,223 @@ body.rotating:active {
 </style>
 </head>
 <body>
-
-<!-- 欢迎页面 -->
-<div id="welcomePage" class="welcome-page">
-    <div class="welcome-dialog">
-        <h2>嫦娥六号探月工程</h2>
-        <p>亲爱的小工程师们，我们的探月工程已经来到了第四期，这次的任务是帮助嫦娥六号完成探月之旅，准备好开启这次的探险了吗！</p>
-        <div class="language-select-container">
-            <span id="languageLabel">语言：</span>
-            <select id="languageSelect">
-                <option value="en">English</option>
-                <option value="zh">繁體中文</option>
-            </select>
+<!-- 添加包裝容器 -->
+<div id="wrapper">
+    <!-- 欢迎页面 -->
+    <div id="welcomePage" class="welcome-page">
+        <div class="welcome-dialog">
+            <h2>嫦娥六号探月工程</h2>
+            <p>亲爱的小工程师们，我们的探月工程已经来到了第四期，这次的任务是帮助嫦娥六号完成探月之旅，准备好开启这次的探险了吗！</p>
+            <div class="language-select-container">
+                <span id="languageLabel">语言：</span>
+                <select id="languageSelect">
+                    <option value="en">English</option>
+                    <option value="zh">繁體中文</option>
+                </select>
+            </div>
+            <button id="startButton">开始游戏</button>
         </div>
-        <button id="startButton">开始游戏</button>
-    </div>
-</div>
-
-<!-- 主体 -->
-<h1>Assemble the Chang'e-6 Spacecraft</h1>
-<div id="languageButtons">
-    <button id="englishButton">English</button>
-    <button id="chineseButton">繁體中文</button>
-</div>
-<!-- 提示按钮 -->
-<button id="hintButton">💡 提示</button>
-<!-- 提示框 -->
-<div id="hintModal" class="hint-modal">
-    <div class="hint-content">
-        <span id="closeHint">&times;</span>
-        <p id="hintText"></p>
-    </div>
-</div>
-
-<!-- 任务一 -->
-<div id="cubeContainer"></div>
-<div id="assemblyArea"></div>
-<div id="resultMessage"></div>
-<button id="resetButton">Reset Game</button>
-
-<!-- Updated Ascender Module -->
-<div class="ascender" id="ascender" draggable="true">
-    <div class="name-container">
-        <div class="dotted-line" style="transform: rotateZ(90deg) translateY(-130px) translateX(70px);"></div>
-        <div class="name-label" id="ascender-label" style="transform: translateX(160px) translateY(80px);"></div>
-    </div>
-    <div class="face front"></div>
-    <div class="face back"></div>
-    <div class="face left"></div>
-    <div class="face right"></div>
-    <div class="face top"></div>
-    <div class="face bottom"></div>
-
-    <!-- Left grid rectangle -->
-    <div class="grid-rectangle grid-left" style="transform: rotateY(-90deg) rotateZ(-90deg) translateZ(41px);">
-        <div></div><div></div><div></div><div></div><div></div>
-        <div></div><div></div><div></div><div></div><div></div>
-        <div></div><div></div><div></div><div></div><div></div>
-        <div></div><div></div><div></div><div></div><div></div>
-        <div></div><div></div><div></div><div></div><div></div>
-
-        <!-- Grid sides -->
-        <div class="grid-front-side" style="position: absolute; width: 10px; height: 100%; background: rgba(180, 180, 180, 0.4); left: -5px; transform: rotateY(90deg) translateZ(50px) translateX(10px) translateY(-1px); transform-origin: right;"></div>
-        <div class="grid-back-side" style="position: absolute; width: 10px; height: 100%; background: rgba(180, 180, 180, 0.4); left: -5px; transform: rotateY(-90deg) translateZ(10px) translateY(-1px); transform-origin: right;"></div>
-        <div class="grid-right-side" style="position: absolute; width: 100%; height: 10px; background: rgba(180, 180, 180, 0.4); left: -5px; transform: rotateX(-90deg) translateZ(95px) translateY(5px); transform-origin: right;"></div>
-        <div class="grid-left-side" style="position: absolute; width: 100%; height: 10px; background-color: rgba(180, 180, 180, 0.4); left: -5px; transform: rotateX(90deg) translateZ(95px) translateY(-5px) translateZ(-88px); transform-origin: right;"></div>
     </div>
 
-    <!-- Right grid rectangle -->
-    <div class="grid-rectangle grid-left" style="transform: rotateY(90deg) rotateZ(-90deg) translateZ(90px) translateZ(41px);">
-        <div></div><div></div><div></div><div></div><div></div>
-        <div></div><div></div><div></div><div></div><div></div>
-        <div></div><div></div><div></div><div></div><div></div>
-        <div></div><div></div><div></div><div></div><div></div>
-        <div></div><div></div><div></div><div></div><div></div>
-
-        <!-- Grid sides -->
-        <div class="grid-front-side" style="position: absolute; width: 10px; height: 100%; background: rgba(180, 180, 180, 0.4); left: -5px; transform: rotateY(90deg) translateZ(50px) translateX(10px) translateY(-1px); transform-origin: right;"></div>
-        <div class="grid-back-side" style="position: absolute; width: 10px; height: 100%; background: rgba(180, 180, 180, 0.4); left: -5px; transform: rotateY(-90deg) translateZ(10px) translateY(-1px); transform-origin: right;"></div>
-        <div class="grid-right-side" style="position: absolute; width: 100%; height: 10px; background: rgba(180, 180, 180, 0.4); left: -5px; transform: rotateX(-90deg) translateZ(95px) translateY(5px); transform-origin: right;"></div>
-        <div class="grid-left-side" style="position: absolute; width: 100%; height: 10px; background-color: rgba(180, 180, 180, 0.4); left: -5px; transform: rotateX(90deg) translateZ(95px) translateY(-5px) translateZ(-88px); transform-origin: right;"></div>
+    <!-- 主体 -->
+    <h1>Assemble the Chang'e-6 Spacecraft</h1>
+    <div id="languageButtons">
+        <button id="englishButton">English</button>
+        <button id="chineseButton">繁體中文</button>
+    </div>
+    <!-- 提示按钮 -->
+    <button id="hintButton">💡 提示</button>
+    <!-- 提示框 -->
+    <div id="hintModal" class="hint-modal">
+        <div class="hint-content">
+            <span id="closeHint">&times;</span>
+            <p id="hintText"></p>
+        </div>
     </div>
 
-    <div class="sphere sphere1" id="sphere1"></div>
-    <div class="sphere sphere2" id="sphere2"></div>
-    <div class="sphere sphere3" id="sphere3"></div>
-    <div class="sphere sphere4" id="sphere4"></div>
-</div>
+    <!-- 任务一 -->
+    <div id="cubeContainer"></div>
+    <div id="assemblyArea"></div>
+    <div id="resultMessage"></div>
+    <button id="resetButton">Reset Game</button>
 
-<div class="lander" id="lander" draggable="true">
-    <div class="name-container">
-        <div class="dotted-line" style="transform: rotateZ(-90deg) translateY(-250px) translateX(-95px);"></div>
-        <div class="name-label" id="lander-label" style="transform: translateX(-350px) translateY(100px);"></div>
+    <!-- Updated Ascender Module -->
+    <div class="ascender" id="ascender" draggable="true">
+        <div class="name-container">
+            <div class="dotted-line" style="transform: rotateZ(90deg) translateY(-130px) translateX(70px);"></div>
+            <div class="name-label" id="ascender-label" style="transform: translateX(160px) translateY(80px);"></div>
+        </div>
+        <div class="face front"></div>
+        <div class="face back"></div>
+        <div class="face left"></div>
+        <div class="face right"></div>
+        <div class="face top"></div>
+        <div class="face bottom"></div>
+
+        <!-- Left grid rectangle -->
+        <div class="grid-rectangle grid-left" style="transform: rotateY(-90deg) rotateZ(-90deg) translateZ(41px);">
+            <div></div><div></div><div></div><div></div><div></div>
+            <div></div><div></div><div></div><div></div><div></div>
+            <div></div><div></div><div></div><div></div><div></div>
+            <div></div><div></div><div></div><div></div><div></div>
+            <div></div><div></div><div></div><div></div><div></div>
+
+            <!-- Grid sides -->
+            <div class="grid-front-side" style="position: absolute; width: 10px; height: 100%; background: rgba(180, 180, 180, 0.4); left: -5px; transform: rotateY(90deg) translateZ(50px) translateX(10px) translateY(-1px); transform-origin: right;"></div>
+            <div class="grid-back-side" style="position: absolute; width: 10px; height: 100%; background: rgba(180, 180, 180, 0.4); left: -5px; transform: rotateY(-90deg) translateZ(10px) translateY(-1px); transform-origin: right;"></div>
+            <div class="grid-right-side" style="position: absolute; width: 100%; height: 10px; background: rgba(180, 180, 180, 0.4); left: -5px; transform: rotateX(-90deg) translateZ(95px) translateY(5px); transform-origin: right;"></div>
+            <div class="grid-left-side" style="position: absolute; width: 100%; height: 10px; background-color: rgba(180, 180, 180, 0.4); left: -5px; transform: rotateX(90deg) translateZ(95px) translateY(-5px) translateZ(-88px); transform-origin: right;"></div>
+        </div>
+
+        <!-- Right grid rectangle -->
+        <div class="grid-rectangle grid-left" style="transform: rotateY(90deg) rotateZ(-90deg) translateZ(90px) translateZ(41px);">
+            <div></div><div></div><div></div><div></div><div></div>
+            <div></div><div></div><div></div><div></div><div></div>
+            <div></div><div></div><div></div><div></div><div></div>
+            <div></div><div></div><div></div><div></div><div></div>
+            <div></div><div></div><div></div><div></div><div></div>
+
+            <!-- Grid sides -->
+            <div class="grid-front-side" style="position: absolute; width: 10px; height: 100%; background: rgba(180, 180, 180, 0.4); left: -5px; transform: rotateY(90deg) translateZ(50px) translateX(10px) translateY(-1px); transform-origin: right;"></div>
+            <div class="grid-back-side" style="position: absolute; width: 10px; height: 100%; background: rgba(180, 180, 180, 0.4); left: -5px; transform: rotateY(-90deg) translateZ(10px) translateY(-1px); transform-origin: right;"></div>
+            <div class="grid-right-side" style="position: absolute; width: 100%; height: 10px; background: rgba(180, 180, 180, 0.4); left: -5px; transform: rotateX(-90deg) translateZ(95px) translateY(5px); transform-origin: right;"></div>
+            <div class="grid-left-side" style="position: absolute; width: 100%; height: 10px; background-color: rgba(180, 180, 180, 0.4); left: -5px; transform: rotateX(90deg) translateZ(95px) translateY(-5px) translateZ(-88px); transform-origin: right;"></div>
+        </div>
+
+        <div class="sphere sphere1" id="sphere1"></div>
+        <div class="sphere sphere2" id="sphere2"></div>
+        <div class="sphere sphere3" id="sphere3"></div>
+        <div class="sphere sphere4" id="sphere4"></div>
     </div>
-    <div class="face front"></div>
-    <div class="face back"></div>
-    <div class="face left"></div>
-    <div class="face right"></div>
-    <div class="face top"></div>
-    <div class="face bottom"></div>
 
-    <!-- Add rectangles with grids to the left and right sides -->
-<div class="grid-rectangle grid-left" style="transform: rotateX(90deg) rotateZ(90deg) translateX(2px) translateY(80px) translateZ(-20px);">
-    <div></div><div></div><div></div><div></div><div></div>
-    <div></div><div></div><div></div><div></div><div></div>
-    <div></div><div></div><div></div><div></div><div></div>
-    <div></div><div></div><div></div><div></div><div></div>
-    <div></div><div></div><div></div><div></div><div></div>
+    <div class="lander" id="lander" draggable="true">
+        <div class="name-container">
+            <div class="dotted-line" style="transform: rotateZ(-90deg) translateY(-250px) translateX(-95px);"></div>
+            <div class="name-label" id="lander-label" style="transform: translateX(-350px) translateY(100px);"></div>
+        </div>
+        <div class="face front"></div>
+        <div class="face back"></div>
+        <div class="face left"></div>
+        <div class="face right"></div>
+        <div class="face top"></div>
+        <div class="face bottom"></div>
 
-        <!-- Grid sides -->
-        <div class="grid-front-side" style="position: absolute; width: 10px; height: 100%; background: rgba(180, 180, 180, 0.4); left: -5px; transform: rotateY(90deg) translateZ(50px) translateX(10px) translateY(-1px); transform-origin: right;"></div>
-        <div class="grid-back-side" style="position: absolute; width: 10px; height: 100%; background: rgba(180, 180, 180, 0.4); left: -5px; transform: rotateY(-90deg) translateZ(12px) translateY(-1px); transform-origin: right;"></div>
-        <div class="grid-right-side" style="position: absolute; width: 100%; height: 10px; background: rgba(180, 180, 180, 0.4); left: -5px; transform: rotateX(-90deg) translateZ(95px) translateY(5px); transform-origin: right;"></div>
-        <div class="grid-left-side" style="position: absolute; width: 100%; height: 10px; background-color: rgba(180, 180, 180, 0.4); left: -5px; transform: rotateX(90deg) translateZ(95px) translateY(-5px) translateZ(-88px); transform-origin: right;"></div>
-
-</div>
-
-<div class="grid-rectangle grid-left" style="transform: rotateX(90deg) rotateZ(90deg) translateX(2px)  translateY(-222px) translateZ(-20px);">
+        <!-- Add rectangles with grids to the left and right sides -->
+    <div class="grid-rectangle grid-left" style="transform: rotateX(90deg) rotateZ(90deg) translateX(2px) translateY(80px) translateZ(-20px);">
         <div></div><div></div><div></div><div></div><div></div>
         <div></div><div></div><div></div><div></div><div></div>
         <div></div><div></div><div></div><div></div><div></div>
         <div></div><div></div><div></div><div></div><div></div>
         <div></div><div></div><div></div><div></div><div></div>
 
-        <!-- Grid sides -->
-        <div class="grid-front-side" style="position: absolute; width: 10px; height: 100%; background: rgba(180, 180, 180, 0.4); left: -5px; transform: rotateY(90deg) translateZ(50px) translateX(10px) translateY(-1px); transform-origin: right;"></div>
-        <div class="grid-back-side" style="position: absolute; width: 10px; height: 100%; background: rgba(180, 180, 180, 0.4); left: -5px; transform: rotateY(-90deg) translateZ(10px) translateY(-1px); transform-origin: right;"></div>
-        <div class="grid-right-side" style="position: absolute; width: 100%; height: 10px; background: rgba(180, 180, 180, 0.4); left: -5px; transform: rotateX(-90deg) translateZ(95px) translateY(5px); transform-origin: right;"></div>
-        <div class="grid-left-side" style="position: absolute; width: 100%; height: 10px; background-color: rgba(180, 180, 180, 0.4); left: -5px; transform: rotateX(90deg) translateZ(95px) translateY(-5px) translateZ(-88px); transform-origin: right;"></div>
+            <!-- Grid sides -->
+            <div class="grid-front-side" style="position: absolute; width: 10px; height: 100%; background: rgba(180, 180, 180, 0.4); left: -5px; transform: rotateY(90deg) translateZ(50px) translateX(10px) translateY(-1px); transform-origin: right;"></div>
+            <div class="grid-back-side" style="position: absolute; width: 10px; height: 100%; background: rgba(180, 180, 180, 0.4); left: -5px; transform: rotateY(-90deg) translateZ(12px) translateY(-1px); transform-origin: right;"></div>
+            <div class="grid-right-side" style="position: absolute; width: 100%; height: 10px; background: rgba(180, 180, 180, 0.4); left: -5px; transform: rotateX(-90deg) translateZ(95px) translateY(5px); transform-origin: right;"></div>
+            <div class="grid-left-side" style="position: absolute; width: 100%; height: 10px; background-color: rgba(180, 180, 180, 0.4); left: -5px; transform: rotateX(90deg) translateZ(95px) translateY(-5px) translateZ(-88px); transform-origin: right;"></div>
 
-</div>
-
-    <!-- Add cylinders for the landing gear -->
-    <div class="cylinder cylinder1">
-        <div class="side front"></div>
-        <div class="side back"></div>
-        <div class="side left"></div>
-        <div class="side right"></div>
-        <div class="side top"></div>
-        <div class="side bottom"></div>
     </div>
-    <div class="cylinder cylinder2">
-        <div class="side front"></div>
-        <div class="side back"></div>
-        <div class="side left"></div>
-        <div class="side right"></div>
-        <div class="side top"></div>
-        <div class="side bottom"></div>
-    </div>
-    <div class="cylinder cylinder3">
-        <div class="side front"></div>
-        <div class="side back"></div>
-        <div class="side left"></div>
-        <div class="side right"></div>
-        <div class="side top"></div>
-        <div class="side bottom"></div>
-    </div>
-    <div class="cylinder cylinder4">
-        <div class="side front"></div>
-        <div class="side back"></div>
-        <div class="side left"></div>
-        <div class="side right"></div>
-        <div class="side top"></div>
-        <div class="side bottom"></div>
-    </div>
-</div>
 
-<div class="returner" id="returner" draggable="true">
-    <div class="name-container">
-        <div class="dotted-line" style="transform: rotateZ(45deg) translateX(80px) translateY(-120px);"></div>
-        <div class="name-label" id="returner-label" style="transform: translateX(170px) translateY(-50px);"></div>
+    <div class="grid-rectangle grid-left" style="transform: rotateX(90deg) rotateZ(90deg) translateX(2px)  translateY(-222px) translateZ(-20px);">
+            <div></div><div></div><div></div><div></div><div></div>
+            <div></div><div></div><div></div><div></div><div></div>
+            <div></div><div></div><div></div><div></div><div></div>
+            <div></div><div></div><div></div><div></div><div></div>
+            <div></div><div></div><div></div><div></div><div></div>
+
+            <!-- Grid sides -->
+            <div class="grid-front-side" style="position: absolute; width: 10px; height: 100%; background: rgba(180, 180, 180, 0.4); left: -5px; transform: rotateY(90deg) translateZ(50px) translateX(10px) translateY(-1px); transform-origin: right;"></div>
+            <div class="grid-back-side" style="position: absolute; width: 10px; height: 100%; background: rgba(180, 180, 180, 0.4); left: -5px; transform: rotateY(-90deg) translateZ(10px) translateY(-1px); transform-origin: right;"></div>
+            <div class="grid-right-side" style="position: absolute; width: 100%; height: 10px; background: rgba(180, 180, 180, 0.4); left: -5px; transform: rotateX(-90deg) translateZ(95px) translateY(5px); transform-origin: right;"></div>
+            <div class="grid-left-side" style="position: absolute; width: 100%; height: 10px; background-color: rgba(180, 180, 180, 0.4); left: -5px; transform: rotateX(90deg) translateZ(95px) translateY(-5px) translateZ(-88px); transform-origin: right;"></div>
+
     </div>
-     <div class="left"></div>
-     <div class="right"></div>
-</div>
 
-<div class="orbiter" id="orbiter" draggable="true">
-    <div class="name-container">
-        <div class="dotted-line" style="transform: rotateZ(-90deg) translateX(-160px) translateY(-240px);"></div>
-        <div class="name-label" id="orbiter-label" style="transform: translateX(-340px) translateY(170px);"></div>
+        <!-- Add cylinders for the landing gear -->
+        <div class="cylinder cylinder1">
+            <div class="side front"></div>
+            <div class="side back"></div>
+            <div class="side left"></div>
+            <div class="side right"></div>
+            <div class="side top"></div>
+            <div class="side bottom"></div>
+        </div>
+        <div class="cylinder cylinder2">
+            <div class="side front"></div>
+            <div class="side back"></div>
+            <div class="side left"></div>
+            <div class="side right"></div>
+            <div class="side top"></div>
+            <div class="side bottom"></div>
+        </div>
+        <div class="cylinder cylinder3">
+            <div class="side front"></div>
+            <div class="side back"></div>
+            <div class="side left"></div>
+            <div class="side right"></div>
+            <div class="side top"></div>
+            <div class="side bottom"></div>
+        </div>
+        <div class="cylinder cylinder4">
+            <div class="side front"></div>
+            <div class="side back"></div>
+            <div class="side left"></div>
+            <div class="side right"></div>
+            <div class="side top"></div>
+            <div class="side bottom"></div>
+        </div>
     </div>
-     <div class="top"></div>
-     <div class="bottom"></div>
-<div class="frustum">
-        <div class="top"></div>
-        <div class="bottom"></div>
-</div>
-    <!-- Add rectangles with grids to the left and right sides -->
-<div class="grid-rectangle grid-left" style="transform: rotateX(90deg) rotateZ(90deg) translateX(2px) translateY(155px) translateZ(5px);">
-    <div></div><div></div><div></div><div></div><div></div>
-    <div></div><div></div><div></div><div></div><div></div>
-    <div></div><div></div><div></div><div></div><div></div>
-    <div></div><div></div><div></div><div></div><div></div>
-    <div></div><div></div><div></div><div></div><div></div>
 
-        <!-- Grid sides -->
-        <div class="grid-front-side" style="position: absolute; width: 10px; height: 100%; background: rgba(180, 180, 180, 0.4); left: -5px; transform: rotateY(90deg) translateZ(50px) translateX(10px) translateY(-1px); transform-origin: right;"></div>
-        <div class="grid-back-side" style="position: absolute; width: 10px; height: 100%; background: rgba(180, 180, 180, 0.4); left: -5px; transform: rotateY(-90deg) translateZ(12px) translateY(-1px); transform-origin: right;"></div>
-        <div class="grid-right-side" style="position: absolute; width: 100%; height: 10px; background: rgba(180, 180, 180, 0.4); left: -5px; transform: rotateX(-90deg) translateZ(95px) translateY(5px); transform-origin: right;"></div>
-        <div class="grid-left-side" style="position: absolute; width: 100%; height: 10px; background-color: rgba(180, 180, 180, 0.4); left: -5px; transform: rotateX(90deg) translateZ(95px) translateY(-5px) translateZ(-88px); transform-origin: right;"></div>
+    <div class="returner" id="returner" draggable="true">
+        <div class="name-container">
+            <div class="dotted-line" style="transform: rotateZ(45deg) translateX(80px) translateY(-120px);"></div>
+            <div class="name-label" id="returner-label" style="transform: translateX(170px) translateY(-50px);"></div>
+        </div>
+         <div class="left"></div>
+         <div class="right"></div>
+    </div>
 
-</div>
-
-<div class="grid-rectangle grid-left" style="transform: rotateX(90deg) rotateZ(90deg) translateX(2px) translateY(-130px) translateZ(5px);">
+    <div class="orbiter" id="orbiter" draggable="true">
+        <div class="name-container">
+            <div class="dotted-line" style="transform: rotateZ(-90deg) translateX(-160px) translateY(-240px);"></div>
+            <div class="name-label" id="orbiter-label" style="transform: translateX(-340px) translateY(170px);"></div>
+        </div>
+         <div class="top"></div>
+         <div class="bottom"></div>
+    <div class="frustum">
+            <div class="top"></div>
+            <div class="bottom"></div>
+    </div>
+        <!-- Add rectangles with grids to the left and right sides -->
+    <div class="grid-rectangle grid-left" style="transform: rotateX(90deg) rotateZ(90deg) translateX(2px) translateY(155px) translateZ(5px);">
         <div></div><div></div><div></div><div></div><div></div>
         <div></div><div></div><div></div><div></div><div></div>
         <div></div><div></div><div></div><div></div><div></div>
         <div></div><div></div><div></div><div></div><div></div>
         <div></div><div></div><div></div><div></div><div></div>
 
-        <!-- Grid sides -->
-        <div class="grid-front-side" style="position: absolute; width: 10px; height: 100%; background: rgba(180, 180, 180, 0.4); left: -5px; transform: rotateY(90deg) translateZ(50px) translateX(10px) translateY(-1px); transform-origin: right;"></div>
-        <div class="grid-back-side" style="position: absolute; width: 10px; height: 100%; background: rgba(180, 180, 180, 0.4); left: -5px; transform: rotateY(-90deg) translateZ(10px) translateY(-1px); transform-origin: right;"></div>
-        <div class="grid-right-side" style="position: absolute; width: 100%; height: 10px; background: rgba(180, 180, 180, 0.4); left: -5px; transform: rotateX(-90deg) translateZ(95px) translateY(5px); transform-origin: right;"></div>
-        <div class="grid-left-side" style="position: absolute; width: 100%; height: 10px; background-color: rgba(180, 180, 180, 0.4); left: -5px; transform: rotateX(90deg) translateZ(95px) translateY(-5px) translateZ(-88px); transform-origin: right;"></div>
+            <!-- Grid sides -->
+            <div class="grid-front-side" style="position: absolute; width: 10px; height: 100%; background: rgba(180, 180, 180, 0.4); left: -5px; transform: rotateY(90deg) translateZ(50px) translateX(10px) translateY(-1px); transform-origin: right;"></div>
+            <div class="grid-back-side" style="position: absolute; width: 10px; height: 100%; background: rgba(180, 180, 180, 0.4); left: -5px; transform: rotateY(-90deg) translateZ(12px) translateY(-1px); transform-origin: right;"></div>
+            <div class="grid-right-side" style="position: absolute; width: 100%; height: 10px; background: rgba(180, 180, 180, 0.4); left: -5px; transform: rotateX(-90deg) translateZ(95px) translateY(5px); transform-origin: right;"></div>
+            <div class="grid-left-side" style="position: absolute; width: 100%; height: 10px; background-color: rgba(180, 180, 180, 0.4); left: -5px; transform: rotateX(90deg) translateZ(95px) translateY(-5px) translateZ(-88px); transform-origin: right;"></div>
 
-</div>
+    </div>
+
+    <div class="grid-rectangle grid-left" style="transform: rotateX(90deg) rotateZ(90deg) translateX(2px) translateY(-130px) translateZ(5px);">
+            <div></div><div></div><div></div><div></div><div></div>
+            <div></div><div></div><div></div><div></div><div></div>
+            <div></div><div></div><div></div><div></div><div></div>
+            <div></div><div></div><div></div><div></div><div></div>
+            <div></div><div></div><div></div><div></div><div></div>
+
+            <!-- Grid sides -->
+            <div class="grid-front-side" style="position: absolute; width: 10px; height: 100%; background: rgba(180, 180, 180, 0.4); left: -5px; transform: rotateY(90deg) translateZ(50px) translateX(10px) translateY(-1px); transform-origin: right;"></div>
+            <div class="grid-back-side" style="position: absolute; width: 10px; height: 100%; background: rgba(180, 180, 180, 0.4); left: -5px; transform: rotateY(-90deg) translateZ(10px) translateY(-1px); transform-origin: right;"></div>
+            <div class="grid-right-side" style="position: absolute; width: 100%; height: 10px; background: rgba(180, 180, 180, 0.4); left: -5px; transform: rotateX(-90deg) translateZ(95px) translateY(5px); transform-origin: right;"></div>
+            <div class="grid-left-side" style="position: absolute; width: 100%; height: 10px; background-color: rgba(180, 180, 180, 0.4); left: -5px; transform: rotateX(90deg) translateZ(95px) translateY(-5px) translateZ(-88px); transform-origin: right;"></div>
+
+    </div>
 </div>
 <!-- 组装完成对话框 -->
 <div id="completionDialog" class="completion-dialog">
