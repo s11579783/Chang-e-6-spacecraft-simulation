@@ -5,20 +5,37 @@ class MoonAssistant {
             DEFAULT_LANGUAGE: 'en',
             DEBUG_MODE: false,
             FALLBACK_TO_LOCAL: true,
-            DEEPSEEK_API_KEY: null
+            DEEPSEEK_API_KEY: null,
+            apiEnabled: false
         };
 
-        // Try to load configuration from window.env if available
-        if (window.env) {
-            this.config = { ...this.config, ...window.env };
+        // Initialize API state
+        this.isApiEnabled = false;
+        this.apiKey = null;
+
+        // Try to load configuration from window.env or window.assistantConfig
+        const configSource = window.assistantConfig || window.env;
+        if (configSource) {
+            this.config = { ...this.config, ...configSource };
             console.log('Configuration loaded:', this.config);
+            
+            // Initialize API if enabled
+            if (this.config.apiEnabled && this.config.apiKey) {
+                this.apiKey = this.config.apiKey;
+                this.isApiEnabled = true;
+                this.debugMode = this.config.debugMode;
+                console.log('API initialized with key:', this.apiKey ? 'Key provided' : 'No key');
+            } else {
+                console.log('API not enabled:', { 
+                    apiEnabled: this.config.apiEnabled, 
+                    hasKey: Boolean(this.config.apiKey)
+                });
+            }
         }
 
-        this.currentLanguage = this.config.DEFAULT_LANGUAGE;
-        this.apiKey = this.config.DEEPSEEK_API_KEY;
-        this.isApiEnabled = Boolean(this.apiKey);
-        this.debugMode = this.config.DEBUG_MODE;
-        this.fallbackToLocal = this.config.FALLBACK_TO_LOCAL;
+        this.currentLanguage = this.config.language || 'en';
+        this.debugMode = this.config.debugMode || false;
+        this.fallbackToLocal = this.config.fallbackToLocal || true;
         
         console.log('AI Assistant initialized:', {
             language: this.currentLanguage,
@@ -26,11 +43,6 @@ class MoonAssistant {
             debugMode: this.debugMode,
             fallbackToLocal: this.fallbackToLocal
         });
-
-        // Initialize API if key is available
-        if (this.apiKey) {
-            this.initializeApi(this.apiKey);
-        }
 
         this.responses = {
             en: {
@@ -363,22 +375,24 @@ class MoonAssistant {
         this.log(`Processing message: ${message}`);
         
         // Try API first if enabled
-        if (this.isApiEnabled) {
+        if (this.isApiEnabled && this.apiKey) {
             try {
                 this.log('API is enabled, attempting API request...');
                 const apiResponse = await this.makeApiRequest(message);
                 if (apiResponse) {
                     this.log('Successfully received API response');
                     return apiResponse;
-                } else {
-                    this.log('API response was empty, falling back to local response', 'warn');
                 }
+                this.log('API response was empty, falling back to local response', 'warn');
             } catch (error) {
                 this.log(`API request failed: ${error.message}`, 'error');
+                if (this.debugMode) {
+                    console.error('Full error:', error);
+                }
                 this.log('Falling back to local responses', 'warn');
             }
         } else {
-            this.log('API is not enabled, using local response');
+            this.log('API is not enabled or no API key available, using local response');
         }
 
         // Fall back to local responses if API fails or is disabled
