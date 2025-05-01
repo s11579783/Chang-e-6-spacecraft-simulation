@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="zh">
+<html lang="en">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -16,6 +16,9 @@
             --message-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
             --tech-gradient: linear-gradient(135deg, #1a73e8, #0052cc);
             --tech-glow: 0 0 20px rgba(26, 115, 232, 0.15);
+            --font-family-zh: 'Microsoft YaHei', 'PingFang SC', 'SimSun', sans-serif;
+            --font-family-zh-tw: 'Microsoft JhengHei', 'PingFang TC', sans-serif;
+            --font-family-en: 'Segoe UI', Arial, sans-serif;
         }
 
         * {
@@ -25,10 +28,18 @@
         }
 
         body {
-            font-family: 'Segoe UI', Arial, sans-serif;
+            font-family: var(--font-family-en);
             background-color: var(--background-color);
             color: var(--text-color);
             line-height: 1.5;
+        }
+
+        [lang="zh"] body {
+            font-family: var(--font-family-zh);
+        }
+
+        [lang="zh-tw"] body {
+            font-family: var(--font-family-zh-tw);
         }
 
         #assistant-container {
@@ -93,6 +104,19 @@
             transition: all 0.3s ease;
             position: relative;
             backdrop-filter: blur(10px);
+            animation: fadeIn 0.3s ease forwards;
+        }
+
+        .message-time {
+            font-size: 0.8em;
+            color: rgba(255, 255, 255, 0.7);
+            position: absolute;
+            bottom: 4px;
+            right: 8px;
+        }
+
+        .assistant-message .message-time {
+            color: rgba(0, 0, 0, 0.5);
         }
 
         .message:hover {
@@ -146,6 +170,11 @@
             background: white;
         }
 
+        #user-input:disabled {
+            opacity: 0.7;
+            cursor: not-allowed;
+        }
+
         #user-input::placeholder {
             color: #999;
             font-style: italic;
@@ -165,9 +194,14 @@
             box-shadow: 0 2px 6px rgba(26, 115, 232, 0.2);
         }
 
-        #send-button:hover {
+        #send-button:hover:not(:disabled) {
             transform: translateY(-2px);
             box-shadow: 0 4px 12px rgba(26, 115, 232, 0.3);
+        }
+
+        #send-button:disabled {
+            opacity: 0.7;
+            cursor: not-allowed;
         }
 
         #minimize-button {
@@ -239,8 +273,22 @@
             }
         }
 
-        .message {
-            animation: fadeIn 0.3s ease forwards;
+        .loading-dots {
+            display: inline-block;
+        }
+
+        .loading-dots::after {
+            content: '...';
+            animation: dots 1.5s steps(4, end) infinite;
+            display: inline-block;
+            width: 0;
+            overflow: hidden;
+        }
+
+        @keyframes dots {
+            to {
+                width: 1.25em;
+            }
         }
     </style>
 </head>
@@ -249,14 +297,17 @@
         <div id="assistant-header">
             <h2 id="assistant-title">Chang'e-6 Mission Assistant</h2>
             <div>
-                <button id="language-switch">切换到中文</button>
-                <button id="minimize-button">−</button>
+                <button id="language-switch" aria-label="Switch language">切换语言</button>
+                <button id="minimize-button" aria-label="Minimize window">−</button>
             </div>
         </div>
         <div id="chat-container"></div>
         <div id="input-container">
-            <input type="text" id="user-input" placeholder="Ask me about the Chang'e-6 mission...">
-            <button id="send-button">Send</button>
+            <input type="text" 
+                   id="user-input" 
+                   aria-label="Query input"
+                   placeholder="Ask me about the Chang'e-6 mission...">
+            <button id="send-button" aria-label="Send message">Send</button>
         </div>
     </div>
 
@@ -276,19 +327,12 @@
         const languageSwitch = document.getElementById('language-switch');
         const assistantTitle = document.getElementById('assistant-title');
 
-        // Load knowledge base data
-        async function initialize() {
-            try {
-                const loaded = await knowledgeBase.loadData();
-                if (loaded) {
-                    addMessage(config[currentLang].welcomeMessage, 'assistant');
-                } else {
-                    addMessage('Error loading knowledge base.', 'assistant');
-                }
-            } catch (error) {
-                console.error('Initialization error:', error);
-                addMessage('Error initializing the assistant.', 'assistant');
-            }
+        // Format message time
+        function formatMessageTime(date) {
+            return new Intl.DateTimeFormat(currentLang, {
+                hour: '2-digit',
+                minute: '2-digit'
+            }).format(date);
         }
 
         // Add message to chat
@@ -296,8 +340,55 @@
             const messageDiv = document.createElement('div');
             messageDiv.className = `message ${type}-message`;
             messageDiv.textContent = text;
+
+            const timeSpan = document.createElement('span');
+            timeSpan.className = 'message-time';
+            timeSpan.textContent = formatMessageTime(new Date());
+            messageDiv.appendChild(timeSpan);
+
             chatContainer.appendChild(messageDiv);
             chatContainer.scrollTop = chatContainer.scrollHeight;
+        }
+
+        // Update UI language
+        function updateUILanguage() {
+            document.documentElement.lang = currentLang;
+            assistantTitle.textContent = config[currentLang].title;
+            userInput.placeholder = config[currentLang].placeholder;
+            languageSwitch.textContent = config[currentLang].languageSwitch;
+            sendButton.textContent = config[currentLang].searchButton;
+            minimizeButton.textContent = config[currentLang].minimizeButton;
+        }
+
+        // Switch language
+        function switchLanguage() {
+            switch(currentLang) {
+                case 'en':
+                    currentLang = 'zh';
+                    break;
+                case 'zh':
+                    currentLang = 'zh-tw';
+                    break;
+                case 'zh-tw':
+                    currentLang = 'en';
+                    break;
+            }
+            
+            knowledgeBase.setLanguage(currentLang);
+            updateUILanguage();
+        }
+
+        // Debounce function
+        function debounce(func, wait) {
+            let timeout;
+            return function executedFunction(...args) {
+                const later = () => {
+                    clearTimeout(timeout);
+                    func(...args);
+                };
+                clearTimeout(timeout);
+                timeout = setTimeout(later, wait);
+            };
         }
 
         // Handle user input
@@ -305,33 +396,56 @@
             const query = userInput.value.trim();
             if (!query) return;
 
+            // Disable input during processing
+            sendButton.disabled = true;
+            userInput.disabled = true;
+
             addMessage(query, 'user');
             userInput.value = '';
 
             try {
+                // Show loading message
+                const loadingDiv = document.createElement('div');
+                loadingDiv.className = 'message assistant-message';
+                loadingDiv.innerHTML = `<span class="loading-dots">${config[currentLang].loadingMessage}</span>`;
+                chatContainer.appendChild(loadingDiv);
+
                 const response = await knowledgeBase.generateResponse(query);
+                chatContainer.removeChild(loadingDiv);
                 addMessage(response, 'assistant');
             } catch (error) {
                 console.error('Error generating response:', error);
+                chatContainer.removeChild(loadingDiv);
+                addMessage(config[currentLang].errorMessage, 'assistant');
+            } finally {
+                // Re-enable input
+                sendButton.disabled = false;
+                userInput.disabled = false;
+                userInput.focus();
+            }
+        }
+
+        // Initialize the assistant
+        async function initialize() {
+            try {
+                const loaded = await knowledgeBase.loadData();
+                if (loaded) {
+                    addMessage(config[currentLang].welcomeMessage, 'assistant');
+                } else {
+                    addMessage(config[currentLang].errorMessage, 'assistant');
+                }
+            } catch (error) {
+                console.error('Initialization error:', error);
                 addMessage(config[currentLang].errorMessage, 'assistant');
             }
         }
 
-        // Switch language
-        function switchLanguage() {
-            currentLang = currentLang === 'en' ? 'zh' : 'en';
-            knowledgeBase.setLanguage(currentLang);
-            
-            // Update UI text
-            assistantTitle.textContent = config[currentLang].title;
-            userInput.placeholder = config[currentLang].placeholder;
-            languageSwitch.textContent = config[currentLang].languageSwitch;
-        }
-
         // Event listeners
-        sendButton.addEventListener('click', handleUserInput);
+        const debouncedHandleUserInput = debounce(handleUserInput, 300);
+        
+        sendButton.addEventListener('click', debouncedHandleUserInput);
         userInput.addEventListener('keypress', (e) => {
-            if (e.key === 'Enter') handleUserInput();
+            if (e.key === 'Enter') debouncedHandleUserInput();
         });
 
         minimizeButton.addEventListener('click', () => {
@@ -345,13 +459,12 @@
             if (event.data.type === 'language') {
                 currentLang = event.data.lang;
                 knowledgeBase.setLanguage(currentLang);
-                
-                // Update UI text
-                assistantTitle.textContent = config[currentLang].title;
-                userInput.placeholder = config[currentLang].placeholder;
-                languageSwitch.textContent = config[currentLang].languageSwitch;
+                updateUILanguage();
             }
         });
+
+        // Set initial language
+        document.documentElement.lang = currentLang;
 
         // Initialize the assistant
         initialize();
