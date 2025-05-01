@@ -261,6 +261,25 @@ document.addEventListener('DOMContentLoaded', () => {
     changeLanguage(DEFAULT_LANGUAGE);
 });
 
+// 在加载function2时传递当前语言
+function loadFunction2() {
+    const contentFrame = document.getElementById('contentFrame');
+    contentFrame.src = 'assembling.html';
+    // 等待iframe加载完成后发送当前语言
+    contentFrame.onload = function() {
+        const currentLang = document.documentElement.lang || 'en';
+        contentFrame.contentWindow.postMessage({ type: 'setLanguage', lang: currentLang }, '*');
+    };
+}
+
+// 监听子页面的语言请求
+window.addEventListener('message', (event) => {
+    if (event.data && event.data.type === 'requestLanguage') {
+        const currentLang = document.documentElement.lang || 'en';
+        event.source.postMessage({ type: 'setLanguage', lang: currentLang }, '*');
+    }
+});
+
 </script>
 
 </body>
