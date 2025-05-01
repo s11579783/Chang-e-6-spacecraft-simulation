@@ -1110,6 +1110,8 @@ function initializeGame() {
     window.addEventListener('message', (event) => {
         if (event.data && event.data.type === 'setLanguage' && event.data.lang) {
             changeLanguage(event.data.lang);
+            // 更新组装成功对话框的语言
+            updateCompletionDialogLanguage(event.data.lang);
         }
     });
     // 页面加载时请求父页面发送当前语言
@@ -1432,6 +1434,17 @@ launchButton.onclick = function() {
     window.location.href = 'launching.html';
 };
 document.body.appendChild(launchButton);
+
+function updateCompletionDialogLanguage(lang) {
+    const completionTitle = document.getElementById('completionTitle');
+    const completionMessage = document.getElementById('completionMessage');
+    const completionButton = document.getElementById('completionButton');
+    completionTitle.textContent = lang === 'zh' ? '闯关成功！' : 'Congratulations!';
+    completionMessage.textContent = lang === 'zh'
+        ? '太棒了！你成功地组装了嫦娥六号飞行器，这是我们探月工程中的第一步，这是嫦娥六号的结构图，你也可以返回主页，拖动你的鼠标查看3D版。'
+        : 'Awesome! You have successfully assembled the Chang\'e-6 spacecraft, which is the first step in our lunar exploration project. This is the structural diagram of Chang\'e-6. You can also return to the homepage and drag your mouse to view the 3D version.';
+    completionButton.textContent = lang === 'zh' ? '确定' : 'OK';
+}
 
 </script>
 
