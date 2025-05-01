@@ -1047,10 +1047,24 @@ function initializeGame() {
     const welcomePage = document.getElementById('welcomePage');
     const startButton = document.getElementById('startButton');
     // 页面加载时显示欢迎页面
+    window.addEventListener('message', (event) => {
+        if (event.data && event.data.type === 'setLanguage' && event.data.lang) {
+            changeLanguage(event.data.lang);
+            // 更新组装成功对话框的语言
+            updateCompletionDialogLanguage(event.data.lang);
+        }
+    });
+    // 页面加载时请求父页面发送当前语言
+    window.parent.postMessage({ type: 'requestLanguage' }, '*');
+    // 确保欢迎对话框在第一次加载时跟随main.html的语言
     window.onload = () => {
         welcomePage.style.display = 'flex';
         // 请求父页面发送当前语言
         window.parent.postMessage({ type: 'requestLanguage' }, '*');
+        // 确保欢迎对话框和组装成功对话框的语言与main.html一致
+        const lang = document.documentElement.lang || 'en';
+        changeLanguage(lang);
+        updateCompletionDialogLanguage(lang);
     };
     // 点击开始按钮后隐藏欢迎页面并开始游戏
     startButton.addEventListener('click', () => {
