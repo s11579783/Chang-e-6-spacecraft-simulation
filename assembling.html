@@ -998,7 +998,6 @@ body.rotating:active {
         </div>
         <img src="https://i.postimg.cc/tCCY876h/image.jpg" alt="Completion Image" class="completion-image">
         <button id="completionButton"></button>
-        <button id="launchArrowButton" style="display:none;margin-top:16px;font-size:28px;background:none;border:none;cursor:pointer;">➡️</button>
     </div>
 </div>
 
@@ -1247,8 +1246,8 @@ function drop(e) {
             const partIndex = correctOrder.indexOf(id);
             const partName = partNames[lang][partIndex];
             const msg = lang === 'zh'
-                ? `錯誤，${partName}應該放在第${partIndex+1}位。`
-                : `Incorrect, ${partName} should be at position ${partIndex+1}.`;
+                ? `錯誤！這裏應該放置${partName}`
+                : `Incorrect! ${partName} should be placed here.`;
             showMessage(false, msg);
             // 回到原位
             cubeContainer.appendChild(droppedCube);
@@ -1259,8 +1258,8 @@ function drop(e) {
     const partIndex = correctOrder.indexOf(id);
     const partName = partNames[lang][partIndex];
     const msg = lang === 'zh'
-        ? `正確，${partName}已放在第${children.length}位。`
-        : `Correct, ${partName} is placed at position ${children.length}.`;
+        ? `正確！${partName}已被正確放置`
+        : `Correct! ${partName} has been placed correctly.`;
     showMessage(true, msg);
     // 如果没错，继续正常流程
     checkAssembly();
@@ -1347,7 +1346,6 @@ function showCompletionDialog() {
     const completionTitle = document.getElementById('completionTitle');
     const completionMessage = document.getElementById('completionMessage');
     const completionButton = document.getElementById('completionButton');
-    const launchArrowButton = document.getElementById('launchArrowButton');
     const stars = document.querySelectorAll('#starsContainer .star');
 
     // 根据语言设置标题和按钮文本
@@ -1357,9 +1355,6 @@ function showCompletionDialog() {
         ? '太棒了！你成功地组装了嫦娥六号飞行器，这是我们探月工程中的第一步，这是嫦娥六号的结构图，你也可以返回主页，拖动你的鼠标查看3D版。'
         : 'Awesome! You have successfully assembled the Chang\'e-6 spacecraft, which is the first step in our lunar exploration project. This is the structural diagram of Chang\'e-6. You can also return to the homepage and drag your mouse to view the 3D version.';
     completionButton.textContent = lang === 'zh' ? '确定' : 'OK';
-    // 设置箭头按钮文本
-    launchArrowButton.innerHTML = lang === 'zh' ? '進入發射 <span style="font-size:32px;">🚀</span>' : 'Go to Launch <span style="font-size:32px;">🚀</span>';
-    launchArrowButton.style.display = 'inline-block';
 
     // 根据用户操作点亮星星
     const totalMistakes = (typeof hintCount !== 'undefined' ? hintCount : 0) + (typeof resetCount !== 'undefined' ? resetCount : 0);
@@ -1382,12 +1377,6 @@ function showCompletionDialog() {
             completionDialog.style.display = 'none';
         });
         completionButton._binded = true;
-    }
-    if (!launchArrowButton._binded) {
-        launchArrowButton.onclick = function() {
-            window.location.href = 'launching.html';
-        };
-        launchArrowButton._binded = true;
     }
 }
 function showNameLabels() {
@@ -1429,6 +1418,15 @@ function hideNameLabels() {
 }
 //任务一结束
 
+// 在游戏界面添加跳转按钮
+const launchButton = document.createElement('button');
+launchButton.id = 'launchButton';
+launchButton.style.display = 'none';
+launchButton.innerHTML = document.documentElement.lang === 'zh' ? '進入發射 <span style="font-size:32px;">🚀</span>' : 'Go to Launch <span style="font-size:32px;">🚀</span>';
+launchButton.onclick = function() {
+    window.location.href = 'launching.html';
+};
+document.body.appendChild(launchButton);
 
 </script>
 
