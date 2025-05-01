@@ -613,4 +613,37 @@ class MoonAssistant {
 // Export the class for use in other files
 if (typeof module !== 'undefined' && module.exports) {
     module.exports = MoonAssistant;
+}
+
+// Configuration for the AI assistant
+async function loadConfig() {
+    try {
+        const response = await fetch('https://s11579783.github.io/Chang-e-6-spacecraft-simulation/config.js');
+        const configText = await response.text();
+        
+        // Extract the configuration object from the JavaScript file
+        const configMatch = configText.match(/window\.assistantConfig\s*=\s*({[\s\S]*?});/);
+        if (configMatch && configMatch[1]) {
+            try {
+                const config = JSON.parse(configMatch[1]);
+                window.env = config;
+                console.log('Configuration loaded from file:', config);
+            } catch (parseError) {
+                console.warn('Failed to parse configuration:', parseError);
+                throw parseError;
+            }
+        } else {
+            throw new Error('Could not find configuration object in file');
+        }
+    } catch (error) {
+        console.warn('Failed to load configuration:', error);
+        // Fallback configuration with Chinese as default
+        window.env = {
+            language: 'zh',
+            apiEnabled: false,
+            debugMode: false,
+            fallbackToLocal: true
+        };
+        console.log('Using fallback configuration:', window.env);
+    }
 } 
