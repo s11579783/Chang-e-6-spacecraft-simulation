@@ -1,0 +1,124 @@
+.completion-dialog {
+    display: none;
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0, 0, 0, 0.8);
+    z-index: 10002;
+    justify-content: center;
+    align-items: center;
+}
+
+#completionButton {
+    padding: 10px 20px;
+    font-size: 16px;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    transition: background-color 0.3s;
+    text-shadow: 0 2px 2px rgba(255, 255, 255, 0.5);
+    background-color: #1a73e8;
+    color: white;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.3);
+    margin-right: 10px;
+}
+
+#launchButton {
+    padding: 10px 20px;
+    font-size: 16px;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    transition: all 0.3s;
+    text-shadow: 0 2px 2px rgba(255, 255, 255, 0.5);
+    background-color: #ff3300;
+    color: white;
+    box-shadow: 0 4px 6px rgba(255, 51, 0, 0.3);
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
+
+#launchButton:hover {
+    background-color: #cc2900;
+    transform: scale(1.05);
+    box-shadow: 0 6px 8px rgba(255, 51, 0, 0.4);
+}
+
+#launchButton .arrow {
+    font-size: 20px;
+    transition: transform 0.3s;
+}
+
+#launchButton:hover .arrow {
+    transform: translateX(5px);
+}
+
+.button-container {
+    display: flex;
+    gap: 10px;
+    margin-top: 20px;
+}
+
+<div class="completion-content">
+    <h2 id="completionTitle"></h2>
+    <p id="completionMessage"></p>
+    <div id="starsContainer">
+        <span class="star">&#9733;</span>
+        <span class="star">&#9733;</span>
+        <span class="star">&#9733;</span>
+    </div>
+    <img src="https://i.postimg.cc/tCCY876h/image.jpg" alt="Completion Image" class="completion-image">
+    <div class="button-container">
+        <button id="completionButton"></button>
+        <button id="launchButton">
+            <span class="arrow">➜</span>
+            <span id="launchButtonText"></span>
+        </button>
+    </div>
+</div>
+
+function showCompletionDialog() {
+    const completionDialog = document.getElementById('completionDialog');
+    const completionTitle = document.getElementById('completionTitle');
+    const completionMessage = document.getElementById('completionMessage');
+    const completionButton = document.getElementById('completionButton');
+    const launchButton = document.getElementById('launchButton');
+    const launchButtonText = document.getElementById('launchButtonText');
+    const stars = document.querySelectorAll('#starsContainer .star');
+
+    // 根据语言设置标题和按钮文本
+    const lang = document.documentElement.lang || 'en';
+    completionTitle.textContent = lang === 'zh' ? '闯关成功！' : 'Congratulations!';
+    completionMessage.textContent = lang === 'zh'
+        ? '太棒了！你成功地组装了嫦娥六号飞行器，这是我们探月工程中的第一步，这是嫦娥六号的结构图，你也可以返回主页，拖动你的鼠标查看3D版。'
+        : 'Awesome! You have successfully assembled the Chang\'e-6 spacecraft, which is the first step in our lunar exploration project. This is the structural diagram of Chang\'e-6. You can also return to the homepage and drag your mouse to view the 3D version.';
+    completionButton.textContent = lang === 'zh' ? '确定' : 'OK';
+    launchButtonText.textContent = lang === 'zh' ? '开始发射' : 'Start Launch';
+
+    // 根据用户操作点亮星星
+    const totalMistakes = hintCount + resetCount;
+    if (totalMistakes === 0) {
+        stars.forEach(star => star.classList.add('active'));
+    } else if (totalMistakes === 1) {
+        stars[0].classList.add('active');
+        stars[1].classList.add('active');
+    } else {
+        stars[0].classList.add('active');
+    }
+
+    // 显示对话框
+    completionDialog.style.display = 'flex';
+
+    // 点击确定按钮后关闭对话框
+    completionButton.addEventListener('click', () => {
+        completionDialog.style.display = 'none';
+    });
+
+    // 点击发射按钮后跳转到发射页面
+    launchButton.addEventListener('click', () => {
+        window.location.href = '../launching.html';
+    });
+} 
