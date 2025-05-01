@@ -93,7 +93,6 @@
             transition: all 0.3s ease;
             position: relative;
             backdrop-filter: blur(10px);
-            animation: fadeIn 0.3s ease forwards;
         }
 
         .message:hover {
@@ -239,6 +238,10 @@
                 transform: translateY(0);
             }
         }
+
+        .message {
+            animation: fadeIn 0.3s ease forwards;
+        }
     </style>
 </head>
 <body>
@@ -354,4 +357,4 @@
         initialize();
     </script>
 </body>
-</html> 
+</html>
