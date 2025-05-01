@@ -6,6 +6,13 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Chang'e-6 Assembly Game</title>
 <style>
+html, body {
+    /* 页面整体缩放 */
+    transform: scale(0.7);
+    transform-origin: top left;
+    width: 142.857%; /* 1/0.7, 防止缩放后出现滚动条 */
+    height: 142.857%;
+}
 /*欢迎页面*/
 .welcome-page {
     position: fixed;
@@ -36,45 +43,8 @@
     color: #333;
     margin-bottom: 20px;
 }
-.language-select-container {
-    display: flex;
-    align-items: center; /* 垂直居中 */
-    justify-content: center; /* Center horizontally */
-    gap: 10px; /* 文字和下拉框之间的间距 */
-    margin-bottom: 20px;
-}
-.language-select-container span {
-    font-size: 14px;
-    color: #333;
-}
-#languageSelect {
-    padding: 8px 16px;
-    font-size: 14px;
-    text-shadow: 0 2px 2px rgba(255, 255, 255, 0.5);
-    background-color: #1a73e8;
-    color: white;
-    border: none;
-    border-radius: 5px;
-    cursor: pointer;
-    width: 100px; /* 设置下拉框宽度 */
-    text-align: center;
-    appearance: none; /* 移除默认样式 */
-    -webkit-appearance: none; /* 兼容 Safari */
-    -moz-appearance: none; /* 兼容 Firefox */
-}
-#languageSelect:hover {
-    background-color: #1557b0;
-    transform: scale(1.05);
-    box-shadow: 0 6px 8px rgba(0, 0, 0, 0.3);
-    text-shadow: 0 2px 2px rgba(153, 153, 153, 0.5);
-}
-#languageSelect {
-    background-image: url("data:image/svg+xml;charset=UTF-8,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='white'%3e%3cpath d='M7 10l5 5 5-5z'/%3e%3c/svg%3e");
-    background-repeat: no-repeat;
-    background-position: right 10px center;
-    background-size: 12px;
-    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.3);
-}
+.language-select-container { display: none !important; }
+#languageButtons { display: none !important; }
 #startButton {
     padding: 10px 20px;
     font-size: 16px;
@@ -85,14 +55,14 @@
     border-radius: 5px;
     cursor: pointer;
     transition: background-color 0.3s;
-    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.3);
+    box-shadow: 0 4px 6px rgba(0, 100, 255, 0.8);
     transition: transform 0.2s, box-shadow 0.2s;
 }
 #startButton:hover {
-    text-shadow: 0 2px 2px rgba(153, 153, 153, 0.5);
+    text-shadow: 0 2px 2px rgba(153, 153, 153, 0.8);
     background-color: #1557b0;
     transform: scale(1.05);
-    box-shadow: 0 6px 8px rgba(0, 0, 0, 0.3);
+    box-shadow: 0 6px 8px rgba(0, 135, 255, 0.6);
 }
 
 /*主体*/
@@ -793,23 +763,12 @@ body.rotating:active {
     <div class="welcome-dialog">
         <h2>嫦娥六号探月工程</h2>
         <p>亲爱的小工程师们，我们的探月工程已经来到了第四期，这次的任务是帮助嫦娥六号完成探月之旅，准备好开启这次的探险了吗！</p>
-        <div class="language-select-container">
-            <span id="languageLabel">语言：</span>
-            <select id="languageSelect">
-                <option value="en">English</option>
-                <option value="zh">繁體中文</option>
-            </select>
-        </div>
         <button id="startButton">开始游戏</button>
     </div>
 </div>
 
 <!-- 主体 -->
 <h1>Assemble the Chang'e-6 Spacecraft</h1>
-<div id="languageButtons">
-    <button id="englishButton">English</button>
-    <button id="chineseButton">繁體中文</button>
-</div>
 <!-- 提示按钮 -->
 <button id="hintButton">💡 提示</button>
 <!-- 提示框 -->
@@ -1059,18 +1018,9 @@ function initializeGame() {
     // 获取欢迎页面和开始按钮
     const welcomePage = document.getElementById('welcomePage');
     const startButton = document.getElementById('startButton');
-    // 获取下拉框
-    const languageSelect = document.getElementById('languageSelect');
-    // 下拉框事件监听
-    languageSelect.addEventListener('change', (event) => {
-        const lang = event.target.value; // 获取选中的语言值
-        changeLanguage(lang); // 切换语言
-    });
     // 页面加载时设置默认语言
     window.onload = () => {
         welcomePage.style.display = 'flex'; // 显示欢迎页面
-        changeLanguage('en'); // 设置默认语言为英语
-        languageSelect.value = 'en'; // 设置下拉框默认选中项
     };
     // 点击开始按钮后隐藏欢迎页面并开始游戏
     startButton.addEventListener('click', () => {
@@ -1093,8 +1043,8 @@ function initializeGame() {
             correctMessage: "Correct! You have assembled the Chang'e-6 spacecraft correctly!",
             incorrectMessage: "Incorrect! Please try again.",
             resetButton: "Reset Game",
-            languageLabel: "Language:" ,
-            hintButton: "💡 Hint" 
+            languageLabel: "Language:",
+            hintButton: "💡 Hint"
         },
         zh: {
             welcomeTitle: "嫦娥六号探月工程",
@@ -1104,25 +1054,22 @@ function initializeGame() {
             correctMessage: "正確！您已成功組裝嫦娥六號太空船！",
             incorrectMessage: "錯誤！請再試一次。",
             resetButton: "重置遊戲",
-            languageLabel: "語言：" ,
+            languageLabel: "語言：",
             hintButton: "💡 提示"
         }
     };
-    // Function to change language
     function changeLanguage(lang) {
-        document.documentElement.lang = lang; // 设置 HTML 的 lang 属性
-
+        document.documentElement.lang = lang;
         // 更新欢迎页面内容
         if (welcomePage.style.display !== 'none') {
             document.querySelector('.welcome-dialog h2').textContent = texts[lang].welcomeTitle;
             document.querySelector('.welcome-dialog p').textContent = texts[lang].welcomeMessage;
             document.getElementById('startButton').textContent = texts[lang].startButton;
-            document.getElementById('languageLabel').textContent = texts[lang].languageLabel; // 更新"语言："文字
         }
         // 更新游戏页面内容
         document.querySelector('h1').textContent = texts[lang].title;
         document.getElementById('resetButton').textContent = texts[lang].resetButton;
-        document.getElementById('hintButton').textContent = texts[lang].hintButton;    // Update task names
+        document.getElementById('hintButton').textContent = texts[lang].hintButton;
         updateNameLabels();
         // 更新箭头按钮文本
         const launchArrowButton = document.getElementById('launchArrowButton');
@@ -1130,14 +1077,8 @@ function initializeGame() {
             launchArrowButton.innerHTML = lang === 'zh' ? '進入發射 <span style="font-size:32px;">🚀</span>' : 'Go to Launch <span style="font-size:32px;">🚀</span>';
         }
     }
-    // Event listeners for language buttons
-    document.getElementById('englishButton').addEventListener('click', () => {
-        changeLanguage('en');
-    });
-    document.getElementById('chineseButton').addEventListener('click', () => {
-        changeLanguage('zh');
-    });
-
+    // 页面初始化时根据lang属性自动切换
+    changeLanguage(document.documentElement.lang || 'en');
 
 // ====================
 // 任务一：组装模块
