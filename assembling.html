@@ -1003,6 +1003,12 @@ body.rotating:active {
 </div>
 
 <script>
+// 组件名映射
+const partNames = {
+    en: ['Ascender', 'Lander', 'Returner', 'Orbiter'],
+    zh: ['上升器', '着陆器', '返回器', '轨道器']
+};
+
 document.addEventListener('DOMContentLoaded', () => {
     const cubeContainer = document.getElementById('cubeContainer');
     const assemblyArea = document.getElementById('assemblyArea');
@@ -1234,11 +1240,10 @@ function drop(e) {
     const children = Array.from(assemblyArea.children);
     const correctOrder = ['ascender', 'lander', 'returner', 'orbiter'];
     let assembledOrder = children.map(child => child.id);
+    const lang = document.documentElement.lang || 'en';
     // 只要有顺序错误，立即提示并回位
     for (let i = 0; i < assembledOrder.length; i++) {
         if (assembledOrder[i] !== correctOrder[i]) {
-            // 错误提示
-            const lang = document.documentElement.lang || 'en';
             const partIndex = correctOrder.indexOf(id);
             const partName = partNames[lang][partIndex];
             const msg = lang === 'zh'
@@ -1251,7 +1256,6 @@ function drop(e) {
         }
     }
     // 正确提示
-    const lang = document.documentElement.lang || 'en';
     const partIndex = correctOrder.indexOf(id);
     const partName = partNames[lang][partIndex];
     const msg = lang === 'zh'
@@ -1271,7 +1275,10 @@ function checkAssembly() {
             const returner = document.getElementById('returner');
             orbiter.appendChild(returner);
             showNameLabels(); // 显示名称标签和虚线
-            showMessage(true);
+            // 组装完成提示
+            const lang = document.documentElement.lang || 'en';
+            const msg = lang === 'zh' ? '全部正確，恭喜完成組裝！' : 'All correct! Congratulations on completing the assembly!';
+            showMessage(true, msg);
             enableRotation();
             showCompletionDialog(); // 确保调用
         } else {
