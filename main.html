@@ -149,21 +149,21 @@ const DEFAULT_LANGUAGE = 'en';  // Set default language to English
 const texts = {
     en: {
         title: "Chang'e-6: Journey to the far side of the moon",
-        function1: "Function 1",
-        function2: "Function 2",
-        function3: "Function 3",
-        function4: "Function 4",
-        function5: "Function 5",
-        function6: "Function 6"
+        function1: "Chang'e-6 Assembly",
+        function2: "Launch Simulation",
+        function3: "Mission Overview",
+        function4: "Technical Details",
+        function5: "Live Updates",
+        function6: "About"
     },
     zh: {
         title: "嫦娥六號：月球背面的旅程",
-        function1: "功能 1",
-        function2: "功能 2",
-        function3: "功能 3",
-        function4: "功能 4",
-        function5: "功能 5",
-        function6: "功能 6"
+        function1: "嫦娥六號組裝",
+        function2: "發射模擬",
+        function3: "任務概覽",
+        function4: "技術細節",
+        function5: "實時動態",
+        function6: "關於我們"
     }
 };
 
@@ -235,15 +235,14 @@ const contentFrame = document.getElementById('contentFrame');
 functionButtons.forEach((button, index) => {
     button.addEventListener('click', () => {
         const functionNumber = index + 1;
-        //contentFrame.src = `function${functionNumber}.html`; // 假设每个功能对应一个HTML文件
-          const urls = [
-              'https://www.baidu.com',
-              'https://www.bilibili.com/video/BV1Li421D7Q5?t=12.6',
-             'https://s11579783.github.io/news-damin/daminzhencaomei.html',
-              'https://www.weixin.qq.com',
-           'https://www.eduhk.hk',
-             'https://www.szu.edu.cn'
-          ];
+        const urls = [
+            'assembling.html',
+            'launching.html',
+            'https://s11579783.github.io/news-damin/daminzhencaomei.html',
+            'https://www.weixin.qq.com',
+            'https://www.eduhk.hk',
+            'https://www.szu.edu.cn'
+        ];
         // 检查索引是否在数组范围内
         if(index >= 0 && index < urls.length) {
             contentFrame.src = urls[index];
