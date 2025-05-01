@@ -104,7 +104,7 @@ body {
     margin: 50px;
     perspective: 1000px; /* Add perspective for 3D effect */
     background: #000;
-    transform: scale(0.2);
+    transform: scale(0.8);
 }
 
 /* 添加包裝容器 */
@@ -792,8 +792,36 @@ body.rotating:active {
 #returner .dotted-line::after { border-color: #FFB74D; }
 #orbiter .dotted-line::after { border-color: #BA68C8; }
 
+/* 添加跳轉按鈕樣式 */
+#launchButton {
+    position: fixed;
+    right: 20px;
+    top: 50%;
+    transform: translateY(-50%);
+    padding: 15px 25px;
+    font-size: 18px;
+    background-color: #1a73e8;
+    color: white;
+    border: none;
+    border-radius: 10px;
+    cursor: pointer;
+    z-index: 1000;
+    display: none; /* 初始隱藏 */
+    box-shadow: 0 4px 15px rgba(0, 100, 255, 0.8);
+    transition: all 0.3s ease;
+}
 
+#launchButton:hover {
+    background-color: #1557b0;
+    transform: translateY(-50%) scale(1.05);
+    box-shadow: 0 6px 20px rgba(0, 135, 255, 0.6);
+}
 
+#launchButton span {
+    font-size: 24px;
+    margin-left: 8px;
+    vertical-align: middle;
+}
 
 </style>
 </head>
@@ -1028,9 +1056,13 @@ body.rotating:active {
         </div>
         <img src="https://i.postimg.cc/tCCY876h/image.jpg" alt="Completion Image" class="completion-image">
         <button id="completionButton"></button>
-        <button id="launchArrowButton" style="display:none;margin-top:16px;font-size:28px;background:none;border:none;cursor:pointer;">➡️</button>
     </div>
 </div>
+
+<!-- 添加跳轉按鈕 -->
+<button id="launchButton" onclick="window.location.href='launching.html'">
+    Go to Launch <span>��</span>
+</button>
 
 <script>
 document.addEventListener('DOMContentLoaded', () => {
@@ -1137,10 +1169,11 @@ function initializeGame() {
         document.getElementById('hintButton').textContent = texts[lang].hintButton;    // Update task names
         updateNameLabels();
         // 更新箭头按钮文本
-        const launchArrowButton = document.getElementById('launchArrowButton');
-        if (launchArrowButton) {
-            launchArrowButton.innerHTML = lang === 'zh' ? '進入發射 <span style="font-size:32px;">🚀</span>' : 'Go to Launch <span style="font-size:32px;">🚀</span>';
+        const launchButton = document.getElementById('launchButton');
+        if (launchButton) {
+            launchButton.innerHTML = lang === 'zh' ? '進入發射 <span style="font-size:32px;">🚀</span>' : 'Go to Launch <span style="font-size:32px;">🚀</span>';
         }
+        updateLaunchButtonText();
     }
     // Event listeners for language buttons
     document.getElementById('englishButton').addEventListener('click', () => {
@@ -1412,8 +1445,8 @@ function showCompletionDialog() {
     const completionTitle = document.getElementById('completionTitle');
     const completionMessage = document.getElementById('completionMessage');
     const completionButton = document.getElementById('completionButton');
-    const launchArrowButton = document.getElementById('launchArrowButton');
     const stars = document.querySelectorAll('#starsContainer .star');
+    const launchButton = document.getElementById('launchButton');
 
     // 根据语言设置标题和按钮文本
     const lang = document.documentElement.lang || 'en';
@@ -1422,9 +1455,10 @@ function showCompletionDialog() {
         ? '太棒了！你成功地组装了嫦娥六号飞行器，这是我们探月工程中的第一步，这是嫦娥六号的结构图，你也可以返回主页，拖动你的鼠标查看3D版。'
         : 'Awesome! You have successfully assembled the Chang\'e-6 spacecraft, which is the first step in our lunar exploration project. This is the structural diagram of Chang\'e-6. You can also return to the homepage and drag your mouse to view the 3D version.';
     completionButton.textContent = lang === 'zh' ? '确定' : 'OK';
-    // 设置箭头按钮文本
-    launchArrowButton.innerHTML = lang === 'zh' ? '進入發射 <span style="font-size:32px;">🚀</span>' : 'Go to Launch <span style="font-size:32px;">🚀</span>';
-    launchArrowButton.style.display = 'inline-block';
+
+    // 显示跳转按钮
+    launchButton.style.display = 'block';
+    launchButton.innerHTML = lang === 'zh' ? '進入發射 <span>🚀</span>' : 'Go to Launch <span>🚀</span>';
 
     // 根据用户操作点亮星星
     const totalMistakes = hintCount + resetCount;
@@ -1444,11 +1478,8 @@ function showCompletionDialog() {
     completionButton.addEventListener('click', () => {
         completionDialog.style.display = 'none';
     });
-    // 跳转按钮事件
-    launchArrowButton.onclick = function() {
-        window.location.href = 'launching.html';
-    };
 }
+
 function showNameLabels() {
     const nameContainers = document.querySelectorAll('.name-container');
     nameContainers.forEach(container => {
@@ -1457,6 +1488,7 @@ function showNameLabels() {
 
     updateNameLabels(); // 根据当前语言更新名称
 }
+
 function updateNameLabels() {
     const names = {
         en: {
@@ -1480,12 +1512,23 @@ function updateNameLabels() {
         label.textContent = names[lang][id];
     });
 }
+
 function hideNameLabels() {
     const nameContainers = document.querySelectorAll('.name-container');
     nameContainers.forEach(container => {
         container.style.display = 'none'; // 隐藏 label
     });
 }
+
+// 添加語言切換時更新按鈕文字的功能
+function updateLaunchButtonText() {
+    const launchButton = document.getElementById('launchButton');
+    const lang = document.documentElement.lang || 'en';
+    if (launchButton.style.display === 'block') {
+        launchButton.innerHTML = lang === 'zh' ? '進入發射 <span>🚀</span>' : 'Go to Launch <span>🚀</span>';
+    }
+}
+
 //任务一结束
 
 
