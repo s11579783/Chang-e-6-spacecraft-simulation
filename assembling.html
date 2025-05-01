@@ -101,9 +101,11 @@ body {
     display: flex;
     flex-direction: column;
     align-items: center;
-    margin: 50px;
-    perspective: 1000px; /* Add perspective for 3D effect */
+    margin: 20px;  /* 减小边距 */
+    perspective: 1000px;
     background: #000;
+    min-height: 100vh;
+    overflow-x: hidden;
 }
 body.rotating {
     cursor: grab;
@@ -207,44 +209,44 @@ body.rotating:active {
     margin-bottom: 20px; /* Space below the dotted box */
 }
 #assemblyArea {
-    width: 150px; /* Width of the assembly area */
-    height: 650px; /* Height of the assembly area */
+    width: 120px;  /* 减小宽度 */
+    height: 500px;  /* 减小高度 */
     display: flex;
-    flex-direction: column; /* Align children vertically */
-    align-items: center; /* Center children horizontally */
-    justify-content: flex-start; /* Align children to the top */
-    margin-bottom: 20px; /* Space below the assembly area */
-    transform-style: preserve-3d; /* Enable 3D transformations */
+    flex-direction: column;
+    align-items: center;
+    justify-content: flex-start;
+    margin-bottom: 20px;
+    transform-style: preserve-3d;
     transform-origin: center center;
-    border: 2px dashed #666; /* 组装成功时显示边框 */
-    will-change: transform; /* 提示浏览器优化性能 */
-    transition: transform 0.1s linear; /* 添加平滑过渡 */
+    border: 2px dashed #666;
+    will-change: transform;
+    transition: transform 0.1s linear;
 }
 
 /* Cuboid styles */
 .ascender {
-    width: 150px;
-    height: 130px; /* Cuboid height */
-    transform-style: preserve-3d; /* Preserve 3D effect */
-    transition: transform 0.3s; /* Smooth transition */
+    width: 120px;  /* 减小宽度 */
+    height: 100px;  /* 减小高度 */
+    transform-style: preserve-3d;
+    transition: transform 0.3s;
     cursor: pointer;
-    position: relative; /* Positioning for 3D */
-    box-sizing: border-box; /* Include padding and border in element's total width and height */
+    position: relative;
+    box-sizing: border-box;
 }
 .ascender .face {
     position: absolute;
-    width: 150px;
-    height: 100px;
+    width: 120px;  /* 减小宽度 */
+    height: 80px;  /* 减小高度 */
     background-color: #EEEEE0;
     border: 1px solid #666;
 }
 .ascender .front {
-    width: 150px;
+    width: 120px;
     height: 100px;
     transform: translateZ(50px);
 }
 .ascender .back {
-    width: 150px;
+    width: 120px;
     height: 100px;
     transform: rotateY(180deg) translateZ(50px);
 }
@@ -259,12 +261,12 @@ body.rotating:active {
     transform: rotateY(90deg) translateZ(100px);
 }
 .ascender .top {
-    width: 150px;
+    width: 120px;
     height: 100px;
     transform: rotateX(90deg) translateZ(50px);
 }
 .ascender .bottom {
-    width: 150px;
+    width: 120px;
     height: 100px;
     transform: rotateX(-90deg) translateZ(50px);
 }
@@ -295,23 +297,23 @@ body.rotating:active {
 .sphere4 { right: 10px; bottom: 25px; transform: translatex(-30px) translatez(-30px);} /* Back-right corner */
 
 .lander {
-    width: 200px;
-    height: 230px; /* Cuboid height */
-    transform-style: preserve-3d; /* Preserve 3D effect */
-    transition: transform 0.3s; /* Smooth transition */
+    width: 160px;  /* 减小宽度 */
+    height: 180px;  /* 减小高度 */
+    transform-style: preserve-3d;
+    transition: transform 0.3s;
     cursor: pointer;
-    position: relative; /* Positioning for 3D */
-    box-sizing: border-box; /* Include padding and border in element's total width and height */
+    position: relative;
+    box-sizing: border-box;
 }
 .lander .face {
     position: absolute;
-    width: 200px;
-    height: 150px;
+    width: 160px;  /* 减小宽度 */
+    height: 120px;  /* 减小高度 */
     background-color: #EEEEE0;
     border: 1px solid #666;
 }
 .lander .front {
-    width: 200px;
+    width: 160px;
     height: 150px;
     transform: rotateY(0deg) translateZ(75px); }
 .lander .right {
@@ -319,7 +321,7 @@ body.rotating:active {
     height: 150px;
     transform: rotateY(90deg) translateZ(125px); }
 .lander .back {
-    width: 200px;
+    width: 160px;
     height: 150px;
     transform: rotateY(180deg) translateZ(75px); }
 .lander .left {
@@ -327,11 +329,11 @@ body.rotating:active {
     height: 150px;
     transform: rotateY(-90deg) translateZ(75px); }
 .lander .top {
-    width: 200px;
+    width: 160px;
     height: 150px;
     transform: rotateX(90deg) translateZ(75px); }
 .lander .bottom {
-    width: 200px;
+    width: 160px;
     height: 150px;
     transform: rotateX(-90deg) translateZ(75px); }
 .cylinder {
@@ -401,14 +403,14 @@ body.rotating:active {
     transform: translateZ(-50px);
 }
 .returner {
-    width: 10px; /* Cylinder diameter */
-    height: 80px; /* Cylinder height */
-    transform-style: preserve-3d; /* Preserve 3D effect */
-    transition: transform 0.3s; /* Smooth transition */
+    width: 80px;  /* 减小宽度 */
+    height: 60px;  /* 减小高度 */
+    transform-style: preserve-3d;
+    transition: transform 0.3s;
     transform-origin: center;
     cursor: pointer;
-    position: relative; /* Positioning for 3D */
-    box-sizing: border-box; /* Include padding and border in element's total width and height */
+    position: relative;
+    box-sizing: border-box;
 }
 .returner .left {
     position: absolute;
@@ -439,13 +441,13 @@ body.rotating:active {
 }
 .orbiter {
     position: relative;
-    width: 35px;
-    height: 185px;
-    transform-style: preserve-3d; /* Preserve 3D effect */
-    transition: transform 0.3s; /* Smooth transition */
+    width: 28px;  /* 减小宽度 */
+    height: 150px;  /* 减小高度 */
+    transform-style: preserve-3d;
+    transition: transform 0.3s;
     cursor: pointer;
     box-sizing: border-box;
-    }
+}
 .orbiter .top {
     position: absolute;
     width: 180px;
@@ -454,7 +456,7 @@ body.rotating:active {
     background-color: #EEEEE0;
     border: 1px solid #333; /* Border for visibility */
     transform: rotateX(90deg) translateX(-75px) translateZ(10px);
-    }
+}
 .orbiter .bottom {
     position: absolute;
     width: 180px;
@@ -463,7 +465,7 @@ body.rotating:active {
     background-color: #EEEEE0;
     border: 1px solid #333; /* Border for visibility */
     transform: rotateX(-90deg) translateX(-75px) translateZ(90px);
-    }
+}
 .orbiter .side {
     position: absolute;
     width: 31.4px; 
@@ -472,7 +474,7 @@ body.rotating:active {
     border: 1px solid white; /* Border for visibility */
     transform-origin: center;
     transition: transform 0.3s;
-    }
+}
 .frustum {
     width: 10px; /* Cylinder diameter */
     height: 80px; /* Cylinder height */
@@ -784,23 +786,28 @@ body.rotating:active {
 /* 添加新的浮动箭头样式 */
 .floating-arrow {
     position: fixed;
-    right: 20px;
+    right: 30px;
     top: 50%;
     transform: translateY(-50%);
     background-color: #ff3300;
     color: white;
-    padding: 15px;
+    padding: 20px;
     border-radius: 50%;
     cursor: pointer;
     box-shadow: 0 4px 6px rgba(255, 51, 0, 0.3);
     animation: pulse 1.5s infinite;
     z-index: 10003;
     display: none;
+    width: 60px;
+    height: 60px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
 }
 
 .floating-arrow::after {
     content: '➜';
-    font-size: 24px;
+    font-size: 32px;
     display: block;
     transform: rotate(-45deg);
 }
@@ -1427,10 +1434,14 @@ function showCompletionDialog() {
     const completionMessage = document.getElementById('completionMessage');
     const completionButton = document.getElementById('completionButton');
     const stars = document.querySelectorAll('#starsContainer .star');
-    const floatingArrow = document.createElement('div');
     
-    floatingArrow.className = 'floating-arrow';
-    document.body.appendChild(floatingArrow);
+    // 创建浮动箭头
+    let floatingArrow = document.querySelector('.floating-arrow');
+    if (!floatingArrow) {
+        floatingArrow = document.createElement('div');
+        floatingArrow.className = 'floating-arrow';
+        document.body.appendChild(floatingArrow);
+    }
 
     // 根据语言设置标题和按钮文本
     const lang = document.documentElement.lang || 'en';
@@ -1457,7 +1468,7 @@ function showCompletionDialog() {
     // 点击确定按钮后关闭对话框并显示箭头
     completionButton.addEventListener('click', () => {
         completionDialog.style.display = 'none';
-        floatingArrow.style.display = 'block';
+        floatingArrow.style.display = 'flex';  // 使用 flex 而不是 block
     });
 
     // 点击箭头后跳转到发射页面
