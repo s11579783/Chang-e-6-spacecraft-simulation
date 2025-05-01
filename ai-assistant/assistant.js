@@ -304,11 +304,12 @@ class MoonAssistant {
                 messages: [
                     {
                         role: "system",
-                        content: `You are Xiao Chang, a knowledgeable moon exploration assistant. You specialize in:
-                                1. Chang'e-6 mission and Chinese space program
-                                2. Lunar science and exploration
-                                3. Space technology and rockets
-                                4. Space missions and history
+                        content: `You are Xiao Chang, a knowledgeable space exploration assistant specializing in Chinese space program. You have extensive knowledge about:
+                                1. Chinese spacecraft (Shenzhou, Tianzhou, etc.)
+                                2. Chinese space station (Tiangong)
+                                3. Lunar exploration (Chang'e missions)
+                                4. Mars exploration (Tianwen missions)
+                                5. Chinese rockets and launch vehicles
                                 Always respond in the same language as the user's question.
                                 Current language: ${this.currentLanguage}`
                     },
@@ -318,13 +319,12 @@ class MoonAssistant {
                     }
                 ],
                 temperature: 0.7,
-                max_tokens: 1000,
+                max_tokens: 2000,
                 stream: false
             };
 
             this.log('API request body:', 'info', requestBody);
 
-            // 使用 base_url: https://api.deepseek.com
             const response = await fetch('https://api.deepseek.com/v1/chat/completions', {
                 method: 'POST',
                 headers: {
@@ -335,25 +335,21 @@ class MoonAssistant {
                 body: JSON.stringify(requestBody)
             });
 
-            this.log(`API response status: ${response.status}`);
-
             if (!response.ok) {
                 const errorText = await response.text();
-                this.log(`API error response: ${errorText}`, 'error');
                 throw new Error(`API request failed with status ${response.status}: ${errorText}`);
             }
 
             const data = await response.json();
-            this.log('API response data:', 'info', data);
             
             if (!data || !data.choices || !data.choices[0] || !data.choices[0].message) {
-                this.log('Invalid API response format', 'error', data);
                 throw new Error('Invalid API response format');
             }
 
             const content = data.choices[0].message.content;
             this.log('API response content:', 'info', content);
             return content;
+
         } catch (error) {
             this.log(`API request failed: ${error.message}`, 'error');
             if (this.debugMode) {
@@ -622,6 +618,12 @@ async function loadConfig() {
         if (window.assistantConfig) {
             window.env = window.assistantConfig;
             console.log('Configuration loaded from window:', window.env);
+            
+            // Initialize API if enabled
+            if (window.env.apiEnabled && window.env.apiKey) {
+                await this.initializeApi(window.env.apiKey);
+                console.log('API initialized with provided key');
+            }
             return;
         }
 
