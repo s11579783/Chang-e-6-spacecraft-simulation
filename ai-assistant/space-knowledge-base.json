@@ -140,6 +140,20 @@
                                     "description": {
                                         "en": "The mission uses a relay satellite for communication with Earth, as direct communication is impossible from the far side. The lander will collect samples using both drilling and surface collection methods.",
                                         "zh": "由于月球背面无法直接与地球通信，任务使用中继卫星进行通信。着陆器将通过钻取和表面采集两种方式收集样本。"
+                                    },
+                                    "objectives": {
+                                        "en": [
+                                            "Collect and return lunar samples from the far side",
+                                            "Study the geological composition of the South Pole-Aitken Basin",
+                                            "Test deep drilling technology",
+                                            "Conduct international scientific experiments"
+                                        ],
+                                        "zh": [
+                                            "采集并返回月球背面样本",
+                                            "研究南极-艾特肯盆地的地质组成",
+                                            "测试深层钻取技术",
+                                            "开展国际科学实验"
+                                        ]
                                     }
                                 },
                                 "international_cooperation": {
@@ -296,6 +310,36 @@
                     "answer": {
                         "en": "The main challenges include: complex terrain with more craters, communication delays through the relay satellite, different geological composition requiring specialized collection methods, and the need for more autonomous operations due to communication constraints.",
                         "zh": "主要挑战包括：地形复杂多坑洼、通过中继卫星导致的通信延迟、需要特殊采集方法的不同地质组成，以及由于通信限制需要更多自主操作。"
+                    }
+                },
+                {
+                    "question": {
+                        "en": "What is the main objective of Chang'e-6 mission?",
+                        "zh": "嫦娥六号任务的主要目标是什么？"
+                    },
+                    "answer": {
+                        "en": "The main objective of Chang'e-6 is to collect and return samples from the far side of the Moon, specifically from the South Pole-Aitken Basin. This will be the first-ever sample return mission from the lunar far side.",
+                        "zh": "嫦娥六号的主要目标是从月球背面的南极-艾特肯盆地采集并返回月球样本。这将是人类首次从月球背面带回样本的任务。"
+                    }
+                },
+                {
+                    "question": {
+                        "en": "When will Chang'e-6 launch?",
+                        "zh": "嫦娥六号什么时候发射？"
+                    },
+                    "answer": {
+                        "en": "Chang'e-6 is scheduled to launch in 2024. The exact launch date will be determined based on mission requirements and launch window conditions.",
+                        "zh": "嫦娥六号计划于2024年发射。具体发射日期将根据任务要求和发射窗口条件确定。"
+                    }
+                },
+                {
+                    "question": {
+                        "en": "What makes Chang'e-6 special?",
+                        "zh": "嫦娥六号有什么特别之处？"
+                    },
+                    "answer": {
+                        "en": "Chang'e-6 will be the first mission to return samples from the far side of the Moon. It features advanced automated sampling technology, deep drilling capabilities, and international cooperation with multiple scientific payloads from different countries.",
+                        "zh": "嫦娥六号将是首个从月球背面返回样本的任务。它具有先进的自动采样技术、深层钻取能力，并搭载来自多个国家的科学载荷，体现国际合作。"
                     }
                 }
             ]
