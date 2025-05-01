@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="zh">
 <head>
 <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700&family=Roboto:wght@400;700&display=swap" rel="stylesheet">
 <meta charset="UTF-8">
@@ -145,6 +145,7 @@ iframe {
 
 <script>
 // 语言切换功能
+const DEFAULT_LANGUAGE = 'zh';  // Set default language to Chinese
 const texts = {
     en: {
         title: "Chang'e-6: Journey to the far side of the moon",
@@ -252,7 +253,10 @@ functionButtons.forEach((button, index) => {
     });
 });
 
-changeLanguage('en'); // 设置默认语言为英语
+// 初始化语言设置
+document.addEventListener('DOMContentLoaded', () => {
+    changeLanguage(DEFAULT_LANGUAGE);
+});
 
 </script>
 
