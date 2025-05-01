@@ -1448,9 +1448,30 @@ const launchButton = document.createElement('button');
 launchButton.id = 'launchButton';
 launchButton.style.display = 'none';
 launchButton.style.position = 'fixed';
-launchButton.style.bottom = '40px';
+launchButton.style.top = '50%';
 launchButton.style.right = '40px';
+launchButton.style.transform = 'translateY(-50%)';
 launchButton.style.zIndex = '10010';
+launchButton.style.padding = '12px 28px';
+launchButton.style.fontSize = '18px';
+launchButton.style.textShadow = '0 2px 2px rgba(255,255,255,0.5)';
+launchButton.style.backgroundColor = '#1a73e8';
+launchButton.style.color = 'white';
+launchButton.style.border = 'none';
+launchButton.style.borderRadius = '8px';
+launchButton.style.boxShadow = '0 4px 8px rgba(0,100,255,0.3)';
+launchButton.style.cursor = 'pointer';
+launchButton.style.transition = 'background 0.2s, transform 0.2s, box-shadow 0.2s';
+launchButton.onmouseenter = function() {
+    launchButton.style.backgroundColor = '#1557b0';
+    launchButton.style.transform = 'translateY(-50%) scale(1.05)';
+    launchButton.style.boxShadow = '0 6px 12px rgba(0,135,255,0.4)';
+};
+launchButton.onmouseleave = function() {
+    launchButton.style.backgroundColor = '#1a73e8';
+    launchButton.style.transform = 'translateY(-50%) scale(1)';
+    launchButton.style.boxShadow = '0 4px 8px rgba(0,100,255,0.3)';
+};
 function updateLaunchButtonText(lang) {
     launchButton.innerHTML = lang === 'zh' ? '進入發射 <span style="font-size:32px;">🚀</span>' : 'Go to Launch <span style="font-size:32px;">🚀</span>';
 }
@@ -1470,6 +1491,11 @@ function updateCompletionDialogLanguage(lang) {
         : 'Awesome! You have successfully assembled the Chang\'e-6 spacecraft, which is the first step in our lunar exploration project. This is the structural diagram of Chang\'e-6. You can also return to the homepage and drag your mouse to view the 3D version.';
     completionButton.textContent = lang === 'zh' ? '确定' : 'OK';
 }
+
+// 点击resetButton时隐藏跳转按钮
+resetButton.addEventListener('click', function() {
+    launchButton.style.display = 'none';
+});
 
 </script>
 
