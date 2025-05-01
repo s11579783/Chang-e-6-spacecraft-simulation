@@ -1248,11 +1248,9 @@ function drop(e) {
 }
 function checkAssembly() {
     const children = Array.from(assemblyArea.children);
-
+    const correctOrder = ['ascender', 'lander', 'returner', 'orbiter'];
+    let assembledOrder = children.map(child => child.id);
     if (children.length === 4) {
-        const correctOrder = ['ascender', 'lander', 'returner', 'orbiter'];
-        let assembledOrder = children.map(child => child.id);
-
         if (JSON.stringify(assembledOrder) === JSON.stringify(correctOrder)) {
             const orbiter = document.getElementById('orbiter');
             const returner = document.getElementById('returner');
@@ -1260,7 +1258,7 @@ function checkAssembly() {
             showNameLabels(); // 显示名称标签和虚线
             showMessage(true);
             enableRotation();
-            showCompletionDialog();
+            showCompletionDialog(); // 确保调用
         } else {
             showMessage(false);
         }

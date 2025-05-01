@@ -192,11 +192,15 @@ function changeLanguage(lang) {
     document.getElementById('function4').textContent = texts[lang].function4;
     document.getElementById('function5').textContent = texts[lang].function5;
     document.getElementById('function6').textContent = texts[lang].function6;
-    
     // Update AI assistant language
     const assistantFrame = document.getElementById('assistantFrame');
     if (assistantFrame.contentWindow && assistantFrame.contentWindow.updateAssistantLanguage) {
         assistantFrame.contentWindow.updateAssistantLanguage(lang);
+    }
+    // 向contentFrame发送语言同步消息
+    const contentFrame = document.getElementById('contentFrame');
+    if (contentFrame && contentFrame.contentWindow) {
+        contentFrame.contentWindow.postMessage({ type: 'setLanguage', lang }, '*');
     }
 }
 
