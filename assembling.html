@@ -1280,6 +1280,9 @@ function checkAssembly() {
             showMessage(true, msg);
             enableRotation();
             showCompletionDialog(); // 确保调用
+            // 显示跳转按钮
+            const launchButton = document.getElementById('launchButton');
+            launchButton.style.display = 'inline-block';
         } else {
             showMessage(false);
         }
