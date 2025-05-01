@@ -1,5 +1,5 @@
 const config = {
-    apiKey: 'sk-4bd30523b64d44d6bb390f62d861538b', // 替换为实际的 API 密钥
+    apiKey: 'aaaaaaa', // 替换为实际的 API 密钥
     apiEndpoint: 'https://api.deepseek.com/v1',
     ui: {
         en: {
