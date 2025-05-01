@@ -799,15 +799,8 @@ body.rotating:active {
 
 <!-- 主体 -->
 <h1>Assemble the Chang'e-6 Spacecraft</h1>
-<!-- 提示按钮 -->
-<button id="hintButton">💡 提示</button>
-<!-- 提示框 -->
-<div id="hintModal" class="hint-modal">
-    <div class="hint-content">
-        <span id="closeHint">&times;</span>
-        <p id="hintText"></p>
-    </div>
-</div>
+<!-- 提示按钮已移除 -->
+<!-- 提示框已移除 -->
 
 <!-- 任务一 -->
 <div id="cubeContainer"></div>
@@ -1099,7 +1092,6 @@ function initializeGame() {
         // 更新游戏页面内容
         document.querySelector('h1').textContent = texts[lang].title;
         document.getElementById('resetButton').textContent = texts[lang].resetButton;
-        document.getElementById('hintButton').textContent = texts[lang].hintButton;
         updateNameLabels();
         // 更新箭头按钮文本
         const launchArrowButton = document.getElementById('launchArrowButton');
@@ -1209,48 +1201,6 @@ function initializeGame() {
     }
 
 // ----------
-// 提示
-// ----------
-const hintButton = document.getElementById('hintButton');
-const hintModal = document.getElementById('hintModal');
-const closeHint = document.getElementById('closeHint');
-const hintText = document.getElementById('hintText');
-const hints = {
-    task1: {
-        en: "Hint for Task 1: Assemble the spacecraft by dragging the modules into the correct order.",
-        zh: "任务1提示：将模块拖放到正确的位置以组装航天器。"
-    },
-    task2: {
-        en: "Hint for Task 2: Follow the launch sequence to ensure a successful liftoff.",
-        zh: "任务2提示：按照发射顺序确保成功升空。"
-    },
-    task3: {
-        en: "Hint for Task 3: Complete the mission objectives to proceed to the next stage.",
-        zh: "任务3提示：完成任务目标以进入下一阶段。"
-    },
-    task4: {
-        en: "Hint for Task 4: Finalize the mission and ensure all systems are operational.",
-        zh: "任务4提示：完成任务并确保所有系统正常运行。"
-    }
-};
-// 当前任务
-let currentTask = 'task1';
-// 打开提示框
-hintButton.addEventListener('click', () => {
-    const lang = document.documentElement.lang || 'en';
-    hintText.textContent = hints[currentTask][lang];
-    hintModal.style.display = 'block';
-});
-// 关闭提示框
-closeHint.addEventListener('click', () => {
-    hintModal.style.display = 'none';
-});
-// 切换任务时更新提示内容
-function updateHintForTask(task) {
-    currentTask = task;
-}
-
-// ----------
 // 组装
 // ----------
     function shuffle(array) {
@@ -1356,19 +1306,6 @@ function checkAssembly() {
     }
     // Reset button functionality
     resetButton.addEventListener('click', initializeGame);
-});
-// 记录用户操作
-let hintCount = 0;
-let resetCount = 0;
-
-// 监听提示按钮点击
-hintButton.addEventListener('click', () => {
-    hintCount++;
-});
-
-// 监听重置按钮点击
-resetButton.addEventListener('click', () => {
-    resetCount++;
 });
 
 // 显示组装完成对话框
