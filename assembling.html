@@ -13,6 +13,17 @@ html, body {
     width: 142.857%; /* 1/0.7, 防止缩放后出现滚动条 */
     height: 142.857%;
 }
+
+#mainAssemblyLayout {
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+    align-items: flex-start;
+    width: 100vw;
+    height: 80vh;
+    margin-top: 40px;
+}
+
 /*欢迎页面*/
 .welcome-page {
     position: fixed;
@@ -113,6 +124,7 @@ body.rotating:active {
     transform: scale(1.05);
     box-shadow: 0 6px 8px rgba(0, 135, 255, 0.6);
 }
+#hintButton, .hint-modal, #hintModal { display: none !important; }
 #hintButton {
     position: fixed;
     bottom: 20px;
@@ -167,28 +179,34 @@ body.rotating:active {
 
 /*任务一*/
 #cubeContainer {
-    width: 100%; /* Full width for the dotted box */
-    height: 250px;
+    width: 220px;
+    min-width: 200px;
+    height: 800px;
     border: 2px dotted #666;
-    padding: 10px; /* Padding inside the box */
-    display: flex; /* Flexbox to arrange cubes in a row */
-    justify-content: space-around; /* Space the cubes equally */
-    align-items: center; /* Center the cubes vertically */
-    margin-bottom: 20px; /* Space below the dotted box */
+    padding: 20px 10px;
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-start;
+    align-items: center;
+    gap: 30px;
+    margin: 0 40px 0 0;
+    background: rgba(30,30,30,0.7);
 }
 #assemblyArea {
-    width: 150px; /* Width of the assembly area */
-    height: 650px; /* Height of the assembly area */
+    width: 500px;
+    height: 900px;
     display: flex;
-    flex-direction: column; /* Align children vertically */
-    align-items: center; /* Center children horizontally */
-    justify-content: flex-start; /* Align children to the top */
-    margin-bottom: 20px; /* Space below the assembly area */
-    transform-style: preserve-3d; /* Enable 3D transformations */
+    flex-direction: column;
+    align-items: center;
+    justify-content: flex-start;
+    margin: 0;
+    transform-style: preserve-3d;
     transform-origin: center center;
-    border: 2px dashed #666; /* 组装成功时显示边框 */
-    will-change: transform; /* 提示浏览器优化性能 */
-    transition: transform 0.1s linear; /* 添加平滑过渡 */
+    border: 2.5px dashed #1a73e8;
+    background: rgba(0,0,0,0.5);
+    will-change: transform;
+    transition: transform 0.1s linear;
+    box-shadow: 0 8px 32px rgba(0,0,0,0.25);
 }
 
 /* Cuboid styles */
@@ -530,29 +548,29 @@ body.rotating:active {
 }
 #resultMessage {
     position: fixed;
-    top: 60px; /* 下移提示，避免与标题重合 */
+    top: 40px;
     left: 50%;
     transform: translateX(-50%);
-    padding: 10px 20px;
-    border-radius: 5px;
-    font-size: 18px;
+    padding: 16px 32px;
+    border-radius: 8px;
+    font-size: 22px;
     font-weight: bold;
-    background-color: rgba(255, 255, 255, 0.9); /* 白色半透明背景 */
-    color: #333; /* 深色文字 */
-    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.8); /* 添加阴影 */
+    background-color: rgba(255,255,255,0.97);
+    color: #333;
+    box-shadow: 0 4px 10px rgba(0,0,0,0.8);
     z-index: 1000;
     opacity: 0;
     transition: opacity 0.5s ease;
 }
 #resultMessage.visible {
-    opacity: 1; /* 显示提示 */
+    opacity: 1;
 }
 #resultMessage.correct {
-    background-color: rgba(40, 167, 69, 0.9); /* 绿色背景 */
+    background-color: rgba(40, 167, 69, 0.97);
     color: white;
 }
 #resultMessage.incorrect {
-    background-color: rgba(220, 53, 69, 0.9); /* 红色背景 */
+    background-color: rgba(220, 53, 69, 0.97);
     color: white;
 }
 #resetButton {
@@ -767,21 +785,11 @@ body.rotating:active {
     </div>
 </div>
 
-<!-- 主体 -->
-<h1>Assemble the Chang'e-6 Spacecraft</h1>
-<!-- 提示按钮 -->
-<button id="hintButton">💡 提示</button>
-<!-- 提示框 -->
-<div id="hintModal" class="hint-modal">
-    <div class="hint-content">
-        <span id="closeHint">&times;</span>
-        <p id="hintText"></p>
-    </div>
+<!-- 主体布局 -->
+<div id="mainAssemblyLayout">
+    <div id="cubeContainer"></div>
+    <div id="assemblyArea"></div>
 </div>
-
-<!-- 任务一 -->
-<div id="cubeContainer"></div>
-<div id="assemblyArea"></div>
 <div id="resultMessage"></div>
 <button id="resetButton">Reset Game</button>
 
@@ -987,34 +995,32 @@ document.addEventListener('DOMContentLoaded', () => {
     const resetButton = document.getElementById('resetButton');
     const cubes = Array.from(document.querySelectorAll('.ascender, .lander, .returner, .orbiter'));
 
-    // Shuffle the cubes and append them to the cube container
-function initializeGame() {
-    shuffle(cubes);
-    cubes.forEach(cube => {
-        cubeContainer.appendChild(cube);
-        cube.setAttribute('draggable', 'true');
-        cube.addEventListener('dragstart', dragStart);
-        cube.addEventListener('dragend', dragEnd);
-    });
-    assemblyArea.innerHTML = '';
-    resultMessage.textContent = '';
-    assemblyArea.style.transform = 'rotateY(0deg)'; // 重置旋转角度
-    document.body.classList.remove('rotating'); // 移除旋转样式
-    assemblyArea.classList.remove('assembled'); // 移除组装成功样式
-    document.removeEventListener('mousedown', startDrag); // 移除事件监听
-    document.removeEventListener('mousemove', rotate);
-    document.removeEventListener('mouseup', endDrag);
-    // 恢复鼠标状态
-    document.body.classList.remove('rotating');
-    document.body.style.cursor = 'default'; // 恢复默认鼠标状态
-    hideNameLabels();
-}
-    // Initial game setup
+    function initializeGame() {
+        shuffle(cubes);
+        cubes.forEach(cube => {
+            cubeContainer.appendChild(cube);
+            cube.setAttribute('draggable', 'true');
+            cube.addEventListener('dragstart', dragStart);
+            cube.addEventListener('dragend', dragEnd);
+        });
+        assemblyArea.innerHTML = '';
+        resultMessage.textContent = '';
+        resultMessage.className = '';
+        assemblyArea.style.transform = 'rotateY(0deg)';
+        document.body.classList.remove('rotating');
+        assemblyArea.classList.remove('assembled');
+        document.removeEventListener('mousedown', startDrag);
+        document.removeEventListener('mousemove', rotate);
+        document.removeEventListener('mouseup', endDrag);
+        document.body.classList.remove('rotating');
+        document.body.style.cursor = 'default';
+        hideNameLabels();
+    }
     initializeGame();
 
-// ====================
-// 欢迎界面
-// ====================
+    // ====================
+    // 欢迎界面
+    // ====================
     // 获取欢迎页面和开始按钮
     const welcomePage = document.getElementById('welcomePage');
     const startButton = document.getElementById('startButton');
@@ -1027,13 +1033,13 @@ function initializeGame() {
         welcomePage.style.display = 'none'; // 隐藏欢迎页面
     });
 
-// ====================
-// 主体
-// ====================
+    // ====================
+    // 主体
+    // ====================
 
-// ----------
-// 语言切换
-// ----------
+    // ----------
+    // 语言切换
+    // ----------
     const texts = {
         en: {
             welcomeTitle: "Chang'e-6 Lunar Mission",
@@ -1080,14 +1086,14 @@ function initializeGame() {
     // 页面初始化时根据lang属性自动切换
     changeLanguage(document.documentElement.lang || 'en');
 
-// ====================
-// 任务一：组装模块
-// ====================
+    // ====================
+    // 任务一：组装模块
+    // ====================
 
 
-// ----------
-// ascender的球体
-// ----------
+    // ----------
+    // ascender的球体
+    // ----------
     const segments = 20; 
     const ringsPerSegment = 1; // Number of rings per segment
     for (let i = 0; i < segments; i++) {
@@ -1102,9 +1108,9 @@ function initializeGame() {
         }
     }
 
-// ----------
-// returner圆台
-// ----------
+    // ----------
+    // returner圆台
+    // ----------
     const returner = document.querySelector('.returner');
     const sides = 40; // 增加面数使表面更平滑
     const topRadius = 30;  // 上底半径
@@ -1133,9 +1139,9 @@ function initializeGame() {
         returner.appendChild(side);
     }
 
-// ----------
-// orbiter圆台
-// ----------
+    // ----------
+    // orbiter圆台
+    // ----------
     const orbiter = document.querySelector('.orbiter');
     const frustum = document.querySelector('.frustum');
     const sidess = 20; // 圆柱体的面数
@@ -1172,51 +1178,9 @@ function initializeGame() {
         frustum.appendChild(side);
     }
 
-// ----------
-// 提示
-// ----------
-const hintButton = document.getElementById('hintButton');
-const hintModal = document.getElementById('hintModal');
-const closeHint = document.getElementById('closeHint');
-const hintText = document.getElementById('hintText');
-const hints = {
-    task1: {
-        en: "Hint for Task 1: Assemble the spacecraft by dragging the modules into the correct order.",
-        zh: "任务1提示：将模块拖放到正确的位置以组装航天器。"
-    },
-    task2: {
-        en: "Hint for Task 2: Follow the launch sequence to ensure a successful liftoff.",
-        zh: "任务2提示：按照发射顺序确保成功升空。"
-    },
-    task3: {
-        en: "Hint for Task 3: Complete the mission objectives to proceed to the next stage.",
-        zh: "任务3提示：完成任务目标以进入下一阶段。"
-    },
-    task4: {
-        en: "Hint for Task 4: Finalize the mission and ensure all systems are operational.",
-        zh: "任务4提示：完成任务并确保所有系统正常运行。"
-    }
-};
-// 当前任务
-let currentTask = 'task1';
-// 打开提示框
-hintButton.addEventListener('click', () => {
-    const lang = document.documentElement.lang || 'en';
-    hintText.textContent = hints[currentTask][lang];
-    hintModal.style.display = 'block';
-});
-// 关闭提示框
-closeHint.addEventListener('click', () => {
-    hintModal.style.display = 'none';
-});
-// 切换任务时更新提示内容
-function updateHintForTask(task) {
-    currentTask = task;
-}
-
-// ----------
-// 组装
-// ----------
+    // ----------
+    // 组装
+    // ----------
     function shuffle(array) {
         for (let i = array.length - 1; i > 0; i--) {
             const j = Math.floor(Math.random() * (i + 1));
@@ -1237,37 +1201,35 @@ function updateHintForTask(task) {
     function dragOver(e) {
         e.preventDefault();
     }
-function drop(e) {
-    e.preventDefault();
-    const id = e.dataTransfer.getData('text/plain');
-    const droppedCube = document.getElementById(id);
-    assemblyArea.appendChild(droppedCube);
-    droppedCube.style.display = 'block'; // 确保在放置后显示
-    checkAssembly();
-}
-function checkAssembly() {
-    const children = Array.from(assemblyArea.children);
-
-    if (children.length === 4) {
-        const correctOrder = ['ascender', 'lander', 'returner', 'orbiter'];
-        let assembledOrder = children.map(child => child.id);
-
-        if (JSON.stringify(assembledOrder) === JSON.stringify(correctOrder)) {
-            const orbiter = document.getElementById('orbiter');
-            const returner = document.getElementById('returner');
-            orbiter.appendChild(returner);
-            showNameLabels(); // 显示名称标签和虚线
-            showMessage(true);
-            enableRotation();
-            showCompletionDialog();
-        } else {
-            showMessage(false);
+    function drop(e) {
+        e.preventDefault();
+        const id = e.dataTransfer.getData('text/plain');
+        const droppedCube = document.getElementById(id);
+        assemblyArea.appendChild(droppedCube);
+        droppedCube.style.display = 'block';
+        checkAssembly();
+    }
+    function checkAssembly() {
+        const children = Array.from(assemblyArea.children);
+        if (children.length === 4) {
+            const correctOrder = ['ascender', 'lander', 'returner', 'orbiter'];
+            let assembledOrder = children.map(child => child.id);
+            if (JSON.stringify(assembledOrder) === JSON.stringify(correctOrder)) {
+                const orbiter = document.getElementById('orbiter');
+                const returner = document.getElementById('returner');
+                orbiter.appendChild(returner);
+                showNameLabels();
+                showMessage(true);
+                enableRotation();
+                showCompletionDialog();
+            } else {
+                showMessage(false);
+            }
         }
     }
-}
-// ----------
-// 组装结果
-// ----------
+    // ----------
+    // 组装结果
+    // ----------
     function disableDragging() {
         const children = assemblyArea.children;
         for (let i = 0; i < children.length; i++) {
@@ -1307,32 +1269,17 @@ function checkAssembly() {
         startX = e.clientX; // 更新起始位置
     }
     function showMessage(isCorrect) {
-        const lang = document.documentElement.lang || 'en'; // 获取当前语言，默认为 'en'
-        const messages = texts[lang] || texts.en; // 如果当前语言未定义，则使用英语
-        const message = isCorrect ? messages.correctMessage : messages.incorrectMessage; // 根据语言选择消息
+        const lang = document.documentElement.lang || 'en';
+        const messages = texts[lang] || texts.en;
+        const message = isCorrect ? messages.correctMessage : messages.incorrectMessage;
         resultMessage.textContent = message;
-        resultMessage.className = isCorrect ? 'correct visible' : 'incorrect visible';
-
-        // 3 秒后隐藏提示
+        resultMessage.className = (isCorrect ? 'correct visible' : 'incorrect visible');
         setTimeout(() => {
             resultMessage.classList.remove('visible');
         }, 3000);
     }
     // Reset button functionality
     resetButton.addEventListener('click', initializeGame);
-});
-// 记录用户操作
-let hintCount = 0;
-let resetCount = 0;
-
-// 监听提示按钮点击
-hintButton.addEventListener('click', () => {
-    hintCount++;
-});
-
-// 监听重置按钮点击
-resetButton.addEventListener('click', () => {
-    resetCount++;
 });
 
 // 显示组装完成对话框
