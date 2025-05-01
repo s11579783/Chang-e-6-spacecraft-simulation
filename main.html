@@ -1,0 +1,260 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700&family=Roboto:wght@400;700&display=swap" rel="stylesheet">
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Chang'e-6 Assembly Game</title>
+<link rel="icon" type="image/svg+xml" href="favicon.svg">
+<style>
+/* 通用样式 */
+body {
+    font-family: 'Roboto', sans-serif;
+    background: #000;
+    color: white;
+    margin: 0;
+    padding: 0;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+h1 {
+    font-family: 'Orbitron', sans-serif;
+    color: white;
+    text-shadow: 0 2px 5px rgba(255, 255, 255, 0.8);
+    margin: 20px 0;
+}
+
+/* 语言切换按钮 */
+#languageButtons {
+    position: fixed;
+    top: 10px;
+    right: 10px;
+    z-index: 1001;
+    display: flex;
+    gap: 10px;
+}
+
+#languageButtons button {
+    padding: 8px 16px;
+    font-size: 14px;
+    text-shadow: 0 2px 2px rgba(255, 255, 255, 0.5);
+    cursor: pointer;
+    background-color: #1a73e8;
+    color: white;
+    border: none;
+    border-radius: 5px;
+    min-width: 100px;
+    height: 40px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    text-align: center;
+    box-shadow: 0 4px 6px rgba(0, 100, 255, 0.8);
+    transition: transform 0.2s, box-shadow 0.2s;
+}
+
+#languageButtons button:hover {
+    text-shadow: 0 2px 2px rgba(153, 153, 153, 0.8);
+    background-color: #1557b0;
+    transform: scale(1.05);
+    box-shadow: 0 6px 8px rgba(0, 135, 255, 0.6);
+}
+
+/* 功能按钮容器 */
+#functionButtons {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 10px;
+    justify-content: center;
+    margin: 20px 0;
+}
+
+#functionButtons button {
+    padding: 10px 20px;
+    font-size: 16px;
+    text-shadow: 0 2px 2px rgba(255, 255, 255, 0.5);
+    cursor: pointer;
+    background-color: #1a73e8;
+    color: white;
+    border: none;
+    border-radius: 5px;
+    min-width: 150px;
+    height: 50px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    text-align: center;
+    box-shadow: 0 4px 6px rgba(0, 100, 255, 0.8);
+    transition: transform 0.2s, box-shadow 0.2s;
+}
+
+#functionButtons button:hover {
+    text-shadow: 0 2px 2px rgba(153, 153, 153, 0.8);
+    background-color: #1557b0;
+    transform: scale(1.05);
+    box-shadow: 0 6px 8px rgba(0, 135, 255, 0.6);
+}
+
+/* iframe 容器 */
+#iframeContainer {
+    width: 80%;
+    height: 700px;
+    border: 2px solid #1a73e8;
+    border-radius: 10px;
+    margin: 20px 0;
+    overflow: hidden;
+}
+
+iframe {
+    width: 100%;
+    height: 100%;
+    border: none;
+}
+</style>
+</head>
+<body>
+
+<!-- 标题 -->
+<h1>Chang'e-6: Journey to the far side of the moon</h1>
+
+<!-- 语言切换按钮 -->
+<div id="languageButtons">
+    <button id="englishButton">English</button>
+    <button id="chineseButton">繁體中文</button>
+</div>
+
+<!-- 功能按钮 -->
+<div id="functionButtons">
+    <button id="function1">功能 1</button>
+    <button id="function2">功能 2</button>
+    <button id="function3">功能 3</button>
+    <button id="function4">功能 4</button>
+    <button id="function5">功能 5</button>
+    <button id="function6">功能 6</button>
+</div>
+
+<!-- iframe 容器 -->
+<div id="iframeContainer">
+    <iframe id="contentFrame" src=""></iframe>
+</div>
+
+<!-- AI Assistant iframe -->
+<iframe id="assistantFrame" src="ai-assistant/assistant.html" style="position: fixed; bottom: 20px; right: 20px; width: 380px; height: 600px; border: none; z-index: 9999;"></iframe>
+
+<script>
+// 语言切换功能
+const texts = {
+    en: {
+        title: "Chang'e-6: Journey to the far side of the moon",
+        function1: "Function 1",
+        function2: "Function 2",
+        function3: "Function 3",
+        function4: "Function 4",
+        function5: "Function 5",
+        function6: "Function 6"
+    },
+    zh: {
+        title: "嫦娥六號：月球背面的旅程",
+        function1: "功能 1",
+        function2: "功能 2",
+        function3: "功能 3",
+        function4: "功能 4",
+        function5: "功能 5",
+        function6: "功能 6"
+    }
+};
+
+// 添加 iframe 加载事件监听
+document.getElementById('assistantFrame').addEventListener('load', function() {
+    // 等待一小段时间确保 iframe 内容完全初始化
+    setTimeout(() => {
+        const currentLang = document.documentElement.lang || 'en';
+        if (this.contentWindow && this.contentWindow.updateAssistantLanguage) {
+            try {
+                this.contentWindow.updateAssistantLanguage(currentLang);
+                console.log('Initialized assistant language:', currentLang);
+            } catch (e) {
+                console.error('Failed to initialize assistant language:', e);
+            }
+        }
+    }, 1000);
+});
+
+function changeLanguage(lang) {
+    document.documentElement.lang = lang;
+    document.querySelector('h1').textContent = texts[lang].title;
+    document.getElementById('function1').textContent = texts[lang].function1;
+    document.getElementById('function2').textContent = texts[lang].function2;
+    document.getElementById('function3').textContent = texts[lang].function3;
+    document.getElementById('function4').textContent = texts[lang].function4;
+    document.getElementById('function5').textContent = texts[lang].function5;
+    document.getElementById('function6').textContent = texts[lang].function6;
+    
+    // Update AI assistant language
+    const assistantFrame = document.getElementById('assistantFrame');
+    if (assistantFrame.contentWindow && assistantFrame.contentWindow.updateAssistantLanguage) {
+        assistantFrame.contentWindow.updateAssistantLanguage(lang);
+    }
+}
+
+document.getElementById('englishButton').addEventListener('click', () => {
+    changeLanguage('en');
+    // 直接调用 iframe 中的语言切换函数
+    const assistantFrame = document.getElementById('assistantFrame');
+    if (assistantFrame.contentWindow) {
+        try {
+            assistantFrame.contentWindow.updateAssistantLanguage('en');
+            console.log('Changed assistant language to English');
+        } catch (e) {
+            console.error('Failed to change assistant language:', e);
+        }
+    }
+});
+
+document.getElementById('chineseButton').addEventListener('click', () => {
+    changeLanguage('zh');
+    // 直接调用 iframe 中的语言切换函数
+    const assistantFrame = document.getElementById('assistantFrame');
+    if (assistantFrame.contentWindow) {
+        try {
+            assistantFrame.contentWindow.updateAssistantLanguage('zh');
+            console.log('Changed assistant language to Chinese');
+        } catch (e) {
+            console.error('Failed to change assistant language:', e);
+        }
+    }
+});
+
+// 功能按钮点击事件
+const functionButtons = document.querySelectorAll('#functionButtons button');
+const contentFrame = document.getElementById('contentFrame');
+
+functionButtons.forEach((button, index) => {
+    button.addEventListener('click', () => {
+        const functionNumber = index + 1;
+        //contentFrame.src = `function${functionNumber}.html`; // 假设每个功能对应一个HTML文件
+          const urls = [
+              'https://www.baidu.com',
+              'https://www.bilibili.com/video/BV1Li421D7Q5?t=12.6',
+             'https://s11579783.github.io/news-damin/daminzhencaomei.html',
+              'https://www.weixin.qq.com',
+           'https://www.eduhk.hk',
+             'https://www.szu.edu.cn'
+          ];
+        // 检查索引是否在数组范围内
+        if(index >= 0 && index < urls.length) {
+            contentFrame.src = urls[index];
+        } else {
+            console.error('无效的功能索引:', index);
+        }
+    });
+});
+
+changeLanguage('en'); // 设置默认语言为英语
+
+</script>
+
+</body>
+</html>
