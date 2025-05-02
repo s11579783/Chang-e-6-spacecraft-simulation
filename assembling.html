@@ -1510,6 +1510,17 @@ resetButton.addEventListener('click', function() {
     launchButton.style.display = 'none';
 });
 
+// 初始化按钮文本
+updateLaunchButtonText(document.documentElement.lang || 'en');
+
+// 添加点击事件
+launchButton.onclick = function() {
+    window.location.href = 'launching.html';
+};
+
+// 将按钮添加到页面
+document.body.appendChild(launchButton);
+
 </script>
 
 </body>
