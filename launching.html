@@ -726,20 +726,20 @@
         
         .payload-blue-bar {
             position: absolute;
-            width: 8px;
-            height: 35px; /* 与大矩形高度一致 */
-            background: #003366;
+            width: 12px;
+            height: 35px;
+            background: #0800ad;
             border-radius: 0;
-            top: 85px; /* 大矩形的top: 85px; */
+            top: 102px; /* 垂直居中大矩形 */
             opacity: 0;
             transition: opacity 0.5s;
             z-index: 2;
         }
         .payload-blue-bar.left {
-            left: 0px;
+            left: -18px; /* 稍微外扩 */
         }
         .payload-blue-bar.right {
-            right: 0px;
+            right: -18px;
         }
         .payload.visible .payload-blue-bar {
             opacity: 1;
