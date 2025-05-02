@@ -984,6 +984,10 @@
             if (gameState.currentStep === 1) {
                 ignitionButton.textContent = texts['ignition'][lang];
             }
+
+            // 更新任务提示文本
+            const promptText = document.querySelector('.prompt-text');
+            promptText.textContent = promptText.getAttribute(`data-${lang === 'zh' ? 'zh-tw' : 'en'}`);
         }
         
         function updatePromptText() {
