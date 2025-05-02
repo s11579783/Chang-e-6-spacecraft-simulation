@@ -315,9 +315,9 @@
         
         .prompt-container {
             position: absolute;
-            top: 30px;
+            top: 50%;
             left: 50%;
-            transform: translateX(-50%);
+            transform: translate(-50%, -50%);
             background-color: rgba(0, 0, 0, 0.7);
             padding: 20px;
             border-radius: 10px;
@@ -350,42 +350,59 @@
         
         .progress-container {
             position: absolute;
-            top: 20px;
-            left: 20px;
-            background-color: rgba(0, 0, 0, 0.5);
-            padding: 10px;
-            border-radius: 5px;
+            top: 50px;
+            left: 50%;
+            transform: translateX(-50%);
+            background-color: rgba(0, 0, 0, 0.7);
+            padding: 15px;
+            border-radius: 10px;
             z-index: 100;
+            width: 80%;
+            max-width: 400px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
         }
         
         .progress-step {
             margin: 5px 0;
             color: #999;
+            font-size: 14px;
+            text-align: center;
+            width: 100%;
+            padding: 5px;
+            border-radius: 5px;
+            transition: all 0.3s ease;
         }
         
         .progress-step.active {
             color: #ffcc00;
             font-weight: bold;
+            background-color: rgba(255, 204, 0, 0.1);
         }
         
         .progress-step.completed {
             color: #00cc00;
+            background-color: rgba(0, 204, 0, 0.1);
         }
         
         .altitude-container {
             position: absolute;
             bottom: 20px;
-            right: 20px;
-            background-color: rgba(0, 0, 0, 0.5);
-            padding: 10px;
-            border-radius: 5px;
+            left: 50%;
+            transform: translateX(-50%);
+            background-color: rgba(0, 0, 0, 0.7);
+            padding: 10px 20px;
+            border-radius: 10px;
             z-index: 100;
+            text-align: center;
         }
         
         #altitude-value {
             font-size: 24px;
             font-weight: bold;
             color: #00cc00;
+            margin-top: 5px;
         }
         
         .countdown {
