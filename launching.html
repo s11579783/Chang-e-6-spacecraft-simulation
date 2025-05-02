@@ -752,8 +752,8 @@
         </div>
         
         <div class="altitude-container">
-            <div id="altitude-label" data-zh-tw="高度" data-en="Altitude">高度: </div>
-            <div id="altitude-value">0 km</div>
+            <div id="altitude-label" data-zh-tw="時間" data-en="Time">時間: </div>
+            <div id="altitude-value">0 s</div>
         </div>
         
         <div class="prompt-container">
@@ -944,8 +944,8 @@
                 'zh': '點火'
             },
             'altitude': {
-                'en': 'Altitude',
-                'zh': '高度'
+                'en': 'Time',
+                'zh': '時間'
             },
             'mission-complete-title': {
                 'en': 'Mission Complete!',
@@ -1039,12 +1039,12 @@
             
             const timerInterval = setInterval(() => {
                 if (gameState.currentStep <= 6) {
-                    gameState.missionTime += 0.1;
+                    // 时间加快：每0.1秒增加0.2秒
+                    gameState.missionTime += 0.2;
                     const currentTime = parseFloat(gameState.missionTime.toFixed(1));
                     
-                    // 更新高度显示（仅作为视觉效果）
-                    gameState.altitude = Math.floor(gameState.missionTime * 2);
-                    altitudeValue.textContent = Math.floor(gameState.altitude / 10) + ' km';
+                    // 更新时间显示
+                    document.getElementById('altitude-value').textContent = currentTime + ' s';
                     
                     // 检查是否到达任务时间点
                     checkMissionTimePoint(currentTime);
@@ -1183,7 +1183,7 @@
             // 更新提示文本
             updatePromptText();
             
-            // 更新高度标签
+            // 更新时间标签
             document.getElementById('altitude-label').textContent = texts['altitude'][lang] + ': ';
             
             // 更新任务完成对话框
