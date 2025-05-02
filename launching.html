@@ -730,19 +730,23 @@
             height: 35px;
             background: #0800ad;
             border-radius: 0;
-            top: 102px; /* 垂直居中大矩形 */
+            top: 85px; /* 与大矩形top一致 */
             opacity: 0;
             transition: opacity 0.5s;
             z-index: 2;
         }
         .payload-blue-bar.left {
-            left: -18px; /* 稍微外扩 */
+            left: 0px;
         }
         .payload-blue-bar.right {
-            right: -18px;
+            right: 0px;
         }
         .payload.visible .payload-blue-bar {
             opacity: 1;
+        }
+        /* 让蓝色长条高度与大矩形一致 */
+        .payload::after {
+            /* 大矩形：height: 35px; top: 85px; */
         }
     </style>
 </head>
