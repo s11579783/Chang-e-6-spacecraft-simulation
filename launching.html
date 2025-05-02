@@ -1009,28 +1009,38 @@
             const timeLimits = gameState.timeLimits;
             
             // 根据当前步骤和时间激活相应的可交互区域
-            if (gameState.currentStep === 2 && 
-                currentTime >= timeLimits.boosterSeparation) {
+            if (gameState.currentStep === 2 && currentTime >= timeLimits.boosterSeparation) {
                 boosterClickLeft.classList.add('active');
                 boosterClickRight.classList.add('active');
-            } else if (gameState.currentStep === 3 && 
-                      currentTime >= timeLimits.fairingSeparation) {
+                boosterClickLeft.style.pointerEvents = 'auto';
+                boosterClickRight.style.pointerEvents = 'auto';
+                boosterClickLeft.style.cursor = 'pointer';
+                boosterClickRight.style.cursor = 'pointer';
+            } else if (gameState.currentStep === 3 && currentTime >= timeLimits.fairingSeparation) {
                 fairingClickArea.classList.add('active');
-            } else if (gameState.currentStep === 4 && 
-                      currentTime >= timeLimits.firstStageSeparation) {
+                fairingClickArea.style.pointerEvents = 'auto';
+                fairingClickArea.style.cursor = 'pointer';
+            } else if (gameState.currentStep === 4 && currentTime >= timeLimits.firstStageSeparation) {
                 firstStageClickArea.classList.add('active');
-            } else if (gameState.currentStep === 6 && 
-                      currentTime >= timeLimits.spacecraftSeparation) {
+                firstStageClickArea.style.pointerEvents = 'auto';
+                firstStageClickArea.style.cursor = 'pointer';
+            } else if (gameState.currentStep === 6 && currentTime >= timeLimits.spacecraftSeparation) {
                 payloadClickArea.classList.add('active');
+                payloadClickArea.style.pointerEvents = 'auto';
+                payloadClickArea.style.cursor = 'pointer';
             }
         }
         
         // 修改高度更新函数为时间更新函数
         function startMissionTimer() {
+            if (gameState.intervalId) {
+                clearInterval(gameState.intervalId);
+            }
+            
             const timerInterval = setInterval(() => {
                 if (gameState.currentStep <= 6) {
-                    gameState.missionTime += 0.1; // 每0.1秒更新一次
-                    const currentTime = gameState.missionTime.toFixed(1);
+                    gameState.missionTime += 0.1;
+                    const currentTime = parseFloat(gameState.missionTime.toFixed(1));
                     
                     // 更新高度显示（仅作为视觉效果）
                     gameState.altitude = Math.floor(gameState.missionTime * 2);
@@ -1113,12 +1123,12 @@
             const boosterClickRight = document.getElementById('booster-click-right');
             if (boosterClickLeft && boosterClickRight) {
                 boosterClickLeft.addEventListener('click', () => {
-                    if (gameState.currentStep === 2 && gameState.altitude >= gameState.heightLimits.boosterSeparation.min * 10) {
+                    if (gameState.currentStep === 2 && gameState.missionTime >= gameState.timeLimits.boosterSeparation) {
                         detachAllBoosters();
                     }
                 });
                 boosterClickRight.addEventListener('click', () => {
-                    if (gameState.currentStep === 2 && gameState.altitude >= gameState.heightLimits.boosterSeparation.min * 10) {
+                    if (gameState.currentStep === 2 && gameState.missionTime >= gameState.timeLimits.boosterSeparation) {
                         detachAllBoosters();
                     }
                 });
@@ -1128,7 +1138,7 @@
             const fairingClickArea = document.getElementById('fairing-click');
             if (fairingClickArea) {
                 fairingClickArea.addEventListener('click', () => {
-                    if (gameState.currentStep === 3 && gameState.altitude >= 400) {
+                    if (gameState.currentStep === 3 && gameState.missionTime >= gameState.timeLimits.fairingSeparation) {
                         detachFairings();
                     }
                 });
@@ -1138,7 +1148,7 @@
             const firstStageClickArea = document.getElementById('first-stage-click');
             if (firstStageClickArea) {
                 firstStageClickArea.addEventListener('click', () => {
-                    if (gameState.currentStep === 4 && gameState.altitude >= 800) {
+                    if (gameState.currentStep === 4 && gameState.missionTime >= gameState.timeLimits.firstStageSeparation) {
                         firstStageDetach();
                     }
                 });
@@ -1148,7 +1158,7 @@
             const payloadClickArea = document.getElementById('payload-click');
             if (payloadClickArea) {
                 payloadClickArea.addEventListener('click', () => {
-                    if (gameState.currentStep === 6 && gameState.altitude >= 1500) {
+                    if (gameState.currentStep === 6 && gameState.missionTime >= gameState.timeLimits.spacecraftSeparation) {
                         payloadSeparate();
                     }
                 });
@@ -1277,7 +1287,7 @@
                 flame.classList.add('active');
             });
             
-            // 开始火箭上升 - 更快的上升速度
+            // 开始火箭上升
             rocketContainer.style.transform = 'translateY(-120vh)';
             rocket.style.bottom = '0';
             earthBackdrop.classList.add('fade-away');
@@ -1287,10 +1297,13 @@
             // 更新游戏状态
             completeStep(1);
             
-            // 更快地切换到飞行模式
+            // 切换到飞行模式
             setTimeout(() => {
                 switchToFlightMode();
-            }, 1500); // 从3000ms减少到1500ms
+            }, 1500);
+
+            // 开始任务计时器
+            startMissionTimer();
         }
         
         // 切换到飞行模式
@@ -1344,20 +1357,20 @@
         
         // 助推器分离事件
         boosterClickLeft.addEventListener('click', () => {
-            if (gameState.currentStep === 2 && gameState.altitude >= 150) {
+            if (gameState.currentStep === 2 && gameState.missionTime >= gameState.timeLimits.boosterSeparation) {
                 detachAllBoosters();
             }
         });
         
         boosterClickRight.addEventListener('click', () => {
-            if (gameState.currentStep === 2 && gameState.altitude >= 150) {
+            if (gameState.currentStep === 2 && gameState.missionTime >= gameState.timeLimits.boosterSeparation) {
                 detachAllBoosters();
             }
         });
         
         // 整流罩分离事件
         fairingClickArea.addEventListener('click', () => {
-            if (gameState.currentStep === 3 && gameState.altitude >= 400) {
+            if (gameState.currentStep === 3 && gameState.missionTime >= gameState.timeLimits.fairingSeparation) {
                 detachFairings();
             }
         });
@@ -1376,7 +1389,7 @@
         
         // 一级火箭分离事件
         firstStageClickArea.addEventListener('click', () => {
-            if (gameState.currentStep === 4 && gameState.altitude >= 800) {
+            if (gameState.currentStep === 4 && gameState.missionTime >= gameState.timeLimits.firstStageSeparation) {
                 firstStageDetach();
             }
         });
@@ -1423,7 +1436,7 @@
         
         // 星箭分离事件
         payloadClickArea.addEventListener('click', () => {
-            if (gameState.currentStep === 6 && gameState.altitude >= 1500) {
+            if (gameState.currentStep === 6 && gameState.missionTime >= gameState.timeLimits.spacecraftSeparation) {
                 payloadSeparate();
             }
         });
@@ -1475,7 +1488,7 @@
             stepElement.classList.remove('active');
             stepElement.classList.add('completed');
             
-            // 重新启动计时器
+            // 重新启动计时器，但不重置时间
             if (step < 6) {
                 startMissionTimer();
             }
