@@ -780,7 +780,7 @@
         let gameState = {
             currentStep: 1,
             altitude: 0,
-            language: 'zh-tw', // 默认语言
+            language: 'en', // Changed default language to 'en'
             rocketLaunched: false,
             countdown: false,
             countdownValue: 5,
@@ -961,7 +961,8 @@
         
         // 更新语言
         function updateLanguage() {
-            const lang = gameState.language === 'zh-tw' ? 'zh' : 'en';
+            // Map 'zh-tw' to 'zh' for consistency with main.html
+            const lang = gameState.language === 'zh-tw' || gameState.language === 'zh' ? 'zh' : 'en';
             
             // 更新所有步骤文本
             document.querySelectorAll('.progress-step').forEach((step, index) => {
@@ -1000,11 +1001,15 @@
         // 监听语言变更消息
         window.addEventListener('message', (event) => {
             if (event.data && event.data.type === 'setLanguage') {
+                // Map the incoming language code
                 gameState.language = event.data.lang;
                 updateLanguage();
             } else if (event.data && event.data.type === 'requestLanguage') {
                 // 如果收到请求语言的消息，回复当前语言
-                event.source.postMessage({ type: 'setLanguage', lang: gameState.language }, '*');
+                event.source.postMessage({ 
+                    type: 'setLanguage', 
+                    lang: gameState.language === 'zh-tw' ? 'zh' : gameState.language 
+                }, '*');
             }
         });
 
