@@ -1224,14 +1224,15 @@
         }
         
         function updatePromptText() {
-            // 只在任务即将到达时显示提示
+            // 只在任务即将到达时显示提示对话框和文字
             let lang = gameState.language;
             if (lang === 'zh-tw') lang = 'zh';
             else if (lang !== 'zh') lang = 'en';
             // 当前任务时间点
             const taskTime = taskTimes[gameState.currentStep - 1] || 0;
-            // 只在剩余1秒内显示
+            // 只在剩余1秒内显示整个对话框，否则隐藏
             if (gameState.missionTime >= taskTime - 1) {
+                promptContainer.style.display = 'block';
                 promptText.textContent = texts[`prompt-${gameState.currentStep}`][lang];
                 if (gameState.currentStep === 1) {
                     ignitionButton.textContent = texts['ignition'][lang];
@@ -1240,6 +1241,7 @@
                     ignitionButton.style.display = 'none';
                 }
             } else {
+                promptContainer.style.display = 'none';
                 promptText.textContent = '';
                 ignitionButton.style.display = 'none';
             }
