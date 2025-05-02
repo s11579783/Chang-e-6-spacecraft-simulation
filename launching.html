@@ -1031,28 +1031,42 @@
             }
         }
         
-        // 修改高度更新函数为时间更新函数
+        // 记录每个任务的时间点
+        const taskTimes = [
+            0, // Ignition
+            gameState.timeLimits.boosterSeparation,
+            gameState.timeLimits.fairingSeparation,
+            gameState.timeLimits.firstStageSeparation,
+            gameState.timeLimits.secondStageIgnition,
+            gameState.timeLimits.spacecraftSeparation
+        ];
+        
         function startMissionTimer() {
             if (gameState.intervalId) {
                 clearInterval(gameState.intervalId);
             }
-            
+            let customSpeed = 2;
             const timerInterval = setInterval(() => {
                 if (gameState.currentStep <= 6) {
-                    // 时间再加快：每0.1秒增加2秒
-                    gameState.missionTime += 2;
+                    // 星舰分离前单独加速
+                    if (gameState.currentStep === 6) {
+                        // 计算与上一个任务的时间差
+                        const prev = gameState.timeLimits.secondStageIgnition;
+                        const next = gameState.timeLimits.spacecraftSeparation;
+                        const remain = next - gameState.missionTime;
+                        // 5秒内到达
+                        customSpeed = remain > 0 ? Math.max(remain / 5, 2) : 2;
+                    } else {
+                        customSpeed = 2;
+                    }
+                    gameState.missionTime += customSpeed;
                     const currentTime = parseFloat(gameState.missionTime.toFixed(1));
-                    
-                    // 更新时间显示
                     document.getElementById('altitude-value').textContent = currentTime + ' s';
-                    
-                    // 检查是否到达任务时间点
                     checkMissionTimePoint(currentTime);
                 } else {
                     clearInterval(timerInterval);
                 }
             }, 100);
-            
             gameState.intervalId = timerInterval;
         }
 
@@ -1210,16 +1224,23 @@
         }
         
         function updatePromptText() {
-            // 修复繁体中文提示未切换问题
+            // 只在任务即将到达时显示提示
             let lang = gameState.language;
             if (lang === 'zh-tw') lang = 'zh';
             else if (lang !== 'zh') lang = 'en';
-            promptText.textContent = texts[`prompt-${gameState.currentStep}`][lang];
-            
-            if (gameState.currentStep === 1) {
-                ignitionButton.textContent = texts['ignition'][lang];
-                ignitionButton.style.display = 'inline-block';
+            // 当前任务时间点
+            const taskTime = taskTimes[gameState.currentStep - 1] || 0;
+            // 只在剩余1秒内显示
+            if (gameState.missionTime >= taskTime - 1) {
+                promptText.textContent = texts[`prompt-${gameState.currentStep}`][lang];
+                if (gameState.currentStep === 1) {
+                    ignitionButton.textContent = texts['ignition'][lang];
+                    ignitionButton.style.display = 'inline-block';
+                } else {
+                    ignitionButton.style.display = 'none';
+                }
             } else {
+                promptText.textContent = '';
                 ignitionButton.style.display = 'none';
             }
         }
