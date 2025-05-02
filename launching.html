@@ -25,41 +25,6 @@
             perspective: 1000px; /* Add perspective for 3D effect */
         }
         
-        #language-switcher {
-    position: fixed;
-    top: 10px;
-    right: 10px;
-    z-index: 1001;
-    display: flex;
-    gap: 10px;
-        }
-        
-        #language-switcher button {
-    padding: 8px 16px;
-    font-size: 14px;
-    text-shadow: 0 2px 2px rgba(255, 255, 255, 0.5);
-    cursor: pointer;
-    background-color: #1a73e8;
-    color: white;
-    border: none;
-    border-radius: 5px;
-    min-width: 100px;
-    height: 40px;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    text-align: center;
-    box-shadow: 0 4px 6px rgba(0, 100, 255, 0.8);
-    transition: transform 0.2s, box-shadow 0.2s;
-        }
-        
-        #language-switcher button.active {
-    text-shadow: 0 2px 2px rgba(153, 153, 153, 0.8);
-    background-color: #1557b0;
-    transform: scale(1.05);
-    box-shadow: 0 6px 8px rgba(0, 135, 255, 0.6);
-        }
-        
         #game-container {
             flex: 1;
             position: relative;
@@ -711,11 +676,6 @@
     </style>
 </head>
 <body>
-    <div id="language-switcher">
-        <button id="en">English</button>
-        <button id="zh-tw" class="active">繁體中文</button>
-    </div>
-    
     <div id="game-container">
         <div class="stars"></div>
         <div class="earth-backdrop"></div>
@@ -818,9 +778,6 @@
         };
         
         // 元素
-        const languageSwitcher = document.getElementById('language-switcher');
-        const zhTwButton = document.getElementById('zh-tw');
-        const enButton = document.getElementById('en');
         const gameContainer = document.getElementById('game-container');
         const rocketContainer = document.getElementById('rocket-container');
         const rocket = document.querySelector('.rocket');
@@ -1313,9 +1270,42 @@
             location.reload();
         });
         
-        // 初始化
-        updateLanguage();
-        hideAllClickableAreas(); // 初始化时隐藏所有可交互区域
+        // 添加语言同步逻辑
+        window.addEventListener('message', (event) => {
+            if (event.data && event.data.type === 'setLanguage' && event.data.lang) {
+                changeLanguage(event.data.lang);
+            }
+        });
+
+        // 页面加载时请求父页面发送当前语言
+        window.parent.postMessage({ type: 'requestLanguage' }, '*');
+
+        // 语言切换函数
+        function changeLanguage(lang) {
+            document.documentElement.lang = lang;
+            // 更新所有需要翻译的文本
+            const texts = {
+                en: {
+                    title: "Chang'e-6 Launch Simulator",
+                    // 添加其他需要翻译的文本
+                },
+                zh: {
+                    title: "嫦娥六號發射模擬器",
+                    // 添加其他需要翻译的文本
+                }
+            };
+            
+            // 更新页面标题
+            document.title = texts[lang].title;
+            // 更新其他文本元素
+            // ...
+        }
+
+        // 确保页面加载时同步语言
+        window.onload = () => {
+            // 请求父页面发送当前语言
+            window.parent.postMessage({ type: 'requestLanguage' }, '*');
+        };
     </script>
 </body>
 </html>
