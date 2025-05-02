@@ -1039,8 +1039,8 @@
             
             const timerInterval = setInterval(() => {
                 if (gameState.currentStep <= 6) {
-                    // 时间大幅加快：每0.1秒增加1秒
-                    gameState.missionTime += 1;
+                    // 时间再加快：每0.1秒增加2秒
+                    gameState.missionTime += 2;
                     const currentTime = parseFloat(gameState.missionTime.toFixed(1));
                     
                     // 更新时间显示
@@ -1210,7 +1210,10 @@
         }
         
         function updatePromptText() {
-            const lang = gameState.language === 'zh-tw' ? 'zh' : 'en';
+            // 修复繁体中文提示未切换问题
+            let lang = gameState.language;
+            if (lang === 'zh-tw') lang = 'zh';
+            else if (lang !== 'zh') lang = 'en';
             promptText.textContent = texts[`prompt-${gameState.currentStep}`][lang];
             
             if (gameState.currentStep === 1) {
