@@ -112,6 +112,30 @@ iframe {
     height: 100%;
     border: none;
 }
+
+#musicControlBtn {
+    position: fixed;
+    left: 20px;
+    bottom: 20px;
+    z-index: 1002;
+    background: rgba(26, 115, 232, 0.9);
+    color: #fff;
+    border: none;
+    border-radius: 50%;
+    width: 56px;
+    height: 56px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 28px;
+    box-shadow: 0 4px 12px rgba(0,0,0,0.3);
+    cursor: pointer;
+    transition: background 0.2s, transform 0.2s;
+}
+#musicControlBtn:hover {
+    background: #1557b0;
+    transform: scale(1.08);
+}
 </style>
 </head>
 <body>
@@ -143,6 +167,10 @@ iframe {
 
 <!-- AI Assistant iframe -->
 <iframe id="assistantFrame" src="ai-assistant/assistant.html" style="position: fixed; bottom: 20px; right: 20px; width: 380px; height: 600px; border: none; z-index: 9999;"></iframe>
+
+<button id="musicControlBtn" title="Toggle Music" aria-label="Toggle Music">
+    <span id="musicIcon">&#x1F507;</span>
+</button>
 
 <script>
 // 语言切换功能
@@ -203,6 +231,7 @@ function changeLanguage(lang) {
     if (contentFrame && contentFrame.contentWindow) {
         contentFrame.contentWindow.postMessage({ type: 'setLanguage', lang }, '*');
     }
+    updateMusicBtnLang();
 }
 
 document.getElementById('englishButton').addEventListener('click', () => {
@@ -281,6 +310,38 @@ window.addEventListener('message', (event) => {
     }
 });
 
+// 音乐控制按钮
+const musicBtn = document.getElementById('musicControlBtn');
+const musicIcon = document.getElementById('musicIcon');
+const bgm = document.getElementById('bgm');
+let musicPlaying = true;
+
+function updateMusicIcon() {
+    if (musicPlaying) {
+        musicIcon.innerHTML = '&#x1F50A;'; // 喇叭有声
+        musicBtn.title = document.documentElement.lang === 'zh' ? '关闭音乐' : 'Turn music off';
+    } else {
+        musicIcon.innerHTML = '&#x1F507;'; // 静音
+        musicBtn.title = document.documentElement.lang === 'zh' ? '开启音乐' : 'Turn music on';
+    }
+}
+musicBtn.addEventListener('click', () => {
+    if (bgm.paused) {
+        bgm.play();
+        musicPlaying = true;
+    } else {
+        bgm.pause();
+        musicPlaying = false;
+    }
+    updateMusicIcon();
+});
+
+// 语言切换时同步按钮提示
+function updateMusicBtnLang() {
+    updateMusicIcon();
+}
+
+document.addEventListener('DOMContentLoaded', updateMusicIcon);
 </script>
 
 </body>
