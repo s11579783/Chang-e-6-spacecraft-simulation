@@ -834,23 +834,22 @@
             countdownValue: 5,
             intervalId: null,
             flightMode: false,
-            // 添加高度限制
             heightLimits: {
                 boosterSeparation: {
-                    min: 45,  // 45km
-                    max: 70   // 70km
+                    min: 45,
+                    max: 70
                 },
                 fairingSeparation: {
-                    min: 110, // 110km
-                    max: 140  // 140km
+                    min: 110,
+                    max: 140
                 },
                 firstStageSeparation: {
-                    min: 170, // 170km
-                    max: 200  // 200km
+                    min: 170,
+                    max: 200
                 },
                 spacecraftSeparation: {
-                    min: 350, // 350km
-                    max: 400  // 400km
+                    min: 350,
+                    max: 400
                 }
             }
         };
@@ -1100,31 +1099,73 @@
             }
         }
         
-        // 初始化所有重启按钮的事件监听
-        function initializeRestartButtons() {
-            const restartButtons = document.querySelectorAll('.restart-button');
-            restartButtons.forEach(button => {
-                button.style.pointerEvents = 'auto';
-                button.style.cursor = 'pointer';
-                button.style.opacity = '1';
-                button.style.zIndex = '1000';
-                
-                // 移除可能存在的旧事件监听器
-                button.replaceWith(button.cloneNode(true));
-                
-                // 重新获取按钮并添加新的事件监听器
-                const newButton = document.querySelector(`.restart-button[data-${gameState.language === 'zh-tw' ? 'zh-tw' : 'en'}="${button.getAttribute(`data-${gameState.language === 'zh-tw' ? 'zh-tw' : 'en'}")}"]`);
-                if (newButton) {
-                    newButton.addEventListener('click', function() {
-                        location.reload();
-                    });
-                }
-            });
-        }
-
         // 页面加载完成后初始化
-        window.addEventListener('load', function() {
-            initializeRestartButtons();
+        window.addEventListener('load', () => {
+            // 初始化点火按钮
+            const ignitionButton = document.querySelector('.ignition-button');
+            if (ignitionButton) {
+                ignitionButton.addEventListener('click', () => {
+                    if (gameState.currentStep === 1) {
+                        startCountdown();
+                    }
+                });
+            }
+
+            // 初始化重启按钮
+            document.querySelectorAll('.restart-button').forEach(button => {
+                button.addEventListener('click', () => {
+                    location.reload();
+                });
+            });
+
+            // 初始化助推器点击事件
+            const boosterClickLeft = document.getElementById('booster-click-left');
+            const boosterClickRight = document.getElementById('booster-click-right');
+            if (boosterClickLeft && boosterClickRight) {
+                boosterClickLeft.addEventListener('click', () => {
+                    if (gameState.currentStep === 2 && gameState.altitude >= gameState.heightLimits.boosterSeparation.min * 10) {
+                        detachAllBoosters();
+                    }
+                });
+                boosterClickRight.addEventListener('click', () => {
+                    if (gameState.currentStep === 2 && gameState.altitude >= gameState.heightLimits.boosterSeparation.min * 10) {
+                        detachAllBoosters();
+                    }
+                });
+            }
+
+            // 初始化整流罩点击事件
+            const fairingClickArea = document.getElementById('fairing-click');
+            if (fairingClickArea) {
+                fairingClickArea.addEventListener('click', () => {
+                    if (gameState.currentStep === 3 && gameState.altitude >= gameState.heightLimits.fairingSeparation.min * 10) {
+                        detachFairings();
+                    }
+                });
+            }
+
+            // 初始化一级火箭点击事件
+            const firstStageClickArea = document.getElementById('first-stage-click');
+            if (firstStageClickArea) {
+                firstStageClickArea.addEventListener('click', () => {
+                    if (gameState.currentStep === 4 && gameState.altitude >= gameState.heightLimits.firstStageSeparation.min * 10) {
+                        firstStageDetach();
+                    }
+                });
+            }
+
+            // 初始化载荷点击事件
+            const payloadClickArea = document.getElementById('payload-click');
+            if (payloadClickArea) {
+                payloadClickArea.addEventListener('click', () => {
+                    if (gameState.currentStep === 6 && gameState.altitude >= gameState.heightLimits.spacecraftSeparation.min * 10) {
+                        payloadSeparate();
+                    }
+                });
+            }
+
+            // 初始化语言
+            updateLanguage();
         });
         
         // 更新语言
@@ -1146,18 +1187,12 @@
             document.getElementById('altitude-label').textContent = texts['altitude'][lang] + ': ';
             
             // 更新任务完成对话框
-            document.querySelector('.mission-complete h2').textContent = texts['mission-complete-title'][lang];
-            document.querySelector('.mission-complete p').textContent = texts['mission-complete-text'][lang];
-            document.querySelector('.restart-button').textContent = texts['restart'][lang];
-            
-            // 更新点火按钮
-            if (gameState.currentStep === 1) {
-                ignitionButton.textContent = texts['ignition'][lang];
+            const missionComplete = document.querySelector('.mission-complete');
+            if (missionComplete) {
+                missionComplete.querySelector('h2').textContent = texts['mission-complete-title'][lang];
+                missionComplete.querySelector('p').textContent = texts['mission-complete-text'][lang];
+                missionComplete.querySelector('.restart-button').textContent = texts['restart'][lang];
             }
-
-            // 更新任务提示文本
-            const promptText = document.querySelector('.prompt-text');
-            promptText.textContent = promptText.getAttribute(`data-${lang === 'zh' ? 'zh-tw' : 'en'}`);
 
             // 更新任务失败对话框
             const missionFailed = document.querySelector('.mission-failed');
@@ -1165,9 +1200,12 @@
                 missionFailed.querySelector('h2').textContent = texts['mission-failed-title'][lang];
                 missionFailed.querySelector('p').textContent = texts['mission-failed-text'][lang];
                 missionFailed.querySelector('.restart-button').textContent = texts['restart'][lang];
-                
-                // 重新初始化重启按钮
-                initializeRestartButtons();
+            }
+            
+            // 更新点火按钮
+            const ignitionButton = document.querySelector('.ignition-button');
+            if (ignitionButton && gameState.currentStep === 1) {
+                ignitionButton.textContent = texts['ignition'][lang];
             }
         }
         
@@ -1215,12 +1253,6 @@
         };
         
         // 点火和发射
-        ignitionButton.addEventListener('click', () => {
-            if (gameState.currentStep === 1) {
-                startCountdown();
-            }
-        });
-        
         function startCountdown() {
             gameState.countdown = true;
             countdown.classList.add('visible');
