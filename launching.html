@@ -723,9 +723,32 @@
                 font-size: 60px;
             }
         }
+        
+        .payload-blue-bar {
+            position: absolute;
+            width: 8px;
+            height: 60px;
+            background: linear-gradient(to bottom, #33aaff 0%, #0055ff 100%);
+            border-radius: 4px;
+            top: 50px;
+            opacity: 0;
+            transition: opacity 0.5s;
+            z-index: 2;
+        }
+        .payload-blue-bar.left {
+            left: -12px;
+        }
+        .payload-blue-bar.right {
+            right: -12px;
+        }
+        .payload.visible .payload-blue-bar {
+            opacity: 1;
+        }
     </style>
 </head>
 <body>
+    <audio id="audio-ignition" src="https://cdn.pixabay.com/audio/2022/10/16/audio_12b5b6b1b2.mp3"></audio>
+    <audio id="audio-flight" src="https://cdn.pixabay.com/audio/2022/10/16/audio_12b5b6b1b2.mp3" loop></audio>
     <div id="game-container">
         <div class="stars"></div>
         <div class="earth-backdrop"></div>
@@ -775,7 +798,10 @@
                 <!-- 火箭部件 -->
                 <div class="fairing left"></div>
                 <div class="fairing right"></div>
-                <div class="payload"></div>
+                <div class="payload">
+                    <div class="payload-blue-bar left"></div>
+                    <div class="payload-blue-bar right"></div>
+                </div>
                 <div class="second-stage">
                     <div class="engine"></div>
                     <div class="engine"></div>
@@ -1328,6 +1354,18 @@
 
             // 开始任务计时器
             startMissionTimer();
+            // 播放点火音效
+            if (audioIgnition) {
+                audioIgnition.currentTime = 0;
+                audioIgnition.play();
+            }
+            // 延迟播放飞行音效
+            setTimeout(() => {
+                if (audioFlight) {
+                    audioFlight.currentTime = 0;
+                    audioFlight.play();
+                }
+            }, 1200);
         }
         
         // 切换到飞行模式
@@ -1537,6 +1575,7 @@
         // 显示任务完成
         function showMissionComplete() {
             missionComplete.style.display = 'block';
+            if (audioFlight) audioFlight.pause();
         }
     </script>
 </body>
