@@ -315,9 +315,9 @@
         
         .prompt-container {
             position: absolute;
-            top: 50%;
+            bottom: 30px;
             left: 50%;
-            transform: translate(-50%, -50%);
+            transform: translateX(-50%);
             background-color: rgba(0, 0, 0, 0.7);
             padding: 20px;
             border-radius: 10px;
@@ -350,27 +350,22 @@
         
         .progress-container {
             position: absolute;
-            top: 50px;
-            left: 50%;
-            transform: translateX(-50%);
+            bottom: 30px;
+            left: 20px;
             background-color: rgba(0, 0, 0, 0.7);
             padding: 15px;
             border-radius: 10px;
             z-index: 100;
-            width: 80%;
-            max-width: 400px;
-            display: flex;
-            flex-direction: column;
-            align-items: center;
+            width: auto;
+            max-width: 300px;
         }
         
         .progress-step {
             margin: 5px 0;
             color: #999;
             font-size: 14px;
-            text-align: center;
-            width: 100%;
-            padding: 5px;
+            text-align: left;
+            padding: 5px 10px;
             border-radius: 5px;
             transition: all 0.3s ease;
         }
@@ -388,9 +383,8 @@
         
         .altitude-container {
             position: absolute;
-            bottom: 20px;
-            left: 50%;
-            transform: translateX(-50%);
+            bottom: 30px;
+            right: 20px;
             background-color: rgba(0, 0, 0, 0.7);
             padding: 10px 20px;
             border-radius: 10px;
