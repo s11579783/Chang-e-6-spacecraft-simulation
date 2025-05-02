@@ -571,11 +571,11 @@
         
         .body-large {
             position: absolute;
-            width: 60px;
-            height: 40px;
+            width: 120px;
+            height: 80px;
             background: #b0b0b0;
-            left: 20px;
-            top: 50px;
+            left: -10px;
+            top: 10px;
             border-radius: 8px;
             box-shadow: 0 2px 8px rgba(0,0,0,0.2);
             border: 2px solid #888;
@@ -584,11 +584,11 @@
         
         .body-small {
             position: absolute;
-            width: 36px;
-            height: 24px;
+            width: 80px;
+            height: 60px;
             background: #e0e0e0;
-            left: 32px;
-            top: 20px;
+            left: 10px;
+            top: -51px;
             border-radius: 5px;
             box-shadow: 0 2px 6px rgba(0,0,0,0.15);
             border: 2px solid #aaa;
@@ -780,8 +780,6 @@
         
         <div class="spacecraft-focus">
             <div class="spacecraft-model">
-                <div class="antenna"></div>
-                <div class="dish"></div>
                 <div class="solar-panel left"></div>
                 <div class="solar-panel right"></div>
                 <div class="body-large"></div>
@@ -1371,6 +1369,8 @@
             
             // 隐藏任务提示
             promptContainer.style.display = 'none';
+            promptText.textContent = '';
+            ignitionButton.style.display = 'none';
             
             // 切换到飞行模式
             setTimeout(() => {
