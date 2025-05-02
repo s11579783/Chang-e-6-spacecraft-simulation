@@ -834,23 +834,13 @@
             countdownValue: 5,
             intervalId: null,
             flightMode: false,
-            heightLimits: {
-                boosterSeparation: {
-                    min: 45,
-                    max: 70
-                },
-                fairingSeparation: {
-                    min: 110,
-                    max: 140
-                },
-                firstStageSeparation: {
-                    min: 170,
-                    max: 200
-                },
-                spacecraftSeparation: {
-                    min: 350,
-                    max: 400
-                }
+            missionTime: 0,
+            timeLimits: {
+                boosterSeparation: 176.0795,
+                fairingSeparation: 326.4445,
+                firstStageSeparation: 485.1839,
+                secondStageIgnition: 488.1839,
+                spacecraftSeparation: 2218.5653
             }
         };
         
@@ -1015,87 +1005,87 @@
         // 根据当前步骤激活相应的可交互区域
         function updateClickableAreas() {
             hideAllClickableAreas();
-            const altitude = gameState.altitude;
-            const limits = gameState.heightLimits;
+            const currentTime = gameState.missionTime;
+            const timeLimits = gameState.timeLimits;
             
-            // 只有当高度在指定范围内才激活相应的可交互区域
+            // 根据当前步骤和时间激活相应的可交互区域
             if (gameState.currentStep === 2 && 
-                altitude >= limits.boosterSeparation.min * 10 && 
-                altitude <= limits.boosterSeparation.max * 10) {
+                currentTime >= timeLimits.boosterSeparation) {
                 boosterClickLeft.classList.add('active');
                 boosterClickRight.classList.add('active');
             } else if (gameState.currentStep === 3 && 
-                      altitude >= limits.fairingSeparation.min * 10 && 
-                      altitude <= limits.fairingSeparation.max * 10) {
+                      currentTime >= timeLimits.fairingSeparation) {
                 fairingClickArea.classList.add('active');
             } else if (gameState.currentStep === 4 && 
-                      altitude >= limits.firstStageSeparation.min * 10 && 
-                      altitude <= limits.firstStageSeparation.max * 10) {
+                      currentTime >= timeLimits.firstStageSeparation) {
                 firstStageClickArea.classList.add('active');
             } else if (gameState.currentStep === 6 && 
-                      altitude >= limits.spacecraftSeparation.min * 10 && 
-                      altitude <= limits.spacecraftSeparation.max * 10) {
+                      currentTime >= timeLimits.spacecraftSeparation) {
                 payloadClickArea.classList.add('active');
             }
-
-            // 检查是否超出高度限制
-            checkMissionFailure(altitude / 10, gameState.currentStep);
         }
         
-        // 检查任务失败
-        function checkMissionFailure(currentAltitude, step) {
-            const limits = gameState.heightLimits;
-            let failed = false;
+        // 修改高度更新函数为时间更新函数
+        function startMissionTimer() {
+            const timerInterval = setInterval(() => {
+                if (gameState.currentStep <= 6) {
+                    gameState.missionTime += 0.1; // 每0.1秒更新一次
+                    const currentTime = gameState.missionTime.toFixed(1);
+                    
+                    // 更新高度显示（仅作为视觉效果）
+                    gameState.altitude = Math.floor(gameState.missionTime * 2);
+                    altitudeValue.textContent = Math.floor(gameState.altitude / 10) + ' km';
+                    
+                    // 检查是否到达任务时间点
+                    checkMissionTimePoint(currentTime);
+                } else {
+                    clearInterval(timerInterval);
+                }
+            }, 100);
+            
+            gameState.intervalId = timerInterval;
+        }
 
-            switch(step) {
+        // 检查任务时间点
+        function checkMissionTimePoint(currentTime) {
+            const timeLimits = gameState.timeLimits;
+            let shouldPause = false;
+
+            switch(gameState.currentStep) {
                 case 2: // 助推器分离
-                    if (currentAltitude > limits.boosterSeparation.max) {
-                        failed = true;
+                    if (currentTime >= timeLimits.boosterSeparation) {
+                        shouldPause = true;
+                        updateClickableAreas();
                     }
                     break;
                 case 3: // 整流罩分离
-                    if (currentAltitude > limits.fairingSeparation.max) {
-                        failed = true;
+                    if (currentTime >= timeLimits.fairingSeparation) {
+                        shouldPause = true;
+                        updateClickableAreas();
                     }
                     break;
                 case 4: // 一级火箭分离
-                    if (currentAltitude > limits.firstStageSeparation.max) {
-                        failed = true;
+                    if (currentTime >= timeLimits.firstStageSeparation) {
+                        shouldPause = true;
+                        updateClickableAreas();
+                    }
+                    break;
+                case 5: // 二级火箭点火
+                    if (currentTime >= timeLimits.secondStageIgnition) {
+                        shouldPause = true;
+                        updateClickableAreas();
                     }
                     break;
                 case 6: // 航天器分离
-                    if (currentAltitude > limits.spacecraftSeparation.max) {
-                        failed = true;
+                    if (currentTime >= timeLimits.spacecraftSeparation) {
+                        shouldPause = true;
+                        updateClickableAreas();
                     }
                     break;
             }
 
-            if (failed) {
-                showMissionFailed();
-            }
-
-            return failed;
-        }
-        
-        // 显示任务失败
-        function showMissionFailed() {
-            const missionFailed = document.querySelector('.mission-failed');
-            missionFailed.style.display = 'block';
-            // 停止所有动画和更新
-            clearInterval(gameState.intervalId);
-            
-            // 确保重启按钮可以点击
-            const restartButton = missionFailed.querySelector('.restart-button');
-            if (restartButton) {
-                restartButton.style.pointerEvents = 'auto';
-                restartButton.style.cursor = 'pointer';
-                restartButton.style.opacity = '1';
-                restartButton.style.zIndex = '1000';
-                
-                // 重新绑定点击事件
-                restartButton.onclick = function() {
-                    location.reload();
-                };
+            if (shouldPause) {
+                clearInterval(gameState.intervalId);
             }
         }
         
@@ -1138,7 +1128,7 @@
             const fairingClickArea = document.getElementById('fairing-click');
             if (fairingClickArea) {
                 fairingClickArea.addEventListener('click', () => {
-                    if (gameState.currentStep === 3 && gameState.altitude >= gameState.heightLimits.fairingSeparation.min * 10) {
+                    if (gameState.currentStep === 3 && gameState.altitude >= 400) {
                         detachFairings();
                     }
                 });
@@ -1148,7 +1138,7 @@
             const firstStageClickArea = document.getElementById('first-stage-click');
             if (firstStageClickArea) {
                 firstStageClickArea.addEventListener('click', () => {
-                    if (gameState.currentStep === 4 && gameState.altitude >= gameState.heightLimits.firstStageSeparation.min * 10) {
+                    if (gameState.currentStep === 4 && gameState.altitude >= 800) {
                         firstStageDetach();
                     }
                 });
@@ -1158,7 +1148,7 @@
             const payloadClickArea = document.getElementById('payload-click');
             if (payloadClickArea) {
                 payloadClickArea.addEventListener('click', () => {
-                    if (gameState.currentStep === 6 && gameState.altitude >= gameState.heightLimits.spacecraftSeparation.min * 10) {
+                    if (gameState.currentStep === 6 && gameState.altitude >= 1500) {
                         payloadSeparate();
                     }
                 });
@@ -1337,25 +1327,6 @@
             }, 500); // 从1000ms减少到500ms
         }
         
-        // 修改高度更新函数
-        function startAltitudeUpdate() {
-            const altitudeInterval = setInterval(() => {
-                if (gameState.currentStep <= 6) {
-                    // 调整高度增加速度，使其更符合实际
-                    gameState.altitude += (gameState.currentStep * 2);
-                    const currentAltitude = Math.floor(gameState.altitude / 10);
-                    altitudeValue.textContent = currentAltitude + ' km';
-                    
-                    // 更新可交互区域，基于当前高度和步骤
-                    updateClickableAreas();
-                } else {
-                    clearInterval(altitudeInterval);
-                }
-            }, 50);
-            
-            gameState.intervalId = altitudeInterval;
-        }
-        
         // 分离所有助推器
         function detachAllBoosters() {
             boosters[0].classList.add('detached-left-front');
@@ -1503,6 +1474,11 @@
             const stepElement = document.querySelector(`.step-${step}`);
             stepElement.classList.remove('active');
             stepElement.classList.add('completed');
+            
+            // 重新启动计时器
+            if (step < 6) {
+                startMissionTimer();
+            }
         }
         
         function advanceToStep(step) {
@@ -1514,7 +1490,7 @@
             
             // 如果是第一次进入步骤2，开始高度更新
             if (step === 2 && gameState.altitude === 0) {
-                startAltitudeUpdate();
+                startMissionTimer();
             }
             
             // 更新可交互区域
