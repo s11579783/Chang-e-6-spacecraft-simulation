@@ -959,17 +959,7 @@
             }
         }
         
-        // 语言同步
-        window.addEventListener('message', (event) => {
-            if (event.data && event.data.type === 'setLanguage') {
-                gameState.language = event.data.lang;
-                updateLanguage();
-            }
-        });
-
-        // 页面加载时请求父页面发送当前语言
-        window.parent.postMessage({ type: 'requestLanguage' }, '*');
-
+        // 更新语言
         function updateLanguage() {
             const lang = gameState.language === 'zh-tw' ? 'zh' : 'en';
             
@@ -996,15 +986,35 @@
         }
         
         function updatePromptText() {
-            promptText.textContent = texts[`prompt-${gameState.currentStep}`][gameState.language];
+            const lang = gameState.language === 'zh-tw' ? 'zh' : 'en';
+            promptText.textContent = texts[`prompt-${gameState.currentStep}`][lang];
             
             if (gameState.currentStep === 1) {
-                ignitionButton.textContent = texts['ignition'][gameState.language];
+                ignitionButton.textContent = texts['ignition'][lang];
                 ignitionButton.style.display = 'inline-block';
             } else {
                 ignitionButton.style.display = 'none';
             }
         }
+        
+        // 监听语言变更消息
+        window.addEventListener('message', (event) => {
+            if (event.data && event.data.type === 'setLanguage') {
+                gameState.language = event.data.lang;
+                updateLanguage();
+            } else if (event.data && event.data.type === 'requestLanguage') {
+                // 如果收到请求语言的消息，回复当前语言
+                event.source.postMessage({ type: 'setLanguage', lang: gameState.language }, '*');
+            }
+        });
+
+        // 页面加载时请求父页面发送当前语言
+        window.onload = () => {
+            // 向父页面请求当前语言设置
+            window.parent.postMessage({ type: 'requestLanguage' }, '*');
+            // 初始化语言
+            updateLanguage();
+        };
         
         // 点火和发射
         ignitionButton.addEventListener('click', () => {
