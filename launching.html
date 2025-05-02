@@ -1090,8 +1090,42 @@
             if (restartButton) {
                 restartButton.style.pointerEvents = 'auto';
                 restartButton.style.cursor = 'pointer';
+                restartButton.style.opacity = '1';
+                restartButton.style.zIndex = '1000';
+                
+                // 重新绑定点击事件
+                restartButton.onclick = function() {
+                    location.reload();
+                };
             }
         }
+        
+        // 初始化所有重启按钮的事件监听
+        function initializeRestartButtons() {
+            const restartButtons = document.querySelectorAll('.restart-button');
+            restartButtons.forEach(button => {
+                button.style.pointerEvents = 'auto';
+                button.style.cursor = 'pointer';
+                button.style.opacity = '1';
+                button.style.zIndex = '1000';
+                
+                // 移除可能存在的旧事件监听器
+                button.replaceWith(button.cloneNode(true));
+                
+                // 重新获取按钮并添加新的事件监听器
+                const newButton = document.querySelector(`.restart-button[data-${gameState.language === 'zh-tw' ? 'zh-tw' : 'en'}="${button.getAttribute(`data-${gameState.language === 'zh-tw' ? 'zh-tw' : 'en'}")}"]`);
+                if (newButton) {
+                    newButton.addEventListener('click', function() {
+                        location.reload();
+                    });
+                }
+            });
+        }
+
+        // 页面加载完成后初始化
+        window.addEventListener('load', function() {
+            initializeRestartButtons();
+        });
         
         // 更新语言
         function updateLanguage() {
@@ -1131,6 +1165,9 @@
                 missionFailed.querySelector('h2').textContent = texts['mission-failed-title'][lang];
                 missionFailed.querySelector('p').textContent = texts['mission-failed-text'][lang];
                 missionFailed.querySelector('.restart-button').textContent = texts['restart'][lang];
+                
+                // 重新初始化重启按钮
+                initializeRestartButtons();
             }
         }
         
@@ -1456,11 +1493,6 @@
         function showMissionComplete() {
             missionComplete.style.display = 'block';
         }
-        
-        // 重新开始
-        restartButton.addEventListener('click', () => {
-            location.reload();
-        });
     </script>
 </body>
 </html>
