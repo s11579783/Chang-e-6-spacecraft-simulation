@@ -1039,8 +1039,8 @@
             
             const timerInterval = setInterval(() => {
                 if (gameState.currentStep <= 6) {
-                    // 时间加快：每0.1秒增加0.2秒
-                    gameState.missionTime += 0.2;
+                    // 时间大幅加快：每0.1秒增加1秒
+                    gameState.missionTime += 1;
                     const currentTime = parseFloat(gameState.missionTime.toFixed(1));
                     
                     // 更新时间显示
