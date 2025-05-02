@@ -1045,24 +1045,23 @@
             if (gameState.intervalId) {
                 clearInterval(gameState.intervalId);
             }
-            let customSpeed = 2;
+            let customSpeed = 3;
             const timerInterval = setInterval(() => {
                 if (gameState.currentStep <= 6) {
                     // 星舰分离前单独加速
                     if (gameState.currentStep === 6) {
-                        // 计算与上一个任务的时间差
                         const prev = gameState.timeLimits.secondStageIgnition;
                         const next = gameState.timeLimits.spacecraftSeparation;
                         const remain = next - gameState.missionTime;
-                        // 5秒内到达
-                        customSpeed = remain > 0 ? Math.max(remain / 5, 2) : 2;
+                        customSpeed = remain > 0 ? Math.max(remain / 3, 3) : 3;
                     } else {
-                        customSpeed = 2;
+                        customSpeed = 3;
                     }
                     gameState.missionTime += customSpeed;
                     const currentTime = parseFloat(gameState.missionTime.toFixed(1));
                     document.getElementById('altitude-value').textContent = currentTime + ' s';
                     checkMissionTimePoint(currentTime);
+                    updatePromptText(); // 保证每次计时都刷新提示
                 } else {
                     clearInterval(timerInterval);
                 }
@@ -1224,14 +1223,13 @@
         }
         
         function updatePromptText() {
-            // 只在任务即将到达时显示提示对话框和文字
+            // 每个任务开始前都显示提示
             let lang = gameState.language;
             if (lang === 'zh-tw') lang = 'zh';
             else if (lang !== 'zh') lang = 'en';
-            // 当前任务时间点
             const taskTime = taskTimes[gameState.currentStep - 1] || 0;
             // 只在剩余1秒内显示整个对话框，否则隐藏
-            if (gameState.missionTime >= taskTime - 1) {
+            if (gameState.missionTime >= taskTime - 1 && gameState.missionTime < taskTime + 3) {
                 promptContainer.style.display = 'block';
                 promptText.textContent = texts[`prompt-${gameState.currentStep}`][lang];
                 if (gameState.currentStep === 1) {
