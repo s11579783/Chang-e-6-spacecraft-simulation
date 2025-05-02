@@ -341,6 +341,20 @@ function updateMusicBtnLang() {
     updateMusicIcon();
 }
 
+document.addEventListener('DOMContentLoaded', function() {
+    const bgm = document.getElementById('bgm');
+    if (bgm) {
+        // 兼容自动播放策略，首次用户交互后允许播放
+        function enableBgmPlayback() {
+            bgm.play().catch(()=>{});
+            window.removeEventListener('click', enableBgmPlayback);
+        }
+        bgm.play().catch(() => {
+            window.addEventListener('click', enableBgmPlayback);
+        });
+    }
+});
+
 document.addEventListener('DOMContentLoaded', updateMusicIcon);
 </script>
 
