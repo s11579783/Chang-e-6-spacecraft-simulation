@@ -727,19 +727,19 @@
         .payload-blue-bar {
             position: absolute;
             width: 8px;
-            height: 60px;
-            background: linear-gradient(to bottom, #33aaff 0%, #0055ff 100%);
-            border-radius: 4px;
-            top: 50px;
+            height: 35px; /* 与大矩形高度一致 */
+            background: #003366;
+            border-radius: 0;
+            top: 85px; /* 大矩形的top: 85px; */
             opacity: 0;
             transition: opacity 0.5s;
             z-index: 2;
         }
         .payload-blue-bar.left {
-            left: -12px;
+            left: 0px;
         }
         .payload-blue-bar.right {
-            right: -12px;
+            right: 0px;
         }
         .payload.visible .payload-blue-bar {
             opacity: 1;
@@ -1357,13 +1357,13 @@
             // 播放点火音效
             if (audioIgnition) {
                 audioIgnition.currentTime = 0;
-                audioIgnition.play();
+                audioIgnition.play().catch(() => {});
             }
             // 延迟播放飞行音效
             setTimeout(() => {
                 if (audioFlight) {
                     audioFlight.currentTime = 0;
-                    audioFlight.play();
+                    audioFlight.play().catch(() => {});
                 }
             }, 1200);
         }
@@ -1576,7 +1576,21 @@
         function showMissionComplete() {
             missionComplete.style.display = 'block';
             if (audioFlight) audioFlight.pause();
+            if (audioFlight) audioFlight.currentTime = 0;
         }
+
+        // 音效元素
+        const audioIgnition = document.getElementById('audio-ignition');
+        const audioFlight = document.getElementById('audio-flight');
+        // 兼容自动播放策略，首次用户交互后允许播放
+        function enableAudioPlayback() {
+            if (audioIgnition) audioIgnition.play().catch(() => {});
+            if (audioFlight) audioFlight.play().catch(() => {});
+            if (audioIgnition) audioIgnition.pause();
+            if (audioFlight) audioFlight.pause();
+            window.removeEventListener('click', enableAudioPlayback);
+        }
+        window.addEventListener('click', enableAudioPlayback);
     </script>
 </body>
 </html>
