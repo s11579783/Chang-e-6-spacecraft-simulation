@@ -102,7 +102,6 @@
     background: #ede8dd;
     top: 35px;
     left: 15px;
-    border-radius: 5px;
 }
 
 /* 下部较大的正方体 */
@@ -114,7 +113,6 @@
     background: #ede8dd;
     bottom: -100px;
     left: 5px;
-    border-radius: 5px;
 }
         .payload.visible {
             opacity: 1;
@@ -169,7 +167,7 @@
     letter-spacing: 5px;
     font-size: 16px;
     font-weight: bold;
-    color: #272833; /* 蓝色文字 */
+    color: #004ea1;
     text-shadow: 0 0 2px rgba(3,3,131,0.8);
     margin-bottom: 10px; /* 为logo留出空间 */
 }
@@ -470,7 +468,7 @@
         
         .mission-complete, .mission-failed {
             position: absolute;
-            top: 50%;
+            top: 700px;
             left: 50%;
             transform: translate(-50%, -50%);
             background-color: rgba(0, 0, 0, 0.9);
@@ -860,15 +858,6 @@
             </p>
             <button class="restart-button" data-zh-tw="重新開始" data-en="Restart">重新開始</button>
         </div>
-        
-        <div class="mission-failed">
-            <h2 data-zh-tw="任務失敗！" data-en="Mission Failed!">任務失敗！</h2>
-            <p data-zh-tw="未能在正確的高度完成分離操作" 
-               data-en="Failed to complete separation at the correct altitude">
-                未能在正確的高度完成分離操作
-            </p>
-            <button class="restart-button" data-zh-tw="重新開始" data-en="Restart">重新開始</button>
-        </div>
     </div>
 
     <script>
@@ -1255,14 +1244,6 @@
                 missionComplete.querySelector('.restart-button').textContent = texts['restart'][lang];
             }
 
-            // 更新任务失败对话框
-            const missionFailed = document.querySelector('.mission-failed');
-            if (missionFailed) {
-                missionFailed.querySelector('h2').textContent = texts['mission-failed-title'][lang];
-                missionFailed.querySelector('p').textContent = texts['mission-failed-text'][lang];
-                missionFailed.querySelector('.restart-button').textContent = texts['restart'][lang];
-            }
-            
             // 更新点火按钮
             const ignitionButton = document.querySelector('.ignition-button');
             if (ignitionButton && gameState.currentStep === 1) {
