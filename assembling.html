@@ -1039,6 +1039,8 @@ function initializeGame() {
     document.body.classList.remove('rotating');
     document.body.style.cursor = 'default'; // 恢复默认鼠标状态
     hideNameLabels();
+    // 隐藏跳转按钮
+    launchButton.style.display = 'none';
 }
     // Initial game setup
     initializeGame();
@@ -1304,8 +1306,7 @@ function checkAssembly() {
             enableRotation();
             showCompletionDialog(); // 确保调用
             // 显示跳转按钮
-            const launchButton = document.getElementById('launchButton');
-            launchButton.style.display = 'inline-block';
+            launchButton.style.display = 'flex';
         } else {
             showMessage(false);
         }
@@ -1446,48 +1447,52 @@ function hideNameLabels() {
 // 在游戏界面添加跳转按钮
 const launchButton = document.createElement('button');
 launchButton.id = 'launchButton';
-launchButton.style.display = 'none';
+launchButton.style.display = 'none'; // 初始状态为隐藏
 launchButton.style.position = 'fixed';
 launchButton.style.top = '50%';
 launchButton.style.right = '40px';
 launchButton.style.transform = 'translateY(-50%)';
 launchButton.style.zIndex = '10010';
-launchButton.style.padding = '12px 28px';
-launchButton.style.fontSize = '18px';
-launchButton.style.textShadow = '0 2px 2px rgba(255,255,255,0.5)';
-launchButton.style.backgroundColor = '#1a73e8';
+launchButton.style.padding = '15px 30px';
+launchButton.style.fontSize = '20px';
+launchButton.style.fontWeight = '600';
+launchButton.style.fontFamily = "'Orbitron', sans-serif";
+launchButton.style.letterSpacing = '1px';
+launchButton.style.backgroundColor = '#2196F3';
 launchButton.style.color = 'white';
-launchButton.style.border = 'none';
-launchButton.style.borderRadius = '8px';
-launchButton.style.boxShadow = '0 4px 8px rgba(0,100,255,0.3)';
+launchButton.style.border = '2px solid rgba(255, 255, 255, 0.2)';
+launchButton.style.borderRadius = '12px';
+launchButton.style.boxShadow = '0 8px 16px rgba(33, 150, 243, 0.3), 0 0 20px rgba(33, 150, 243, 0.2)';
 launchButton.style.cursor = 'pointer';
-launchButton.style.transition = 'background 0.08s, transform 0.08s, box-shadow 0.08s';
-launchButton.style.display = 'block';
-launchButton.style.width = 'auto';
+launchButton.style.transition = 'all 0.3s cubic-bezier(0.4, 0, 0.2, 1)';
+launchButton.style.backdropFilter = 'blur(5px)';
 launchButton.style.textAlign = 'center';
 launchButton.style.userSelect = 'none';
-launchButton.style.lineHeight = 'normal';
-launchButton.style.minWidth = '180px';
-launchButton.style.minHeight = '48px';
-launchButton.style.boxSizing = 'border-box';
+launchButton.style.minWidth = '200px';
+launchButton.style.minHeight = '60px';
+launchButton.style.display = 'flex';
+launchButton.style.alignItems = 'center';
+launchButton.style.justifyContent = 'center';
+launchButton.style.gap = '10px';
+
 launchButton.onmouseenter = function() {
-    launchButton.style.backgroundColor = '#1557b0';
-    launchButton.style.transform = 'translateY(-50%) scale(1.05)';
-    launchButton.style.boxShadow = '0 6px 12px rgba(0,135,255,0.4)';
+    this.style.backgroundColor = '#1976D2';
+    this.style.transform = 'translateY(-50%) scale(1.05)';
+    this.style.boxShadow = '0 12px 24px rgba(33, 150, 243, 0.4), 0 0 30px rgba(33, 150, 243, 0.3)';
+    this.style.border = '2px solid rgba(255, 255, 255, 0.3)';
 };
+
 launchButton.onmouseleave = function() {
-    launchButton.style.backgroundColor = '#1a73e8';
-    launchButton.style.transform = 'translateY(-50%) scale(1)';
-    launchButton.style.boxShadow = '0 4px 8px rgba(0,100,255,0.3)';
+    this.style.backgroundColor = '#2196F3';
+    this.style.transform = 'translateY(-50%) scale(1)';
+    this.style.boxShadow = '0 8px 16px rgba(33, 150, 243, 0.3), 0 0 20px rgba(33, 150, 243, 0.2)';
+    this.style.border = '2px solid rgba(255, 255, 255, 0.2)';
 };
+
 function updateLaunchButtonText(lang) {
-    launchButton.innerHTML = lang === 'zh' ? '進入發射 <span style="font-size:32px;">🚀</span>' : 'Go to Launch <span style="font-size:32px;">🚀</span>';
+    const rocketEmoji = '<span style="font-size: 24px; margin-left: 8px;">🚀</span>';
+    launchButton.innerHTML = (lang === 'zh' ? '進入發射' : 'Go to Launch') + rocketEmoji;
 }
-updateLaunchButtonText(document.documentElement.lang || 'en');
-launchButton.onclick = function() {
-    window.location.href = 'launching.html';
-};
-document.body.appendChild(launchButton);
 
 function updateCompletionDialogLanguage(lang) {
     const completionTitle = document.getElementById('completionTitle');
