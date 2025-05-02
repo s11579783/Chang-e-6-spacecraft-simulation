@@ -730,23 +730,19 @@
             height: 35px;
             background: #0800ad;
             border-radius: 0;
-            top: 85px; /* 与大矩形top一致 */
+            top: 85px;
             opacity: 0;
             transition: opacity 0.5s;
             z-index: 2;
         }
         .payload-blue-bar.left {
-            left: 0px;
+            left: -14px; /* 紧贴大矩形左侧 */
         }
         .payload-blue-bar.right {
-            right: 0px;
+            right: -14px; /* 紧贴大矩形右侧 */
         }
         .payload.visible .payload-blue-bar {
             opacity: 1;
-        }
-        /* 让蓝色长条高度与大矩形一致 */
-        .payload::after {
-            /* 大矩形：height: 35px; top: 85px; */
         }
     </style>
 </head>
@@ -1275,36 +1271,34 @@
             }
         }
         
-        // 监听语言变更消息
+        // 语言同步优化
+        let languageInitialized = false;
+        function applyInitialLanguage(lang) {
+            gameState.language = lang;
+            document.documentElement.lang = lang;
+            updateLanguage();
+            updatePromptText();
+            languageInitialized = true;
+        }
         window.addEventListener('message', (event) => {
             if (event.data && event.data.type === 'setLanguage') {
-                // Map the incoming language code and update gameState
-                gameState.language = event.data.lang;
-                updateLanguage();
+                applyInitialLanguage(event.data.lang);
             } else if (event.data && event.data.type === 'requestLanguage') {
-                // 如果收到请求语言的消息，回复当前语言
                 event.source.postMessage({ 
                     type: 'setLanguage', 
                     lang: gameState.language === 'zh-tw' ? 'zh' : gameState.language 
                 }, '*');
             }
         });
-
-        // 页面加载时请求父页面发送当前语言
-        window.onload = () => {
-            // 向父页面请求当前语言设置
+        // 页面加载时请求父页面发送当前语言，收到后再渲染UI
+        window.addEventListener('DOMContentLoaded', () => {
             window.parent.postMessage({ type: 'requestLanguage' }, '*');
-            
-            // 等待一小段时间确保收到父页面的语言设置
             setTimeout(() => {
-                // 如果还没有收到父页面的语言设置，使用文档当前的语言
-                if (!gameState.language) {
-                    gameState.language = document.documentElement.lang || 'en';
+                if (!languageInitialized) {
+                    applyInitialLanguage(document.documentElement.lang || 'en');
                 }
-                // 初始化语言
-                updateLanguage();
-            }, 500);
-        };
+            }, 1000);
+        });
         
         // 点火和发射
         function startCountdown() {
@@ -1361,13 +1355,13 @@
             // 播放点火音效
             if (audioIgnition) {
                 audioIgnition.currentTime = 0;
-                audioIgnition.play().catch(() => {});
+                audioIgnition.play().catch((e) => {console.log('Ignition audio error', e);});
             }
             // 延迟播放飞行音效
             setTimeout(() => {
                 if (audioFlight) {
                     audioFlight.currentTime = 0;
-                    audioFlight.play().catch(() => {});
+                    audioFlight.play().catch((e) => {console.log('Flight audio error', e);});
                 }
             }, 1200);
         }
@@ -1588,6 +1582,8 @@
         const audioFlight = document.getElementById('audio-flight');
         // 兼容自动播放策略，首次用户交互后允许播放
         function enableAudioPlayback() {
+            if (audioIgnition) audioIgnition.load();
+            if (audioFlight) audioFlight.load();
             if (audioIgnition) audioIgnition.play().catch(() => {});
             if (audioFlight) audioFlight.play().catch(() => {});
             if (audioIgnition) audioIgnition.pause();
