@@ -769,7 +769,7 @@
         let gameState = {
             currentStep: 1,
             altitude: 0,
-            language: 'zh-tw',
+            language: 'zh-tw', // 默认语言
             rocketLaunched: false,
             countdown: false,
             countdownValue: 5,
@@ -948,25 +948,17 @@
             }
         }
         
-        // 语言切换
-        zhTwButton.addEventListener('click', () => {
-            if (gameState.language !== 'zh-tw') {
-                gameState.language = 'zh-tw';
-                zhTwButton.classList.add('active');
-                enButton.classList.remove('active');
+        // 语言同步
+        window.addEventListener('message', (event) => {
+            if (event.data && event.data.type === 'setLanguage' && event.data.lang) {
+                gameState.language = event.data.lang;
                 updateLanguage();
             }
         });
-        
-        enButton.addEventListener('click', () => {
-            if (gameState.language !== 'en') {
-                gameState.language = 'en';
-                enButton.classList.add('active');
-                zhTwButton.classList.remove('active');
-                updateLanguage();
-            }
-        });
-        
+
+        // 页面加载时请求父页面发送当前语言
+        window.parent.postMessage({ type: 'requestLanguage' }, '*');
+
         function updateLanguage() {
             // 更新所有带有data-zh-tw和data-en属性的元素
             document.querySelectorAll('[data-zh-tw][data-en]').forEach(el => {
@@ -1269,43 +1261,6 @@
         restartButton.addEventListener('click', () => {
             location.reload();
         });
-        
-        // 添加语言同步逻辑
-        window.addEventListener('message', (event) => {
-            if (event.data && event.data.type === 'setLanguage' && event.data.lang) {
-                changeLanguage(event.data.lang);
-            }
-        });
-
-        // 页面加载时请求父页面发送当前语言
-        window.parent.postMessage({ type: 'requestLanguage' }, '*');
-
-        // 语言切换函数
-        function changeLanguage(lang) {
-            document.documentElement.lang = lang;
-            // 更新所有需要翻译的文本
-            const texts = {
-                en: {
-                    title: "Chang'e-6 Launch Simulator",
-                    // 添加其他需要翻译的文本
-                },
-                zh: {
-                    title: "嫦娥六號發射模擬器",
-                    // 添加其他需要翻译的文本
-                }
-            };
-            
-            // 更新页面标题
-            document.title = texts[lang].title;
-            // 更新其他文本元素
-            // ...
-        }
-
-        // 确保页面加载时同步语言
-        window.onload = () => {
-            // 请求父页面发送当前语言
-            window.parent.postMessage({ type: 'requestLanguage' }, '*');
-        };
     </script>
 </body>
 </html>
