@@ -836,72 +836,72 @@
         // 文本数据
         const texts = {
             'step-1': {
-                'zh-tw': '點火升空',
-                'en': 'Ignition and Liftoff'
+                'en': 'Ignition and Liftoff',
+                'zh': '點火升空'
             },
             'step-2': {
-                'zh-tw': '助推器分離',
-                'en': 'Booster Separation'
+                'en': 'Booster Separation',
+                'zh': '助推器分離'
             },
             'step-3': {
-                'zh-tw': '整流罩分離',
-                'en': 'Fairing Separation'
+                'en': 'Fairing Separation',
+                'zh': '整流罩分離'
             },
             'step-4': {
-                'zh-tw': '一級火箭分離',
-                'en': 'First Stage Separation'
+                'en': 'First Stage Separation',
+                'zh': '一級火箭分離'
             },
             'step-5': {
-                'zh-tw': '二級火箭點火',
-                'en': 'Second Stage Ignition'
+                'en': 'Second Stage Ignition',
+                'zh': '二級火箭點火'
             },
             'step-6': {
-                'zh-tw': '星箭分離',
-                'en': 'Spacecraft Separation'
+                'en': 'Spacecraft Separation',
+                'zh': '星箭分離'
             },
             'prompt-1': {
-                'zh-tw': '準備發射嫦娥六號任務',
-                'en': 'Prepare to launch Chang\'e-6 mission'
+                'en': 'Prepare to launch Chang\'e-6 mission',
+                'zh': '準備發射嫦娥六號任務'
             },
             'prompt-2': {
-                'zh-tw': '火箭已上升，請點擊助推器進行分離',
-                'en': 'Rocket is ascending, click on boosters to separate them'
+                'en': 'Rocket is ascending, click on boosters to separate them',
+                'zh': '火箭已上升，請點擊助推器進行分離'
             },
             'prompt-3': {
-                'zh-tw': '請點擊整流罩進行分離',
-                'en': 'Click on the fairing to separate it'
+                'en': 'Click on the fairing to separate it',
+                'zh': '請點擊整流罩進行分離'
             },
             'prompt-4': {
-                'zh-tw': '請點擊一級火箭進行分離',
-                'en': 'Click on the first stage rocket to separate it'
+                'en': 'Click on the first stage rocket to separate it',
+                'zh': '請點擊一級火箭進行分離'
             },
             'prompt-5': {
-                'zh-tw': '二級火箭開始點火',
-                'en': 'Second stage engine ignition'
+                'en': 'Second stage engine ignition',
+                'zh': '二級火箭開始點火'
             },
             'prompt-6': {
-                'zh-tw': '請點擊嫦娥六號進行星箭分離',
-                'en': 'Click on Chang\'e-6 for spacecraft separation'
+                'en': 'Click on Chang\'e-6 for spacecraft separation',
+                'zh': '請點擊嫦娥六號進行星箭分離'
             },
             'ignition': {
-                'zh-tw': '點火',
-                'en': 'Ignite'
+                'en': 'Ignite',
+                'zh': '點火'
             },
             'altitude': {
-                'zh-tw': '高度',
-                'en': 'Altitude'
+                'en': 'Altitude',
+                'zh': '高度'
             },
             'mission-complete-title': {
-                'zh-tw': '任務完成！',
-                'en': 'Mission Complete!'
+                'en': 'Mission Complete!',
+                'zh': '任務完成！'
             },
             'mission-complete-text': {
-                'zh-tw': '嫦娥六號成功進入軌道',
-                'en': 'Chang\'e-6 has successfully entered orbit'
+                'en': 'Chang\'e-6 has successfully entered orbit',
+                'zh': '嫦娥六號成功進入軌道'
             },
             'restart': {
-                'zh-tw': '重新開始',
-                'en': 'Restart'
+                'en': 'Restart',
+                'zh': '重新開始'
             }
         };
         
@@ -961,7 +961,7 @@
         
         // 语言同步
         window.addEventListener('message', (event) => {
-            if (event.data && event.data.type === 'setLanguage' && event.data.lang) {
+            if (event.data && event.data.type === 'setLanguage') {
                 gameState.language = event.data.lang;
                 updateLanguage();
             }
@@ -971,13 +971,28 @@
         window.parent.postMessage({ type: 'requestLanguage' }, '*');
 
         function updateLanguage() {
-            // 更新所有带有data-zh-tw和data-en属性的元素
-            document.querySelectorAll('[data-zh-tw][data-en]').forEach(el => {
-                el.textContent = el.getAttribute(`data-${gameState.language}`);
+            const lang = gameState.language === 'zh-tw' ? 'zh' : 'en';
+            
+            // 更新所有步骤文本
+            document.querySelectorAll('.progress-step').forEach((step, index) => {
+                step.textContent = texts[`step-${index + 1}`][lang];
             });
             
-            // 更新当前提示文本
+            // 更新提示文本
             updatePromptText();
+            
+            // 更新高度标签
+            document.getElementById('altitude-label').textContent = texts['altitude'][lang] + ': ';
+            
+            // 更新任务完成对话框
+            document.querySelector('.mission-complete h2').textContent = texts['mission-complete-title'][lang];
+            document.querySelector('.mission-complete p').textContent = texts['mission-complete-text'][lang];
+            document.querySelector('.restart-button').textContent = texts['restart'][lang];
+            
+            // 更新点火按钮
+            if (gameState.currentStep === 1) {
+                ignitionButton.textContent = texts['ignition'][lang];
+            }
         }
         
         function updatePromptText() {
