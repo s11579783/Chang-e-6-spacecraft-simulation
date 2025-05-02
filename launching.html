@@ -10,7 +10,7 @@
             margin: 0;
             padding: 0;
             box-sizing: border-box;
-            font-family: 'Arial', sans-serif;
+            font-family: 'Orbitron', 'Arial', sans-serif;
         }
         
         body {
@@ -318,46 +318,60 @@
             bottom: 30px;
             left: 50%;
             transform: translateX(-50%);
-            background-color: rgba(0, 0, 0, 0.7);
+            background-color: rgba(0, 0, 0, 0.8);
             padding: 20px;
             border-radius: 10px;
             text-align: center;
             z-index: 100;
             min-width: 300px;
+            border: 2px solid #1a73e8;
+            box-shadow: 0 4px 6px rgba(0, 100, 255, 0.8);
         }
         
         .prompt-text {
             font-size: 24px;
             margin-bottom: 20px;
+            color: white;
+            text-shadow: 0 2px 2px rgba(255, 255, 255, 0.5);
         }
         
         .ignition-button {
             padding: 10px 20px;
-            background-color: #ff3300;
+            background-color: #1a73e8;
             color: white;
             border: none;
             border-radius: 5px;
             font-size: 18px;
             cursor: pointer;
-            animation: pulse 1.5s infinite;
+            min-width: 100px;
+            height: 40px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            text-align: center;
+            box-shadow: 0 4px 6px rgba(0, 100, 255, 0.8);
+            transition: transform 0.2s, box-shadow 0.2s;
+            font-family: 'Orbitron', sans-serif;
         }
         
-        @keyframes pulse {
-            0% { transform: scale(1); }
-            50% { transform: scale(1.1); }
-            100% { transform: scale(1); }
+        .ignition-button:hover {
+            background-color: #1557b0;
+            transform: scale(1.05);
+            box-shadow: 0 6px 8px rgba(0, 135, 255, 0.6);
         }
         
         .progress-container {
             position: absolute;
             bottom: 30px;
             left: 20px;
-            background-color: rgba(0, 0, 0, 0.7);
+            background-color: rgba(0, 0, 0, 0.8);
             padding: 15px;
             border-radius: 10px;
             z-index: 100;
             width: auto;
             max-width: 300px;
+            border: 2px solid #1a73e8;
+            box-shadow: 0 4px 6px rgba(0, 100, 255, 0.8);
         }
         
         .progress-step {
@@ -368,35 +382,42 @@
             padding: 5px 10px;
             border-radius: 5px;
             transition: all 0.3s ease;
+            font-family: 'Orbitron', sans-serif;
         }
         
         .progress-step.active {
-            color: #ffcc00;
+            color: #1a73e8;
             font-weight: bold;
-            background-color: rgba(255, 204, 0, 0.1);
+            background-color: rgba(26, 115, 232, 0.1);
+            border-left: 3px solid #1a73e8;
         }
         
         .progress-step.completed {
             color: #00cc00;
             background-color: rgba(0, 204, 0, 0.1);
+            border-left: 3px solid #00cc00;
         }
         
         .altitude-container {
             position: absolute;
             bottom: 30px;
             right: 20px;
-            background-color: rgba(0, 0, 0, 0.7);
+            background-color: rgba(0, 0, 0, 0.8);
             padding: 10px 20px;
             border-radius: 10px;
             z-index: 100;
             text-align: center;
+            border: 2px solid #1a73e8;
+            box-shadow: 0 4px 6px rgba(0, 100, 255, 0.8);
+            font-family: 'Orbitron', sans-serif;
         }
         
         #altitude-value {
             font-size: 24px;
             font-weight: bold;
-            color: #00cc00;
+            color: #1a73e8;
             margin-top: 5px;
+            text-shadow: 0 0 10px rgba(26, 115, 232, 0.5);
         }
         
         .countdown {
@@ -448,24 +469,34 @@
             bottom: -800px;
         }
         
-        .mission-complete {
+        .mission-complete, .mission-failed {
             position: absolute;
             top: 50%;
             left: 50%;
             transform: translate(-50%, -50%);
-            background-color: rgba(0, 0, 0, 0.8);
+            background-color: rgba(0, 0, 0, 0.9);
             padding: 30px;
             border-radius: 10px;
             text-align: center;
             z-index: 300;
             max-width: 80%;
             display: none;
+            border: 2px solid #1a73e8;
+            box-shadow: 0 4px 6px rgba(0, 100, 255, 0.8);
         }
         
         .mission-complete h2 {
             font-size: 36px;
-            color: #ffcc00;
+            color: #1a73e8;
             margin-bottom: 20px;
+            text-shadow: 0 0 10px rgba(26, 115, 232, 0.5);
+        }
+        
+        .mission-failed h2 {
+            font-size: 36px;
+            color: #ff3300;
+            margin-bottom: 20px;
+            text-shadow: 0 0 10px rgba(255, 51, 0, 0.5);
         }
         
         .mission-complete p {
@@ -475,12 +506,28 @@
         
         .restart-button {
             padding: 10px 20px;
-            background-color: #0066cc;
+            background-color: #1a73e8;
             color: white;
             border: none;
             border-radius: 5px;
             font-size: 18px;
             cursor: pointer;
+            min-width: 100px;
+            height: 40px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            text-align: center;
+            box-shadow: 0 4px 6px rgba(0, 100, 255, 0.8);
+            transition: transform 0.2s, box-shadow 0.2s;
+            font-family: 'Orbitron', sans-serif;
+            margin: 0 auto;
+        }
+        
+        .restart-button:hover {
+            background-color: #1557b0;
+            transform: scale(1.05);
+            box-shadow: 0 6px 8px rgba(0, 135, 255, 0.6);
         }
         
         .flight-indicator {
@@ -773,6 +820,15 @@
             </p>
             <button class="restart-button" data-zh-tw="重新開始" data-en="Restart">重新開始</button>
         </div>
+        
+        <div class="mission-failed">
+            <h2 data-zh-tw="任務失敗！" data-en="Mission Failed!">任務失敗！</h2>
+            <p data-zh-tw="未能在正確的高度完成分離操作" 
+               data-en="Failed to complete separation at the correct altitude">
+                未能在正確的高度完成分離操作
+            </p>
+            <button class="restart-button" data-zh-tw="重新開始" data-en="Restart">重新開始</button>
+        </div>
     </div>
 
     <script>
@@ -780,12 +836,31 @@
         let gameState = {
             currentStep: 1,
             altitude: 0,
-            language: document.documentElement.lang || 'en', // Initialize with current document language
+            language: document.documentElement.lang || 'en',
             rocketLaunched: false,
             countdown: false,
             countdownValue: 5,
             intervalId: null,
-            flightMode: false
+            flightMode: false,
+            // 添加高度限制
+            heightLimits: {
+                boosterSeparation: {
+                    min: 45,  // 45km
+                    max: 70   // 70km
+                },
+                fairingSeparation: {
+                    min: 110, // 110km
+                    max: 140  // 140km
+                },
+                firstStageSeparation: {
+                    min: 170, // 170km
+                    max: 200  // 200km
+                },
+                spacecraftSeparation: {
+                    min: 350, // 350km
+                    max: 400  // 400km
+                }
+            }
         };
         
         // 元素
@@ -902,6 +977,14 @@
             'restart': {
                 'en': 'Restart',
                 'zh': '重新開始'
+            },
+            'mission-failed-title': {
+                'en': 'Mission Failed!',
+                'zh': '任務失敗！'
+            },
+            'mission-failed-text': {
+                'en': 'Failed to complete separation at the correct altitude',
+                'zh': '未能在正確的高度完成分離操作'
             }
         };
         
@@ -941,27 +1024,78 @@
         // 根据当前步骤激活相应的可交互区域
         function updateClickableAreas() {
             hideAllClickableAreas();
+            const altitude = gameState.altitude;
+            const limits = gameState.heightLimits;
             
-            // 只有当高度达到特定阈值时才激活相应的可交互区域
-            if (gameState.currentStep === 2 && gameState.altitude >= 150) {
-                // 激活助推器的可交互区域
+            // 只有当高度在指定范围内才激活相应的可交互区域
+            if (gameState.currentStep === 2 && 
+                altitude >= limits.boosterSeparation.min * 10 && 
+                altitude <= limits.boosterSeparation.max * 10) {
                 boosterClickLeft.classList.add('active');
                 boosterClickRight.classList.add('active');
-            } else if (gameState.currentStep === 3 && gameState.altitude >= 400) {
-                // 激活整流罩的可交互区域
+            } else if (gameState.currentStep === 3 && 
+                      altitude >= limits.fairingSeparation.min * 10 && 
+                      altitude <= limits.fairingSeparation.max * 10) {
                 fairingClickArea.classList.add('active');
-            } else if (gameState.currentStep === 4 && gameState.altitude >= 800) {
-                // 激活一级火箭的可交互区域
+            } else if (gameState.currentStep === 4 && 
+                      altitude >= limits.firstStageSeparation.min * 10 && 
+                      altitude <= limits.firstStageSeparation.max * 10) {
                 firstStageClickArea.classList.add('active');
-            } else if (gameState.currentStep === 6 && gameState.altitude >= 1500) {
-                // 激活载荷的可交互区域
+            } else if (gameState.currentStep === 6 && 
+                      altitude >= limits.spacecraftSeparation.min * 10 && 
+                      altitude <= limits.spacecraftSeparation.max * 10) {
                 payloadClickArea.classList.add('active');
             }
+
+            // 检查是否超出高度限制
+            checkMissionFailure(altitude / 10, gameState.currentStep);
+        }
+        
+        // 检查任务失败
+        function checkMissionFailure(currentAltitude, step) {
+            const limits = gameState.heightLimits;
+            let failed = false;
+
+            switch(step) {
+                case 2: // 助推器分离
+                    if (currentAltitude > limits.boosterSeparation.max) {
+                        failed = true;
+                    }
+                    break;
+                case 3: // 整流罩分离
+                    if (currentAltitude > limits.fairingSeparation.max) {
+                        failed = true;
+                    }
+                    break;
+                case 4: // 一级火箭分离
+                    if (currentAltitude > limits.firstStageSeparation.max) {
+                        failed = true;
+                    }
+                    break;
+                case 6: // 航天器分离
+                    if (currentAltitude > limits.spacecraftSeparation.max) {
+                        failed = true;
+                    }
+                    break;
+            }
+
+            if (failed) {
+                showMissionFailed();
+            }
+
+            return failed;
+        }
+        
+        // 显示任务失败
+        function showMissionFailed() {
+            const missionFailed = document.querySelector('.mission-failed');
+            missionFailed.style.display = 'block';
+            // 停止所有动画和更新
+            clearInterval(gameState.intervalId);
         }
         
         // 更新语言
         function updateLanguage() {
-            // Map 'zh-tw' to 'zh' for consistency with main.html
             const lang = gameState.language === 'zh-tw' || gameState.language === 'zh' ? 'zh' : 'en';
             
             // 更新 document 语言
@@ -991,6 +1125,14 @@
             // 更新任务提示文本
             const promptText = document.querySelector('.prompt-text');
             promptText.textContent = promptText.getAttribute(`data-${lang === 'zh' ? 'zh-tw' : 'en'}`);
+
+            // 更新任务失败对话框
+            const missionFailed = document.querySelector('.mission-failed');
+            if (missionFailed) {
+                missionFailed.querySelector('h2').textContent = texts['mission-failed-title'][lang];
+                missionFailed.querySelector('p').textContent = texts['mission-failed-text'][lang];
+                missionFailed.querySelector('.restart-button').textContent = texts['restart'][lang];
+            }
         }
         
         function updatePromptText() {
@@ -1127,20 +1269,23 @@
             }, 500); // 从1000ms减少到500ms
         }
         
-        // 高度更新 - 加快高度增加
+        // 修改高度更新函数
         function startAltitudeUpdate() {
             const altitudeInterval = setInterval(() => {
                 if (gameState.currentStep <= 6) {
-                    // 高度增加速度提高了
-                    gameState.altitude += (gameState.currentStep * 4); // 增加系数从2到4
-                    altitudeValue.textContent = Math.floor(gameState.altitude / 10) + ' km';
+                    // 调整高度增加速度，使其更符合实际
+                    gameState.altitude += (gameState.currentStep * 2);
+                    const currentAltitude = Math.floor(gameState.altitude / 10);
+                    altitudeValue.textContent = currentAltitude + ' km';
                     
                     // 更新可交互区域，基于当前高度和步骤
                     updateClickableAreas();
                 } else {
                     clearInterval(altitudeInterval);
                 }
-            }, 50); // 更新频率更高 (从100ms到50ms)
+            }, 50);
+            
+            gameState.intervalId = altitudeInterval;
         }
         
         // 分离所有助推器
