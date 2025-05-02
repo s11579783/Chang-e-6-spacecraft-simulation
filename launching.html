@@ -169,7 +169,11 @@
     font-weight: bold;
     color: #004ea1;
     text-shadow: 0 0 2px rgba(3,3,131,0.8);
-    margin-bottom: 10px; /* 为logo留出空间 */
+    margin-top: 20px;
+    margin-bottom: 0;
+    left: 10px;
+    top: 100px;
+    transform: translateY(10px);
 }
 .first-stage::before {
     content: "";
@@ -1308,6 +1312,11 @@
             gameState.countdown = true;
             countdown.classList.add('visible');
             
+            // 立即隐藏任务提示
+            promptContainer.style.display = 'none';
+            promptText.textContent = '';
+            ignitionButton.style.display = 'none';
+
             // 速度更快的倒计时
             gameState.countdownValue = 3; // 减少到3秒
             countdown.textContent = gameState.countdownValue;
@@ -1347,11 +1356,6 @@
             
             // 更新游戏状态
             completeStep(1);
-            
-            // 隐藏任务提示
-            promptContainer.style.display = 'none';
-            promptText.textContent = '';
-            ignitionButton.style.display = 'none';
             
             // 切换到飞行模式
             setTimeout(() => {
@@ -1515,13 +1519,8 @@
             // 隐藏载荷的可交互区域
             payloadClickArea.classList.remove('active');
             
-            // 隐藏任务提示
-            promptContainer.style.display = 'none';
-            
-            setTimeout(() => {
-                // 场景切换到嫦娥六号特写
-                switchToSpacecraftFocus();
-            }, 1000); // 从1500ms减少到1000ms
+            // 切换到嫦娥六号特写
+            switchToSpacecraftFocus();
         }
         
         // 切换到嫦娥六号特写
