@@ -165,7 +165,7 @@
     content: "中国航天";
     writing-mode: vertical-rl;
     letter-spacing: 5px;
-    font-size: 16px;
+    font-size: 25px;
     font-weight: bold;
     color: #004ea1;
     text-shadow: 0 0 2px rgba(3,3,131,0.8);
@@ -767,6 +767,21 @@
         .payload.visible .payload-blue-bar {
             opacity: 1;
         }
+        /* 一级火箭锯齿装饰 */
+        .first-stage .zigzag {
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            width: 80px;
+            height: 16px;
+            background: repeating-linear-gradient(135deg, #ece7df 0 6px, #d9d2c5 6px 12px);
+            clip-path: polygon(
+                0% 0%, 5% 100%, 10% 0%, 15% 100%, 20% 0%, 25% 100%, 30% 0%, 35% 100%,
+                40% 0%, 45% 100%, 50% 0%, 55% 100%, 60% 0%, 65% 100%, 70% 0%, 75% 100%,
+                80% 0%, 85% 100%, 90% 0%, 95% 100%, 100% 0%, 100% 100%, 0% 100%
+            );
+            z-index: 2;
+        }
     </style>
 </head>
 <body>
@@ -837,6 +852,7 @@
                     <div class="engine"></div>
                     <div class="engine"></div>
                     <div class="flame"></div>
+                    <div class="zigzag"></div>
                 </div>
                 <div class="booster left-front">
                     <div class="flame"></div>
