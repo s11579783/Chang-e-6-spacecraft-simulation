@@ -780,7 +780,7 @@
         let gameState = {
             currentStep: 1,
             altitude: 0,
-            language: 'en', // Changed default language to 'en'
+            language: document.documentElement.lang || 'en', // Initialize with current document language
             rocketLaunched: false,
             countdown: false,
             countdownValue: 5,
@@ -964,6 +964,9 @@
             // Map 'zh-tw' to 'zh' for consistency with main.html
             const lang = gameState.language === 'zh-tw' || gameState.language === 'zh' ? 'zh' : 'en';
             
+            // 更新 document 语言
+            document.documentElement.lang = gameState.language;
+            
             // 更新所有步骤文本
             document.querySelectorAll('.progress-step').forEach((step, index) => {
                 step.textContent = texts[`step-${index + 1}`][lang];
@@ -1005,7 +1008,7 @@
         // 监听语言变更消息
         window.addEventListener('message', (event) => {
             if (event.data && event.data.type === 'setLanguage') {
-                // Map the incoming language code
+                // Map the incoming language code and update gameState
                 gameState.language = event.data.lang;
                 updateLanguage();
             } else if (event.data && event.data.type === 'requestLanguage') {
@@ -1021,8 +1024,16 @@
         window.onload = () => {
             // 向父页面请求当前语言设置
             window.parent.postMessage({ type: 'requestLanguage' }, '*');
-            // 初始化语言
-            updateLanguage();
+            
+            // 等待一小段时间确保收到父页面的语言设置
+            setTimeout(() => {
+                // 如果还没有收到父页面的语言设置，使用文档当前的语言
+                if (!gameState.language) {
+                    gameState.language = document.documentElement.lang || 'en';
+                }
+                // 初始化语言
+                updateLanguage();
+            }, 500);
         };
         
         // 点火和发射
