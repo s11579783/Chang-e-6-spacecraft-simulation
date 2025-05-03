@@ -203,6 +203,7 @@
             top: 300px;
             border-radius: 50px 50px 0 0;
             transition: all 1s;
+            overflow: visible;
         }
         
         .booster.left-front {
@@ -739,6 +740,17 @@
         .payload.visible .payload-blue-bar {
             opacity: 1;
         }
+        
+        /* 助推器图片装饰 */
+        .booster-image {
+            position: absolute;
+            width: 40px;
+            height: 40px;
+            left: 20px;
+            top: 30px;
+            z-index: 10;
+            pointer-events: none;
+        }
     </style>
 </head>
 <body>
@@ -813,15 +825,19 @@
                     <div class="flame"></div>
                 </div>
                 <div class="booster left-front">
+                    <img class="booster-image" src="https://i.postimg.cc/D0z5z2PC/China-Aerospace-Science-and-Technology-Corporation-2.png" alt="助推器装饰" />
                     <div class="flame"></div>
                 </div>
                 <div class="booster right-front">
+                    <img class="booster-image" src="https://i.postimg.cc/D0z5z2PC/China-Aerospace-Science-and-Technology-Corporation-2.png" alt="助推器装饰" />
                     <div class="flame"></div>
                 </div>
                 <div class="booster left-back">
+                    <img class="booster-image" src="https://i.postimg.cc/D0z5z2PC/China-Aerospace-Science-and-Technology-Corporation-2.png" alt="助推器装饰" />
                     <div class="flame"></div>
                 </div>
                 <div class="booster right-back">
+                    <img class="booster-image" src="https://i.postimg.cc/D0z5z2PC/China-Aerospace-Science-and-Technology-Corporation-2.png" alt="助推器装饰" />
                     <div class="flame"></div>
                 </div>
             </div>
