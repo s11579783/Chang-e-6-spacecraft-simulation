@@ -1345,6 +1345,44 @@
             }, 800); // 加快倒计时速度
         }
         
+        // 切换到飞行模式
+        function switchToFlightMode() {
+            // 激活场景过渡
+            sceneTransition.classList.add('active');
+            
+            setTimeout(() => {
+                // 重置火箭位置到屏幕中央
+                rocketContainer.style.transition = 'none';
+                rocketContainer.style.transform = 'translateY(0)';
+                rocket.style.bottom = '50%';
+                rocket.style.transform = 'rotateX(-10deg) translateY(50%)';
+                
+                // 创建飞行效果
+                createFlightIndicator();
+                
+                // 淡出过渡 - 加快速度
+                setTimeout(() => {
+                    sceneTransition.classList.remove('active');
+                    gameState.flightMode = true;
+                    
+                    // 升空后聚焦时停止播放音效
+                    audioFlight.pause();
+                    audioFlight.currentTime = 0;
+                    
+                    // 加快恢复过渡效果
+                    setTimeout(() => {
+                        rocketContainer.style.transition = 'transform 2.5s ease-out'; // 更快的过渡
+                        
+                        // 进入下一步
+                        advanceToStep(2);
+                        
+                        // 更新可交互区域
+                        updateClickableAreas();
+                    }, 300); // 从500ms减少到300ms
+                }, 500); // 从1000ms减少到500ms
+            }, 500); // 从1000ms减少到500ms
+        }
+        
         function startLaunch() {
             // 激活所有一级火箭和助推器引擎
             firstStageEngines.forEach(engine => {
@@ -1491,44 +1529,6 @@
             
             // 切换到嫦娥六号特写
             switchToFlightMode();
-        }
-        
-        // 切换到嫦娥六号特写
-        function switchToFlightMode() {
-            // 激活场景过渡
-            sceneTransition.classList.add('active');
-            
-            setTimeout(() => {
-                // 重置火箭位置到屏幕中央
-                rocketContainer.style.transition = 'none';
-                rocketContainer.style.transform = 'translateY(0)';
-                rocket.style.bottom = '50%';
-                rocket.style.transform = 'rotateX(-10deg) translateY(50%)';
-                
-                // 创建飞行效果
-                createFlightIndicator();
-                
-                // 淡出过渡 - 加快速度
-                setTimeout(() => {
-                    sceneTransition.classList.remove('active');
-                    gameState.flightMode = true;
-                    
-                    // 升空后聚焦时停止播放音效
-                    audioFlight.pause();
-                    audioFlight.currentTime = 0;
-                    
-                    // 加快恢复过渡效果
-                    setTimeout(() => {
-                        rocketContainer.style.transition = 'transform 2.5s ease-out'; // 更快的过渡
-                        
-                        // 进入下一步
-                        advanceToStep(2);
-                        
-                        // 更新可交互区域
-                        updateClickableAreas();
-                    }, 300); // 从500ms减少到300ms
-                }, 500); // 从1000ms减少到500ms
-            }, 500); // 从1000ms减少到500ms
         }
         
         // 更新游戏步骤
