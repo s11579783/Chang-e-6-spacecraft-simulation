@@ -1178,6 +1178,8 @@
             // 初始化重启按钮
             document.querySelectorAll('.restart-button').forEach(button => {
                 button.addEventListener('click', () => {
+                    rocketContainer.style.opacity = '1';
+                    spacecraftFocus.classList.remove('visible');
                     location.reload();
                 });
             });
