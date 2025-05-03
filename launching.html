@@ -424,7 +424,7 @@
         .countdown {
             position: absolute;
             top: 250px;
-            left: 700px;
+            left: 800px;
             transform: translate(-50%, -50%);
             font-size: 120px;
             color: #ff3300;
@@ -1614,16 +1614,22 @@
             assistantFrame.addEventListener('load', () => {
                 const assistantWindow = assistantFrame.contentWindow;
                 if (assistantWindow) {
-                    // 监听AI助手的点击事件
-                    assistantWindow.addEventListener('click', () => {
-                        audioClick.currentTime = 0;
-                        audioClick.play().catch(e => console.log('Click sound error:', e));
+                    // 只监听AI助手图标的点击事件
+                    assistantWindow.addEventListener('click', (event) => {
+                        // 检查点击的是否是AI助手图标或缩放按钮
+                        const target = event.target;
+                        if (target.classList.contains('assistant-icon') || target.classList.contains('resize-button')) {
+                            audioClick.currentTime = 0;
+                            audioClick.play().catch(e => console.log('Click sound error:', e));
+                        }
                     });
 
                     // 监听AI助手的缩放事件
                     const observer = new MutationObserver((mutations) => {
                         mutations.forEach((mutation) => {
-                            if (mutation.attributeName === 'style') {
+                            if (mutation.attributeName === 'style' && 
+                                (mutation.target.classList.contains('assistant-dialog') || 
+                                 mutation.target.classList.contains('resize-button'))) {
                                 audioClick.currentTime = 0;
                                 audioClick.play().catch(e => console.log('Click sound error:', e));
                             }
