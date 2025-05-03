@@ -764,8 +764,6 @@
     </style>
 </head>
 <body>
-    <audio id="audio-ignition" src="music/ignition.mp3" preload="auto"></audio>
-    <audio id="audio-flight" src="music/flight.mp3" loop preload="auto"></audio>
     <div id="game-container">
         <div class="stars"></div>
         <div class="earth-backdrop"></div>
@@ -1376,52 +1374,40 @@
 
             // 开始任务计时器
             startMissionTimer();
-            // 播放点火音效
-            if (audioIgnition) {
-                audioIgnition.currentTime = 0;
-                audioIgnition.play().catch((e) => {console.log('Ignition audio error', e);});
-            }
-            // 延迟播放飞行音效
-            setTimeout(() => {
-                if (audioFlight) {
-                    audioFlight.currentTime = 0;
-                    audioFlight.play().catch((e) => {console.log('Flight audio error', e);});
-                }
-            }, 1200);
-        }
-        
-        // 切换到飞行模式
-        function switchToFlightMode() {
-            // 激活场景过渡
-            sceneTransition.classList.add('active');
-            
-            setTimeout(() => {
-                // 重置火箭位置到屏幕中央
-                rocketContainer.style.transition = 'none';
-                rocketContainer.style.transform = 'translateY(0)';
-                rocket.style.bottom = '50%';
-                rocket.style.transform = 'rotateX(-10deg) translateY(50%)';
+
+            // 切换到飞行模式
+            function switchToFlightMode() {
+                // 激活场景过渡
+                sceneTransition.classList.add('active');
                 
-                // 创建飞行效果
-                createFlightIndicator();
-                
-                // 淡出过渡 - 加快速度
                 setTimeout(() => {
-                    sceneTransition.classList.remove('active');
-                    gameState.flightMode = true;
+                    // 重置火箭位置到屏幕中央
+                    rocketContainer.style.transition = 'none';
+                    rocketContainer.style.transform = 'translateY(0)';
+                    rocket.style.bottom = '50%';
+                    rocket.style.transform = 'rotateX(-10deg) translateY(50%)';
                     
-                    // 加快恢复过渡效果
+                    // 创建飞行效果
+                    createFlightIndicator();
+                    
+                    // 淡出过渡 - 加快速度
                     setTimeout(() => {
-                        rocketContainer.style.transition = 'transform 2.5s ease-out'; // 更快的过渡
+                        sceneTransition.classList.remove('active');
+                        gameState.flightMode = true;
                         
-                        // 进入下一步
-                        advanceToStep(2);
-                        
-                        // 更新可交互区域
-                        updateClickableAreas();
-                    }, 300); // 从500ms减少到300ms
+                        // 加快恢复过渡效果
+                        setTimeout(() => {
+                            rocketContainer.style.transition = 'transform 2.5s ease-out'; // 更快的过渡
+                            
+                            // 进入下一步
+                            advanceToStep(2);
+                            
+                            // 更新可交互区域
+                            updateClickableAreas();
+                        }, 300); // 从500ms减少到300ms
+                    }, 500); // 从1000ms减少到500ms
                 }, 500); // 从1000ms减少到500ms
-            }, 500); // 从1000ms减少到500ms
+            }
         }
         
         // 分离所有助推器
@@ -1608,18 +1594,10 @@
                 
                 // 显示对话框
                 missionComplete.style.display = 'block';
-                
-                // 停止飞行音效
-                if (audioFlight) {
-                    audioFlight.pause();
-                    audioFlight.currentTime = 0;
-                }
             }
         }
 
         // 音效元素
-        const audioIgnition = document.getElementById('audio-ignition');
-        const audioFlight = document.getElementById('audio-flight');
         const audioClick = new Audio('music/sounds-click.mp3');
         const audioAI = new Audio('music/sounds-ai.mp3');
 
@@ -1647,16 +1625,10 @@
 
         // 兼容自动播放策略，首次用户交互后允许播放
         function enableAudioPlayback() {
-            if (audioIgnition) audioIgnition.load();
-            if (audioFlight) audioFlight.load();
             if (audioClick) audioClick.load();
             if (audioAI) audioAI.load();
-            if (audioIgnition) audioIgnition.play().catch(() => {});
-            if (audioFlight) audioFlight.play().catch(() => {});
             if (audioClick) audioClick.play().catch(() => {});
             if (audioAI) audioAI.play().catch(() => {});
-            if (audioIgnition) audioIgnition.pause();
-            if (audioFlight) audioFlight.pause();
             if (audioClick) audioClick.pause();
             if (audioAI) audioAI.pause();
             window.removeEventListener('click', enableAudioPlayback);
