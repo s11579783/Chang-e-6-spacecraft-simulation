@@ -472,7 +472,7 @@
         
         .mission-complete, .mission-failed {
             position: absolute;
-            bottom: 30px;
+            bottom: 20px;
             left: 50%;
             transform: translate(-50%, -50%);
             background-color: rgba(0, 0, 0, 0.9);
@@ -764,8 +764,8 @@
     </style>
 </head>
 <body>
-    <audio id="audio-ignition" src="music/ignition.mp3"></audio>
-    <audio id="audio-flight" src="music/flight.mp3" loop></audio>
+    <audio id="audio-ignition" src="music/ignition.mp3" preload="auto"></audio>
+    <audio id="audio-flight" src="music/flight.mp3" loop preload="auto"></audio>
     <div id="game-container">
         <div class="stars"></div>
         <div class="earth-backdrop"></div>
