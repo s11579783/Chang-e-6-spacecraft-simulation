@@ -1375,6 +1375,14 @@
             // 开始任务计时器
             startMissionTimer();
 
+            // 在火箭发射时播放音效
+            audioFlight.currentTime = 0;
+            audioFlight.play().catch(() => {});
+
+            // 在 switchToFlightMode 函数中，升空后聚焦时停止播放音效
+            audioFlight.pause();
+            audioFlight.currentTime = 0;
+
             // 切换到飞行模式
             function switchToFlightMode() {
                 // 激活场景过渡
@@ -1600,6 +1608,7 @@
         // 音效元素
         const audioClick = new Audio('music/sounds-click.mp3');
         const audioAI = new Audio('music/sounds-ai.mp3');
+        const audioFlight = new Audio('music/sounds-flight.mp3');
 
         // 为音量控制按钮添加点击音效
         document.getElementById('musicControlBtn').addEventListener('click', () => {
