@@ -1357,6 +1357,12 @@
                 flame.classList.add('active');
             });
             
+            // 播放火箭发射音效
+            audioFlight.currentTime = 0;
+            audioFlight.play().catch(error => {
+                console.log('Flight sound error:', error);
+            });
+
             // 开始火箭上升
             rocketContainer.style.transform = 'translateY(-120vh)';
             rocket.style.bottom = '0';
@@ -1374,48 +1380,6 @@
 
             // 开始任务计时器
             startMissionTimer();
-
-            // 在火箭发射时播放音效
-            audioFlight.currentTime = 0;
-            audioFlight.play().catch(() => {});
-
-            // 在 switchToFlightMode 函数中，升空后聚焦时停止播放音效
-            audioFlight.pause();
-            audioFlight.currentTime = 0;
-
-            // 切换到飞行模式
-            function switchToFlightMode() {
-                // 激活场景过渡
-                sceneTransition.classList.add('active');
-                
-                setTimeout(() => {
-                    // 重置火箭位置到屏幕中央
-                    rocketContainer.style.transition = 'none';
-                    rocketContainer.style.transform = 'translateY(0)';
-                    rocket.style.bottom = '50%';
-                    rocket.style.transform = 'rotateX(-10deg) translateY(50%)';
-                    
-                    // 创建飞行效果
-                    createFlightIndicator();
-                    
-                    // 淡出过渡 - 加快速度
-                    setTimeout(() => {
-                        sceneTransition.classList.remove('active');
-                        gameState.flightMode = true;
-                        
-                        // 加快恢复过渡效果
-                        setTimeout(() => {
-                            rocketContainer.style.transition = 'transform 2.5s ease-out'; // 更快的过渡
-                            
-                            // 进入下一步
-                            advanceToStep(2);
-                            
-                            // 更新可交互区域
-                            updateClickableAreas();
-                        }, 300); // 从500ms减少到300ms
-                    }, 500); // 从1000ms减少到500ms
-                }, 500); // 从1000ms减少到500ms
-            }
         }
         
         // 分离所有助推器
@@ -1535,30 +1499,35 @@
             sceneTransition.classList.add('active');
             
             setTimeout(() => {
-                // 隐藏火箭
-                rocketContainer.style.opacity = '0';
+                // 重置火箭位置到屏幕中央
+                rocketContainer.style.transition = 'none';
+                rocketContainer.style.transform = 'translateY(0)';
+                rocket.style.bottom = '50%';
+                rocket.style.transform = 'rotateX(-10deg) translateY(50%)';
                 
+                // 创建飞行效果
+                createFlightIndicator();
+                
+                // 淡出过渡 - 加快速度
                 setTimeout(() => {
-                    // 显示嫦娥六号特写
-                    spacecraftFocus.classList.add('visible');
-                    // 隐藏任务提示
-                    promptContainer.style.display = 'none';
-                    promptText.textContent = '';
-                    ignitionButton.style.display = 'none';
-
-                    // 淡出过渡
+                    sceneTransition.classList.remove('active');
+                    gameState.flightMode = true;
+                    
+                    // 升空后聚焦时停止播放音效
+                    audioFlight.pause();
+                    audioFlight.currentTime = 0;
+                    
+                    // 加快恢复过渡效果
                     setTimeout(() => {
-                        sceneTransition.classList.remove('active');
+                        rocketContainer.style.transition = 'transform 2.5s ease-out'; // 更快的过渡
                         
-                        // 完成最后一步
-                        completeStep(6);
+                        // 进入下一步
+                        advanceToStep(2);
                         
-                        // 延迟显示任务完成
-                        setTimeout(() => {
-                            showMissionComplete();
-                        }, 1000); // 从2000ms减少到1000ms
-                    }, 500); // 从1000ms减少到500ms
-                }, 300); // 从500ms减少到300ms
+                        // 更新可交互区域
+                        updateClickableAreas();
+                    }, 300); // 从500ms减少到300ms
+                }, 500); // 从1000ms减少到500ms
             }, 500); // 从1000ms减少到500ms
         }
         
