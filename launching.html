@@ -472,7 +472,7 @@
         
         .mission-complete, .mission-failed {
             position: absolute;
-            top: 500px;
+            top: 600px;
             left: 50%;
             transform: translate(-50%, -50%);
             background-color: rgba(0, 0, 0, 0.9);
@@ -1620,23 +1620,10 @@
         // 音效元素
         const audioIgnition = document.getElementById('audio-ignition');
         const audioFlight = document.getElementById('audio-flight');
-        // 兼容自动播放策略，首次用户交互后允许播放
-        function enableAudioPlayback() {
-            if (audioIgnition) audioIgnition.load();
-            if (audioFlight) audioFlight.load();
-            if (audioIgnition) audioIgnition.play().catch(() => {});
-            if (audioFlight) audioFlight.play().catch(() => {});
-            if (audioIgnition) audioIgnition.pause();
-            if (audioFlight) audioFlight.pause();
-            window.removeEventListener('click', enableAudioPlayback);
-        }
-        window.addEventListener('click', enableAudioPlayback);
-
-        // 添加音效元素
         const audioClick = new Audio('music/sounds-click.mp3');
         const audioAI = new Audio('music/sounds-ai.mp3');
 
-        // 为所有按钮添加点击音效
+        // 为所有按钮添加点击音效（除了AI助手按钮）
         document.querySelectorAll('button:not(.ai-assistant-button)').forEach(button => {
             button.addEventListener('click', () => {
                 audioClick.currentTime = 0;
@@ -1657,6 +1644,24 @@
             });
             observer.observe(aiAssistant, { attributes: true });
         }
+
+        // 兼容自动播放策略，首次用户交互后允许播放
+        function enableAudioPlayback() {
+            if (audioIgnition) audioIgnition.load();
+            if (audioFlight) audioFlight.load();
+            if (audioClick) audioClick.load();
+            if (audioAI) audioAI.load();
+            if (audioIgnition) audioIgnition.play().catch(() => {});
+            if (audioFlight) audioFlight.play().catch(() => {});
+            if (audioClick) audioClick.play().catch(() => {});
+            if (audioAI) audioAI.play().catch(() => {});
+            if (audioIgnition) audioIgnition.pause();
+            if (audioFlight) audioFlight.pause();
+            if (audioClick) audioClick.pause();
+            if (audioAI) audioAI.pause();
+            window.removeEventListener('click', enableAudioPlayback);
+        }
+        window.addEventListener('click', enableAudioPlayback);
     </script>
 </body>
 </html>
