@@ -1523,12 +1523,8 @@
         
         function payloadSeparate() {
             payload.classList.add('separated');
-            
-            // 隐藏载荷的可交互区域
             payloadClickArea.classList.remove('active');
-            
-            // 切换到嫦娥六号特写
-            switchToFlightMode();
+            switchToSpacecraftFocus();
         }
         
         // 更新游戏步骤
@@ -1640,6 +1636,34 @@
                 audioClick.play();
             }
         });
+
+        // 添加/恢复切换到嫦娥六号特写的函数
+        function switchToSpacecraftFocus() {
+            // 激活场景过渡
+            sceneTransition.classList.add('active');
+            setTimeout(() => {
+                // 隐藏火箭
+                rocketContainer.style.opacity = '0';
+                setTimeout(() => {
+                    // 显示嫦娥六号特写
+                    spacecraftFocus.classList.add('visible');
+                    // 隐藏任务提示
+                    promptContainer.style.display = 'none';
+                    promptText.textContent = '';
+                    ignitionButton.style.display = 'none';
+                    // 淡出过渡
+                    setTimeout(() => {
+                        sceneTransition.classList.remove('active');
+                        // 完成最后一步
+                        completeStep(6);
+                        // 延迟显示任务完成
+                        setTimeout(() => {
+                            showMissionComplete();
+                        }, 1000);
+                    }, 500);
+                }, 300);
+            }, 500);
+        }
     </script>
 </body>
 </html>
