@@ -424,7 +424,7 @@
         .countdown {
             position: absolute;
             top: 250px;
-            left: 800px;
+            left: 750px;
             transform: translate(-50%, -50%);
             font-size: 120px;
             color: #ff3300;
@@ -1651,6 +1651,14 @@
             window.removeEventListener('click', enableAudioPlayback);
         }
         window.addEventListener('click', enableAudioPlayback);
+
+        // 监听来自AI助手iframe的缩放按钮点击消息
+        window.addEventListener('message', (event) => {
+            if (event.data && event.data.type === 'ai-minimize-click') {
+                audioClick.currentTime = 0;
+                audioClick.play();
+            }
+        });
     </script>
 </body>
 </html>

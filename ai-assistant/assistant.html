@@ -351,6 +351,8 @@
                 isMinimized = !isMinimized;
                 container.classList.toggle('minimized', isMinimized);
                 minimizeButton.innerHTML = isMinimized ? '🌙' : '−';
+                // 通知父页面播放音效
+                window.parent.postMessage({ type: 'ai-minimize-click' }, '*');
             });
 
             // Update the initial button state
