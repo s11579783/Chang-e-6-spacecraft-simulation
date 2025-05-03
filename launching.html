@@ -472,7 +472,7 @@
         
         .mission-complete, .mission-failed {
             position: absolute;
-            bottom: -10px;
+            bottom: 10px;
             left: 50%;
             transform: translate(-50%, -50%);
             background-color: rgba(0, 0, 0, 0.9);
@@ -1180,6 +1180,7 @@
                 button.addEventListener('click', () => {
                     rocketContainer.style.opacity = '1';
                     spacecraftFocus.classList.remove('visible');
+                    if (secondStage) secondStage.innerHTML = '<div class="engine"></div><div class="engine"></div><div class="engine"></div><div class="engine"></div>';
                     location.reload();
                 });
             });
@@ -1268,12 +1269,17 @@
         }
         
         function updatePromptText() {
-            // 每个任务开始前都显示提示
             let lang = gameState.language;
             if (lang === 'zh-tw') lang = 'zh';
             else if (lang !== 'zh') lang = 'en';
             const taskTime = taskTimes[gameState.currentStep - 1] || 0;
-            // 只在剩余1秒内显示整个对话框，否则隐藏
+            // 如果聚焦嫦娥六号，直接隐藏提示
+            if (spacecraftFocus.classList.contains('visible')) {
+                promptContainer.style.display = 'none';
+                promptText.textContent = '';
+                ignitionButton.style.display = 'none';
+                return;
+            }
             if (gameState.missionTime >= taskTime - 1 && gameState.missionTime < taskTime + 3) {
                 promptContainer.style.display = 'block';
                 promptText.textContent = texts[`prompt-${gameState.currentStep}`][lang];
