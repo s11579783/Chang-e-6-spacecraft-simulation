@@ -1598,9 +1598,23 @@
         
         // 显示任务完成
         function showMissionComplete() {
-            missionComplete.style.display = 'block';
-            if (audioFlight) audioFlight.pause();
-            if (audioFlight) audioFlight.currentTime = 0;
+            const missionComplete = document.querySelector('.mission-complete');
+            if (missionComplete) {
+                // 确保对话框内容使用当前语言
+                const lang = gameState.language === 'zh-tw' || gameState.language === 'zh' ? 'zh' : 'en';
+                missionComplete.querySelector('h2').textContent = texts['mission-complete-title'][lang];
+                missionComplete.querySelector('p').textContent = texts['mission-complete-text'][lang];
+                missionComplete.querySelector('.restart-button').textContent = texts['restart'][lang];
+                
+                // 显示对话框
+                missionComplete.style.display = 'block';
+                
+                // 停止飞行音效
+                if (audioFlight) {
+                    audioFlight.pause();
+                    audioFlight.currentTime = 0;
+                }
+            }
         }
 
         // 音效元素
