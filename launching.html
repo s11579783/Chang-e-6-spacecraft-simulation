@@ -124,7 +124,7 @@
         
         .second-stage {
             position: absolute;
-            width: 80px;
+            width: 100px;
             height: 100px;
             background: linear-gradient(to bottom, #f8f4ed 0%, #ece7df 100%);
             left: 60px;
@@ -1534,7 +1534,11 @@
                 setTimeout(() => {
                     // 显示嫦娥六号特写
                     spacecraftFocus.classList.add('visible');
-                    
+                    // 隐藏任务提示
+                    promptContainer.style.display = 'none';
+                    promptText.textContent = '';
+                    ignitionButton.style.display = 'none';
+
                     // 淡出过渡
                     setTimeout(() => {
                         sceneTransition.classList.remove('active');
