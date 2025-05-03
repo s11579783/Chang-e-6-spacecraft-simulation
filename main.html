@@ -356,6 +356,55 @@ document.addEventListener('DOMContentLoaded', function() {
 });
 
 document.addEventListener('DOMContentLoaded', updateMusicIcon);
+
+// 音效元素
+const audioClick = new Audio('music/sounds-click.mp3');
+const audioAI = new Audio('music/sounds-ai.mp3');
+
+// 为音量控制按钮添加点击音效
+document.getElementById('musicControlBtn').addEventListener('click', () => {
+    audioClick.currentTime = 0;
+    audioClick.play().catch(e => console.log('Click sound error:', e));
+});
+
+// 为AI助手添加音效
+const assistantFrame = document.getElementById('assistantFrame');
+if (assistantFrame) {
+    // 监听AI助手的点击和缩放事件
+    assistantFrame.addEventListener('load', () => {
+        const assistantWindow = assistantFrame.contentWindow;
+        if (assistantWindow) {
+            // 监听AI助手的点击事件
+            assistantWindow.addEventListener('click', () => {
+                audioAI.currentTime = 0;
+                audioAI.play().catch(e => console.log('AI sound error:', e));
+            });
+
+            // 监听AI助手的缩放事件
+            const observer = new MutationObserver((mutations) => {
+                mutations.forEach((mutation) => {
+                    if (mutation.attributeName === 'style') {
+                        audioAI.currentTime = 0;
+                        audioAI.play().catch(e => console.log('AI sound error:', e));
+                    }
+                });
+            });
+            observer.observe(assistantFrame, { attributes: true });
+        }
+    });
+}
+
+// 兼容自动播放策略，首次用户交互后允许播放
+function enableAudioPlayback() {
+    if (audioClick) audioClick.load();
+    if (audioAI) audioAI.load();
+    if (audioClick) audioClick.play().catch(() => {});
+    if (audioAI) audioAI.play().catch(() => {});
+    if (audioClick) audioClick.pause();
+    if (audioAI) audioAI.pause();
+    window.removeEventListener('click', enableAudioPlayback);
+}
+window.addEventListener('click', enableAudioPlayback);
 </script>
 
 </body>
