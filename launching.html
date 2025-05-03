@@ -423,8 +423,8 @@
         
         .countdown {
             position: absolute;
-            top: 50%;
-            left: 50%;
+            top: 250px;
+            left: 865px;
             transform: translate(-50%, -50%);
             font-size: 120px;
             color: #ff3300;
@@ -1595,6 +1595,43 @@
                 // 显示对话框
                 missionComplete.style.display = 'block';
             }
+        }
+
+        // 音效元素
+        const audioClick = new Audio('music/sounds-click.mp3');
+        const audioAI = new Audio('music/sounds-ai.mp3');
+
+        // 为音量控制按钮添加点击音效
+        document.getElementById('musicControlBtn').addEventListener('click', () => {
+            audioAI.currentTime = 0;
+            audioAI.play().catch(e => console.log('AI sound error:', e));
+        });
+
+        // 为AI助手添加音效
+        const assistantFrame = document.getElementById('assistantFrame');
+        if (assistantFrame) {
+            // 监听AI助手的点击和缩放事件
+            assistantFrame.addEventListener('load', () => {
+                const assistantWindow = assistantFrame.contentWindow;
+                if (assistantWindow) {
+                    // 监听AI助手的点击事件
+                    assistantWindow.addEventListener('click', () => {
+                        audioClick.currentTime = 0;
+                        audioClick.play().catch(e => console.log('Click sound error:', e));
+                    });
+
+                    // 监听AI助手的缩放事件
+                    const observer = new MutationObserver((mutations) => {
+                        mutations.forEach((mutation) => {
+                            if (mutation.attributeName === 'style') {
+                                audioClick.currentTime = 0;
+                                audioClick.play().catch(e => console.log('Click sound error:', e));
+                            }
+                        });
+                    });
+                    observer.observe(assistantFrame, { attributes: true });
+                }
+            });
         }
     </script>
 </body>
