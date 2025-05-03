@@ -1286,6 +1286,8 @@ function drop(e) {
         ? `正確！${partName}已被正確放置`
         : `Correct! ${partName} has been placed correctly.`;
     showMessage(true, msg);
+    // 禁止已放入的组件再拖动
+    droppedCube.setAttribute('draggable', 'false');
     // 如果没错，继续正常流程
     checkAssembly();
 }
