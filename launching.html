@@ -57,7 +57,7 @@
         
         .fairing {
             position: absolute;
-            width: 80px;
+            width: 100px;
             height: 120px;
             background: linear-gradient(to bottom, #ffffff 0%, #f8f4ed 100%);
             left: 60px;
@@ -101,7 +101,7 @@
     height: 30px;
     background: #ede8dd;
     top: 35px;
-    left: 15px;
+    left: 25px;
 }
 
 /* 下部较大的正方体 */
@@ -112,7 +112,7 @@
     height: 35px;
     background: #ede8dd;
     bottom: -100px;
-    left: 5px;
+    left: 15px;
 }
         .payload.visible {
             opacity: 1;
@@ -147,7 +147,7 @@
         
         .first-stage {
     position: absolute;
-    width: 80px;
+    width: 100px;
     height: 300px;
      background: linear-gradient(to bottom, #ece7df 50%, #d9d2c5 100%);
     left: 60px;
@@ -197,29 +197,29 @@
         
         .booster {
             position: absolute;
-            width: 50px;
+            width: 80px;
             height: 250px;
             background: linear-gradient(to bottom, #f8f4ed 0%, #d9d2c5 100%);
             top: 300px;
-            border-radius: 20px 20px 0 0;
+            border-radius: 50px 50px 0 0;
             transition: all 1s;
         }
         
         .booster.left-front {
-            left: 8px;
+            left: -22px;
         }
         
         .booster.right-front {
-            left: 142px;
+            left: 162px;
         }
         
         .booster.left-back {
-            left: 8px;
+            left: -22px;
             transform: translateZ(-10px);
         }
         
         .booster.right-back {
-            left: 142px;
+            left: 162px;
             transform: translateZ(-10px);
         }
         
@@ -254,37 +254,37 @@
         }
         
         .first-stage .engine {
-            left: 10px;
+            left: 20px;
         }
         
         .first-stage .engine:nth-child(2) {
-            left: 30px;
+            left: 40px;
         }
         
         .first-stage .engine:nth-child(3) {
-            left: 50px;
+            left: 60px;
         }
         
         .first-stage .engine:nth-child(4) {
-            left: 70px;
+            left: 80px;
         }
         
         .second-stage .engine {
-            left: 10px;
+            left: 20px;
             opacity: 0;
             transition: opacity 0.5s;
         }
         
         .second-stage .engine:nth-child(2) {
-            left: 30px;
+            left: 40px;
         }
         
         .second-stage .engine:nth-child(3) {
-            left: 50px;
+            left: 60px;
         }
         
         .second-stage .engine:nth-child(4) {
-            left: 70px;
+            left: 80px;
         }
         
         .engine.ignited {
@@ -662,31 +662,31 @@
         }
         
         .booster-click-area {
-            width: 70px;
+            width: 100px;
             height: 280px;
         }
         
         .booster-click-area.left-front {
-            left: -2px;
+            left: -32px;
             top: 290px;
         }
         
         .booster-click-area.right-front {
-            left: 133px;
+            left: 152px;
             top: 290px;
         }
         
         .fairing-click-area {
-            width: 120px;
+            width: 130px;
             height: 140px;
-            left: 40px;
+            left: 45px;
             top: -10px;
         }
         
         .first-stage-click-area {
-            width: 120px;
+            width: 130px;
             height: 320px;
-            left: 40px;
+            left: 45px;
             top: 210px;
         }
 
@@ -700,7 +700,7 @@
         .payload-click-area {
             width: 100px;
             height: 80px;
-            left: 50px;
+            left: 60px;
             top: 45px;
         }
         
@@ -757,11 +757,11 @@
             z-index: 2;
         }
         .payload-blue-bar.left {
-            left: -8px; /* 紧贴大矩形左侧 */
+            left: 2px; /* 紧贴大矩形左侧 */
             top: 70px;
         }
         .payload-blue-bar.right {
-            right: -78px; /* 紧贴大矩形右侧 */
+            right: -88px; /* 紧贴大矩形右侧 */
             top: 70px;
         }
         .payload.visible .payload-blue-bar {
