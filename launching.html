@@ -1633,6 +1633,18 @@
                 }
             });
         }
+
+        // 兼容自动播放策略，首次用户交互后允许播放
+        function enableAudioPlayback() {
+            if (audioClick) audioClick.load();
+            if (audioAI) audioAI.load();
+            if (audioClick) audioClick.play().catch(() => {});
+            if (audioAI) audioAI.play().catch(() => {});
+            if (audioClick) audioClick.pause();
+            if (audioAI) audioAI.pause();
+            window.removeEventListener('click', enableAudioPlayback);
+        }
+        window.addEventListener('click', enableAudioPlayback);
     </script>
 </body>
 </html>
