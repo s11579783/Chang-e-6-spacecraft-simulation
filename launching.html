@@ -65,6 +65,7 @@
             border-radius: 40px 40px 0 0;
             transform-origin: bottom center;
             transition: all 1s;
+            overflow: visible;
         }
         
         .fairing.left {
@@ -767,6 +768,16 @@
         .payload.visible .payload-blue-bar {
             opacity: 1;
         }
+        /* 整流罩顶部图片装饰 */
+        .fairing-image {
+            position: absolute;
+            width: 60px;
+            height: 30px;
+            left: 20px;
+            top: -32px;
+            z-index: 10;
+            pointer-events: none;
+        }
     </style>
 </head>
 <body>
@@ -819,8 +830,12 @@
                 <div class="clickable payload-click-area" id="payload-click"></div>
                 
                 <!-- 火箭部件 -->
-                <div class="fairing left"></div>
-                <div class="fairing right"></div>
+                <div class="fairing left">
+                    <img class="fairing-image" src="https://i.postimg.cc/zfksQGtv/b977dabc9f584b10bbf8fa5d98873b5e.png" alt="装饰图片" />
+                </div>
+                <div class="fairing right">
+                    <img class="fairing-image" src="https://i.postimg.cc/zfksQGtv/b977dabc9f584b10bbf8fa5d98873b5e.png" alt="装饰图片" />
+                </div>
                 <div class="payload">
                     <div class="payload-blue-bar left"></div>
                     <div class="payload-blue-bar right"></div>
