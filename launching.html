@@ -472,7 +472,7 @@
         
         .mission-complete, .mission-failed {
             position: absolute;
-            top: 700px;
+            top: 500px;
             left: 50%;
             transform: translate(-50%, -50%);
             background-color: rgba(0, 0, 0, 0.9);
@@ -1631,6 +1631,32 @@
             window.removeEventListener('click', enableAudioPlayback);
         }
         window.addEventListener('click', enableAudioPlayback);
+
+        // 添加音效元素
+        const audioClick = new Audio('music/sounds-click.mp3');
+        const audioAI = new Audio('music/sounds-ai.mp3');
+
+        // 为所有按钮添加点击音效
+        document.querySelectorAll('button:not(.ai-assistant-button)').forEach(button => {
+            button.addEventListener('click', () => {
+                audioClick.currentTime = 0;
+                audioClick.play().catch(e => console.log('Click sound error:', e));
+            });
+        });
+
+        // 为AI助手对话框添加展开/缩小音效
+        const aiAssistant = document.querySelector('.ai-assistant');
+        if (aiAssistant) {
+            const observer = new MutationObserver((mutations) => {
+                mutations.forEach((mutation) => {
+                    if (mutation.attributeName === 'class') {
+                        audioAI.currentTime = 0;
+                        audioAI.play().catch(e => console.log('AI sound error:', e));
+                    }
+                });
+            });
+            observer.observe(aiAssistant, { attributes: true });
+        }
     </script>
 </body>
 </html>
