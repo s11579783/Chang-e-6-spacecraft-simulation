@@ -1596,44 +1596,6 @@
                 missionComplete.style.display = 'block';
             }
         }
-
-        // 音效元素
-        const audioClick = new Audio('music/sounds-click.mp3');
-        const audioAI = new Audio('music/sounds-ai.mp3');
-
-        // 为所有按钮添加点击音效（除了AI助手按钮）
-        document.querySelectorAll('button:not(.ai-assistant-button)').forEach(button => {
-            button.addEventListener('click', () => {
-                audioClick.currentTime = 0;
-                audioClick.play().catch(e => console.log('Click sound error:', e));
-            });
-        });
-
-        // 为AI助手对话框添加展开/缩小音效
-        const aiAssistant = document.querySelector('.ai-assistant');
-        if (aiAssistant) {
-            const observer = new MutationObserver((mutations) => {
-                mutations.forEach((mutation) => {
-                    if (mutation.attributeName === 'class') {
-                        audioAI.currentTime = 0;
-                        audioAI.play().catch(e => console.log('AI sound error:', e));
-                    }
-                });
-            });
-            observer.observe(aiAssistant, { attributes: true });
-        }
-
-        // 兼容自动播放策略，首次用户交互后允许播放
-        function enableAudioPlayback() {
-            if (audioClick) audioClick.load();
-            if (audioAI) audioAI.load();
-            if (audioClick) audioClick.play().catch(() => {});
-            if (audioAI) audioAI.play().catch(() => {});
-            if (audioClick) audioClick.pause();
-            if (audioAI) audioAI.pause();
-            window.removeEventListener('click', enableAudioPlayback);
-        }
-        window.addEventListener('click', enableAudioPlayback);
     </script>
 </body>
 </html>
