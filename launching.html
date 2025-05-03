@@ -1611,10 +1611,13 @@
         const audioFlight = new Audio('music/sounds-flight.mp3');
 
         // 为音量控制按钮添加点击音效
-        document.getElementById('musicControlBtn').addEventListener('click', () => {
-            audioAI.currentTime = 0;
-            audioAI.play().catch(e => console.log('AI sound error:', e));
-        });
+        const musicControlBtn = document.getElementById('musicControlBtn');
+        if (musicControlBtn) {
+            musicControlBtn.addEventListener('click', () => {
+                audioAI.currentTime = 0;
+                audioAI.play().catch(e => console.log('AI sound error:', e));
+            });
+        }
 
         // 为AI助手添加音效
         const assistantFrame = document.getElementById('assistantFrame');
