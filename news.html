@@ -633,6 +633,7 @@
 
         // 语言切换功能
         function updateLanguage(lang) {
+            console.log('Updating language to:', lang); // 添加调试日志
             const elements = document.querySelectorAll('[data-zh-tw], [data-en]');
             elements.forEach(element => {
                 if (lang === 'zh-tw') {
@@ -645,6 +646,7 @@
 
         // 监听来自父窗口的消息
         window.addEventListener('message', (event) => {
+            console.log('Received message:', event.data); // 添加调试日志
             if (event.data && event.data.type === 'setLanguage') {
                 updateLanguage(event.data.lang);
             }
@@ -652,8 +654,14 @@
 
         // 页面加载时请求父页面发送当前语言
         window.addEventListener('DOMContentLoaded', () => {
+            console.log('Requesting current language from parent'); // 添加调试日志
             window.parent.postMessage({ type: 'requestLanguage' }, '*');
         });
+
+        // 添加一个函数来手动触发语言切换（用于测试）
+        window.testLanguageSwitch = function(lang) {
+            updateLanguage(lang);
+        };
     </script>
 </body>
 </html>
