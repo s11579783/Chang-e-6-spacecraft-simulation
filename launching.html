@@ -1586,9 +1586,16 @@
             });
             
             // 添加二级火箭火焰
-            const secondStageFlame = document.createElement('div');
-            secondStageFlame.className = 'flame active';
-            secondStage.appendChild(secondStageFlame);
+            if (secondStage) {
+                // 先移除现有的火焰
+                const existingFlames = secondStage.querySelectorAll('.flame');
+                existingFlames.forEach(flame => flame.remove());
+                
+                // 创建新的火焰元素
+                const secondStageFlame = document.createElement('div');
+                secondStageFlame.className = 'flame active';
+                secondStage.appendChild(secondStageFlame);
+            }
             
             // 显示一段时间后进入下一步 - 加快速度
             setTimeout(() => {
