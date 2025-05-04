@@ -1178,9 +1178,26 @@
             // 初始化重启按钮
             document.querySelectorAll('.restart-button').forEach(button => {
                 button.addEventListener('click', () => {
+                    // 重置火箭容器和嫦娥六号特写
                     rocketContainer.style.opacity = '1';
                     spacecraftFocus.classList.remove('visible');
-                    if (secondStage) secondStage.innerHTML = '<div class="engine"></div><div class="engine"></div><div class="engine"></div><div class="engine"></div>';
+                    
+                    // 重置二级火箭
+                    if (secondStage) {
+                        // 移除所有现有的火焰
+                        const flames = secondStage.querySelectorAll('.flame');
+                        flames.forEach(flame => flame.remove());
+                        
+                        // 重置引擎
+                        secondStage.innerHTML = `
+                            <div class="engine"></div>
+                            <div class="engine"></div>
+                            <div class="engine"></div>
+                            <div class="engine"></div>
+                        `;
+                    }
+                    
+                    // 刷新页面
                     location.reload();
                 });
             });
