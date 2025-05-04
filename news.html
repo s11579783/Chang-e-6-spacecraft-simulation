@@ -684,7 +684,7 @@
             console.log('Updating language to:', lang); // 添加调试日志
             const elements = document.querySelectorAll('[data-zh-tw], [data-en]');
             elements.forEach(element => {
-                if (lang === 'zh-tw') {
+                if (lang === 'zh-tw' || lang === 'zh') {
                     element.textContent = element.getAttribute('data-zh-tw');
                 } else {
                     element.textContent = element.getAttribute('data-en');
