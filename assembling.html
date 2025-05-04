@@ -791,9 +791,9 @@ body.rotating:active {
 <!-- 欢迎页面 -->
 <div id="welcomePage" class="welcome-page">
     <div class="welcome-dialog">
-        <h2>嫦娥六号探月工程</h2>
-        <p>亲爱的小工程师们，我们的探月工程已经来到了第四期，这次的任务是帮助嫦娥六号完成探月之旅，准备好开启这次的探险了吗！</p>
-        <button id="startButton">开始游戏</button>
+        <h2>嫦娥六號探月工程</h2>
+        <p>親愛的小工程師們，我們的探月工程已經來到了第四期，這次的任務是幫助嫦娥六號完成探月之旅，準備好開啓這次的探險了嗎！</p>
+        <button id="startButton">開始遊戲</button>
     </div>
 </div>
 
@@ -1092,9 +1092,9 @@ function initializeGame() {
             hintButton: "💡 Hint" 
         },
         zh: {
-            welcomeTitle: "嫦娥六号探月工程",
-            welcomeMessage: "亲爱的小工程师们，我们的探月工程已经来到了第四期，这次的任务是帮助嫦娥六号完成探月之旅，准备好开启这次的探险了吗！",
-            startButton: "开始游戏",
+            welcomeTitle: "嫦娥六號探月工程",
+            welcomeMessage: "親愛的小工程師們，我們的探月工程已經來到了第四期，這次的任務是幫助嫦娥六號完成探月之旅，準備好開啓這次的探險了嗎！",
+            startButton: "開始遊戲",
             title: "嫦娥六號：月球背面的旅程",
             correctMessage: "正確！您已成功組裝嫦娥六號太空船！",
             incorrectMessage: "錯誤！請再試一次。",
@@ -1379,9 +1379,9 @@ function showCompletionDialog() {
 
     // 根据语言设置标题和按钮文本
     const lang = document.documentElement.lang || 'en';
-    completionTitle.textContent = lang === 'zh' ? '闯关成功！' : 'Congratulations!';
+    completionTitle.textContent = lang === 'zh' ? '闖關成功！' : 'Congratulations!';
     completionMessage.textContent = lang === 'zh'
-        ? '太棒了！你成功地组装了嫦娥六号飞行器，这是我们探月工程中的第一步，这是嫦娥六号的结构图，你也可以返回主页，拖动你的鼠标查看3D版。'
+        ? '太棒了！您成功地組裝了嫦娥六號飛行器，這是我們探月工程中的第一步，這是嫦娥六號的結構圖，你也可以返回主頁，拖動你的鼠標查看3D版。'
         : 'Awesome! You have successfully assembled the Chang\'e-6 spacecraft, which is the first step in our lunar exploration project. This is the structural diagram of Chang\'e-6. You can also return to the homepage and drag your mouse to view the 3D version.';
     completionButton.textContent = lang === 'zh' ? '确定' : 'OK';
 
@@ -1425,9 +1425,9 @@ function updateNameLabels() {
         },
         zh: {
             ascender: '上升器',
-            lander: '着陆器',
+            lander: '着陸器',
             returner: '返回器',
-            orbiter: '轨道器'
+            orbiter: '軌道器'
         }
     };
 
@@ -1502,9 +1502,9 @@ function updateCompletionDialogLanguage(lang) {
     const completionButton = document.getElementById('completionButton');
     completionTitle.textContent = lang === 'zh' ? '闯关成功！' : 'Congratulations!';
     completionMessage.textContent = lang === 'zh'
-        ? '太棒了！你成功地组装了嫦娥六号飞行器，这是我们探月工程中的第一步，这是嫦娥六号的结构图，你也可以返回主页，拖动你的鼠标查看3D版。'
+        ? '太棒了！您成功地組裝了嫦娥六號飛行器，這是我們探月工程中的第一步，這是嫦娥六號的結構圖，你也可以返回主頁，拖動你的鼠標查看3D版。'
         : 'Awesome! You have successfully assembled the Chang\'e-6 spacecraft, which is the first step in our lunar exploration project. This is the structural diagram of Chang\'e-6. You can also return to the homepage and drag your mouse to view the 3D version.';
-    completionButton.textContent = lang === 'zh' ? '确定' : 'OK';
+    completionButton.textContent = lang === 'zh' ? '確定' : 'OK';
 }
 
 // 点击resetButton时隐藏跳转按钮
