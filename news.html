@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>嫦娥六号探月任务 - 小学生版</title>
+    <title data-zh-tw="嫦娥六號探月任務 - 小学生版" data-en="Chang'e-6 Lunar Exploration - Primary School Version">嫦娥六號探月任務 - 小学生版</title>
     <style>
         @import url('https://fonts.googleapis.com/css2?family=Noto+Sans+SC:wght@300;400;500;700&family=Noto+Serif+SC:wght@400;600&display=swap');
         
@@ -623,6 +623,30 @@
             updateMoonPosition();
             
             animate();
+        });
+
+        // 语言切换功能
+        function updateLanguage(lang) {
+            const elements = document.querySelectorAll('[data-zh-tw], [data-en]');
+            elements.forEach(element => {
+                if (lang === 'zh-tw') {
+                    element.textContent = element.getAttribute('data-zh-tw');
+                } else {
+                    element.textContent = element.getAttribute('data-en');
+                }
+            });
+        }
+
+        // 监听来自父窗口的消息
+        window.addEventListener('message', (event) => {
+            if (event.data && event.data.type === 'setLanguage') {
+                updateLanguage(event.data.lang);
+            }
+        });
+
+        // 页面加载时请求父页面发送当前语言
+        window.addEventListener('DOMContentLoaded', () => {
+            window.parent.postMessage({ type: 'requestLanguage' }, '*');
         });
     </script>
 </body>
