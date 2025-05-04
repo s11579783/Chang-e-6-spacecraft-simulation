@@ -270,7 +270,7 @@ functionButtons.forEach((button, index) => {
     button.addEventListener('click', () => {
         const functionNumber = index + 1;
         const urls = [
-            'https://www.baidu.com',
+            'news.html', // function1
             'assembling.html', // function2
             'https://s11579783.github.io/news-damin/daminzhencaomei.html',
             'https://www.weixin.qq.com',
@@ -280,6 +280,11 @@ functionButtons.forEach((button, index) => {
         // 检查索引是否在数组范围内
         if(index >= 0 && index < urls.length) {
             contentFrame.src = urls[index];
+            // 语言同步
+            contentFrame.onload = function() {
+                const currentLang = document.documentElement.lang || 'en';
+                contentFrame.contentWindow.postMessage({ type: 'setLanguage', lang: currentLang }, '*');
+            };
         } else {
             console.error('无效的功能索引:', index);
         }
