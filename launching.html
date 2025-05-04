@@ -1178,26 +1178,87 @@
             // 初始化重启按钮
             document.querySelectorAll('.restart-button').forEach(button => {
                 button.addEventListener('click', () => {
-                    // 重置火箭容器和嫦娥六号特写
-                    rocketContainer.style.opacity = '1';
-                    spacecraftFocus.classList.remove('visible');
-                    
-                    // 重置二级火箭
+                    // 重置所有火箭部件的状态
                     if (secondStage) {
                         // 移除所有现有的火焰
                         const flames = secondStage.querySelectorAll('.flame');
                         flames.forEach(flame => flame.remove());
                         
                         // 重置引擎
-                        secondStage.innerHTML = `
-                            <div class="engine"></div>
-                            <div class="engine"></div>
-                            <div class="engine"></div>
-                            <div class="engine"></div>
-                        `;
+                        secondStageEngines.forEach(engine => {
+                            engine.classList.remove('ignited');
+                            engine.style.opacity = '0';
+                        });
                     }
+
+                    // 重置一级火箭
+                    if (firstStage) {
+                        firstStage.classList.remove('detached');
+                        firstStageEngines.forEach(engine => {
+                            engine.classList.remove('ignited');
+                        });
+                        if (firstStageFlame) {
+                            firstStageFlame.classList.remove('active');
+                        }
+                    }
+
+                    // 重置助推器
+                    boosters.forEach(booster => {
+                        booster.classList.remove('detached-left-front', 'detached-right-front', 'detached-left-back', 'detached-right-back');
+                        const boosterFlame = booster.querySelector('.flame');
+                        if (boosterFlame) {
+                            boosterFlame.classList.remove('active');
+                        }
+                    });
+
+                    // 重置整流罩
+                    if (fairingLeft) fairingLeft.classList.remove('detached-left');
+                    if (fairingRight) fairingRight.classList.remove('detached-right');
+                    if (payload) {
+                        payload.classList.remove('visible', 'separated');
+                    }
+
+                    // 重置火箭容器和嫦娥六号特写
+                    rocketContainer.style.opacity = '1';
+                    rocketContainer.style.transform = 'none';
+                    spacecraftFocus.classList.remove('visible');
                     
-                    // 刷新页面
+                    // 重置游戏状态
+                    gameState = {
+                        currentStep: 1,
+                        altitude: 0,
+                        language: gameState.language,
+                        rocketLaunched: false,
+                        countdown: false,
+                        countdownValue: 5,
+                        intervalId: null,
+                        flightMode: false,
+                        missionTime: 0,
+                        timeLimits: {
+                            boosterSeparation: 176.0795,
+                            fairingSeparation: 326.4445,
+                            firstStageSeparation: 485.1839,
+                            secondStageIgnition: 488.1839,
+                            spacecraftSeparation: 2218.5653
+                        }
+                    };
+
+                    // 重置进度步骤
+                    progressSteps.forEach(step => {
+                        step.classList.remove('active', 'completed');
+                    });
+                    progressSteps[0].classList.add('active');
+
+                    // 重置时间显示
+                    altitudeValue.textContent = '0 s';
+
+                    // 重置提示文本
+                    updatePromptText();
+
+                    // 隐藏任务完成对话框
+                    missionComplete.style.display = 'none';
+
+                    // 最后刷新页面
                     location.reload();
                 });
             });
