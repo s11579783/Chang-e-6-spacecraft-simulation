@@ -272,7 +272,7 @@ functionButtons.forEach((button, index) => {
         const urls = [
             'news.html', // function1
             'assembling.html', // function2
-            'https://s11579783.github.io/news-damin/daminzhencaomei.html',
+            'facts.html', // function3
             'https://www.weixin.qq.com',
             'https://www.eduhk.hk',
             'https://www.szu.edu.cn'
@@ -412,12 +412,12 @@ function enableAudioPlayback() {
 window.addEventListener('click', enableAudioPlayback);
 
 function function3() {
-    const iframe = document.getElementById('content-iframe');
+    const iframe = document.getElementById('contentFrame');
     iframe.src = 'facts.html';
     iframe.style.display = 'block';
     // 发送当前语言到 facts.html
     setTimeout(() => {
-        iframe.contentWindow.postMessage({ type: 'setLanguage', lang: currentLang }, '*');
+        iframe.contentWindow.postMessage({ type: 'setLanguage', lang: document.documentElement.lang }, '*');
     }, 1000);
 }
 </script>
