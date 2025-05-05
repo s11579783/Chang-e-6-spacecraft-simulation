@@ -410,6 +410,16 @@ function enableAudioPlayback() {
     window.removeEventListener('click', enableAudioPlayback);
 }
 window.addEventListener('click', enableAudioPlayback);
+
+function function3() {
+    const iframe = document.getElementById('content-iframe');
+    iframe.src = 'facts.html';
+    iframe.style.display = 'block';
+    // 发送当前语言到 facts.html
+    setTimeout(() => {
+        iframe.contentWindow.postMessage({ type: 'setLanguage', lang: currentLang }, '*');
+    }, 1000);
+}
 </script>
 
 </body>
