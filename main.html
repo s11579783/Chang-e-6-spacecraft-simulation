@@ -274,7 +274,7 @@ functionButtons.forEach((button, index) => {
             'assembling.html', // function2
             'facts.html', // function3
             'game.html', // function4
-            'https://www.eduhk.hk',
+            'spacecraft.html', // function5
             'https://www.szu.edu.cn'
         ];
         // 检查索引是否在数组范围内
@@ -311,6 +311,17 @@ function loadFunction2() {
 function loadFunction4() {
     const contentFrame = document.getElementById('contentFrame');
     contentFrame.src = 'game.html';
+    // 等待iframe加载完成后发送当前语言
+    contentFrame.onload = function() {
+        const currentLang = document.documentElement.lang || 'en';
+        contentFrame.contentWindow.postMessage({ type: 'setLanguage', lang: currentLang }, '*');
+    };
+}
+
+// 在加载function5时传递当前语言
+function loadFunction5() {
+    const contentFrame = document.getElementById('contentFrame');
+    contentFrame.src = 'spacecraft.html';
     // 等待iframe加载完成后发送当前语言
     contentFrame.onload = function() {
         const currentLang = document.documentElement.lang || 'en';
