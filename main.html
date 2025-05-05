@@ -157,7 +157,6 @@ iframe {
     <button id="function3">Function 3</button>
     <button id="function4">Function 4</button>
     <button id="function5">Function 5</button>
-    <button id="function6">Function 6</button>
 </div>
 
 <!-- iframe 容器 -->
@@ -182,8 +181,7 @@ const texts = {
         function2: "Chang'e 6 Simulation",
         function3: "Fun Facts",
         function4: "Simulation Game",
-        function5: "Space Projects",
-        function6: "Function 6"
+        function5: "Space Projects"
     },
     zh: {
         title: "嫦娥六號：月球背面的旅程",
@@ -191,8 +189,7 @@ const texts = {
         function2: "嫦娥六號模擬",
         function3: "趣味知識",
         function4: "模擬遊戲",
-        function5: "航空項目",
-        function6: "功能 6"
+        function5: "航空項目"
     }
 };
 
@@ -220,7 +217,6 @@ function changeLanguage(lang) {
     document.getElementById('function3').textContent = texts[lang].function3;
     document.getElementById('function4').textContent = texts[lang].function4;
     document.getElementById('function5').textContent = texts[lang].function5;
-    document.getElementById('function6').textContent = texts[lang].function6;
     // Update AI assistant language
     const assistantFrame = document.getElementById('assistantFrame');
     if (assistantFrame.contentWindow && assistantFrame.contentWindow.updateAssistantLanguage) {
@@ -274,8 +270,7 @@ functionButtons.forEach((button, index) => {
             'assembling.html', // function2
             'facts.html', // function3
             'game.html', // function4
-            'spacecraft.html', // function5
-            'https://www.szu.edu.cn'
+            'spacecraft.html' // function5
         ];
         // 检查索引是否在数组范围内
         if(index >= 0 && index < urls.length) {
