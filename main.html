@@ -273,7 +273,7 @@ functionButtons.forEach((button, index) => {
             'news.html', // function1
             'assembling.html', // function2
             'facts.html', // function3
-            'https://www.weixin.qq.com',
+            'game.html', // function4
             'https://www.eduhk.hk',
             'https://www.szu.edu.cn'
         ];
@@ -300,6 +300,17 @@ document.addEventListener('DOMContentLoaded', () => {
 function loadFunction2() {
     const contentFrame = document.getElementById('contentFrame');
     contentFrame.src = 'assembling.html';
+    // 等待iframe加载完成后发送当前语言
+    contentFrame.onload = function() {
+        const currentLang = document.documentElement.lang || 'en';
+        contentFrame.contentWindow.postMessage({ type: 'setLanguage', lang: currentLang }, '*');
+    };
+}
+
+// 在加载function4时传递当前语言
+function loadFunction4() {
+    const contentFrame = document.getElementById('contentFrame');
+    contentFrame.src = 'game.html';
     // 等待iframe加载完成后发送当前语言
     contentFrame.onload = function() {
         const currentLang = document.documentElement.lang || 'en';

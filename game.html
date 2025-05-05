@@ -1,0 +1,485 @@
+<!DOCTYPE html>
+<html lang="zh-Hant">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title data-zh-tw="嫦娥六號探月任務 - 互動遊戲" data-en="Chang'e-6 Lunar Mission - Interactive Game">嫦娥六號探月任務 - 互動遊戲</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: "微軟正黑體", Arial, sans-serif;
+        }
+        
+        body {
+            background-color: #fff;
+            color: #333;
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+        }
+        
+        .container {
+            display: flex;
+            flex: 1;
+            flex-direction: row;
+            max-width: 1200px;
+            margin: 0 auto;
+            width: 100%;
+        }
+        
+        @media (max-width: 768px) {
+            .container {
+                flex-direction: column;
+            }
+        }
+        
+        .sidebar {
+            width: 250px;
+            background-color: #f5f5f5;
+            padding: 20px;
+            border-right: 1px solid #ddd;
+        }
+        
+        @media (max-width: 768px) {
+            .sidebar {
+                width: 100%;
+                border-right: none;
+                border-bottom: 1px solid #ddd;
+            }
+        }
+        
+        .main-content {
+            flex: 1;
+            padding: 30px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: flex-start;
+        }
+        
+        h1 {
+            text-align: center;
+            margin: 20px 0;
+            color: #2c3e50;
+            font-size: 2rem;
+        }
+        
+        h2 {
+            color: #2c3e50;
+            margin: 15px 0;
+            font-size: 1.5rem;
+        }
+        
+        .accordion {
+            background-color: #e0e0e0;
+            color: #333;
+            cursor: pointer;
+            padding: 15px;
+            width: 100%;
+            border: none;
+            text-align: left;
+            outline: none;
+            font-size: 15px;
+            transition: 0.4s;
+            border-radius: 5px;
+            margin-bottom: 10px;
+            font-weight: bold;
+        }
+
+        .active, .accordion:hover {
+            background-color: #d0d0d0;
+        }
+
+        .panel {
+            padding: 0 15px;
+            background-color: #f5f5f5;
+            max-height: 0;
+            overflow: hidden;
+            transition: max-height 0.2s ease-out;
+            border-radius: 0 0 5px 5px;
+            margin-bottom: 15px;
+        }
+        
+        .input-group {
+            margin: 20px 0;
+            width: 100%;
+            max-width: 500px;
+        }
+        
+        label {
+            display: block;
+            margin-bottom: 8px;
+            color: #333;
+            font-size: 16px;
+        }
+        
+        input {
+            width: 100%;
+            padding: 10px;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+            background-color: #fff;
+            color: #333;
+            font-size: 16px;
+            outline: none;
+            transition: border-color 0.3s;
+        }
+        
+        input:focus {
+            border-color: #3498db;
+        }
+        
+        button {
+            padding: 10px 20px;
+            background-color: #3498db;
+            color: #fff;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            font-size: 16px;
+            font-weight: bold;
+            margin: 20px 0;
+            transition: background-color 0.3s;
+        }
+        
+        button:hover {
+            background-color: #2980b9;
+        }
+        
+        .results {
+            margin-top: 30px;
+            width: 100%;
+            max-width: 700px;
+        }
+        
+        .planet-weight {
+            background-color: #f5f5f5;
+            padding: 15px;
+            border-radius: 5px;
+            margin: 10px 0;
+            display: flex;
+            align-items: center;
+            border: 1px solid #ddd;
+        }
+        
+        .planet-icon {
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            margin-right: 15px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 18px;
+            background-color: #3498db;
+            color: white;
+        }
+        
+        .planet-info {
+            flex: 1;
+        }
+        
+        .planet-name {
+            font-weight: bold;
+            color: #2c3e50;
+            font-size: 16px;
+        }
+        
+        .weight-value {
+            font-size: 18px;
+            color: #333;
+        }
+        
+        .jump-result {
+            font-size: 18px;
+            margin: 30px 0;
+            padding: 15px;
+            background-color: #f5f5f5;
+            border-radius: 5px;
+            text-align: center;
+            width: 100%;
+            max-width: 700px;
+            border: 1px solid #ddd;
+        }
+        
+        .highlight {
+            color: #e74c3c;
+            font-weight: bold;
+        }
+        
+        .moon-visual {
+            width: 100%;
+            max-width: 500px;
+            height: 200px;
+            margin: 20px 0;
+            position: relative;
+            border-radius: 5px;
+            overflow: hidden;
+            background-color: #f5f5f5;
+            border: 1px solid #ddd;
+        }
+        
+        .moon-surface {
+            position: absolute;
+            bottom: 0;
+            width: 100%;
+            height: 40px;
+            background-color: #bdc3c7;
+        }
+        
+        .person {
+            position: absolute;
+            bottom: 40px;
+            left: calc(50% - 10px);
+            width: 20px;
+            height: 30px;
+            background-color: #e74c3c;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; }
+            to { opacity: 1; }
+        }
+        
+        .game {
+            display: none;
+            width: 100%;
+            animation: fadeIn 0.5s;
+        }
+        
+        .game.active {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+        
+        .knowledge-box {
+            background-color: #f0f7ff;
+            border-left: 4px solid #3498db;
+            padding: 15px;
+            margin: 20px 0;
+            border-radius: 0 5px 5px 0;
+            width: 100%;
+            max-width: 700px;
+        }
+        
+        .knowledge-title {
+            font-weight: bold;
+            color: #2c3e50;
+            margin-bottom: 8px;
+        }
+    </style>
+</head>
+<body>
+    <h1 data-zh-tw="嫦娥六號探月任務" data-en="Chang'e-6 Lunar Mission">嫦娥六號探月任務</h1>
+    
+    <div class="container">
+        <div class="sidebar">
+            <h2 data-zh-tw="選擇遊戲" data-en="Choose Game">選擇遊戲</h2>
+            <button class="accordion active">星球體重計算器</button>
+            <div class="panel" style="max-height: 60px;">
+                <p data-zh-tw="了解您在不同星球上的體重差異" data-en="Learn about your weight on different planets">了解您在不同星球上的體重差異</p>
+            </div>
+            
+            <button class="accordion">月球跳高模擬器</button>
+            <div class="panel">
+                <p data-zh-tw="計算您在月球上能跳多高" data-en="Calculate how high you can jump on the moon">計算您在月球上能跳多高</p>
+            </div>
+        </div>
+        
+        <div class="main-content">
+            <div id="weightGame" class="game active">
+                <h2 data-zh-tw="星球體重計算器" data-en="Planet Weight Calculator">星球體重計算器</h2>
+                <p data-zh-tw="請輸入您在地球上的體重，了解在太陽系不同星球上的體重差異。" data-en="Enter your weight on Earth to learn about your weight on different planets in the solar system.">請輸入您在地球上的體重，了解在太陽系不同星球上的體重差異。</p>
+                
+                <div class="input-group">
+                    <label for="earthWeight" data-zh-tw="您在地球上的體重 (公斤)：" data-en="Your weight on Earth (kilograms):">您在地球上的體重 (公斤)：</label>
+                    <input type="number" id="earthWeight" min="1" max="500" placeholder="例如：70">
+                </div>
+                
+                <button id="calculateWeight">計算體重</button>
+                
+                <div class="knowledge-box">
+                    <div class="knowledge-title">為什麼在不同星球上體重會不同？</div>
+                    <p data-zh-tw="體重是物體受到的重力大小，而重力大小取決於星體的質量和半徑。質量越大的星球重力越強，但半徑越大重力反而會減弱。例如木星質量很大，所以重力是地球的2.34倍；而月球質量小，重力只有地球的1/6。" data-en="Weight is the force of gravity acting on an object, and it depends on the mass and radius of the celestial body. The larger the mass, the stronger the gravity, but the larger the radius, the weaker the gravity. For example, Jupiter is much more massive than Earth, so its gravity is 2.34 times stronger than Earth's; while the Moon is much smaller, its gravity is only 1/6 of Earth's.">體重是物體受到的重力大小，而重力大小取決於星體的質量和半徑。質量越大的星球重力越強，但半徑越大重力反而會減弱。例如木星質量很大，所以重力是地球的2.34倍；而月球質量小，重力只有地球的1/6。</p>
+                </div>
+                
+                <div id="weightResults" class="results"></div>
+            </div>
+            
+            <div id="jumpGame" class="game">
+                <h2 data-zh-tw="月球跳高模擬器" data-en="Moon Jump Simulator">月球跳高模擬器</h2>
+                <p data-zh-tw="請輸入您在地球上能跳多高，計算在月球上的跳躍高度。" data-en="Enter how high you can jump on Earth to calculate your jump height on the Moon.">請輸入您在地球上能跳多高，計算在月球上的跳躍高度。</p>
+                
+                <div class="input-group">
+                    <label for="earthJump" data-zh-tw="您在地球上能跳多高 (公分)：" data-en="Your jump height on Earth (centimeters):">您在地球上能跳多高 (公分)：</label>
+                    <input type="number" id="earthJump" min="1" max="200" placeholder="例如：40">
+                </div>
+                
+                <button id="calculateJump">計算跳高</button>
+                
+                <div class="knowledge-box">
+                    <div class="knowledge-title">為什麼在月球上能跳得更高？</div>
+                    <p data-zh-tw="月球的重力只有地球的1/6，這意味著你的體重會變輕，同時你腿部肌肉需要克服的重力也變小了。同樣的力量下，你能跳得更高。這也是為什麼太空人在月球上能輕鬆跳躍的原因。" data-en="The Moon's gravity is only 1/6 of Earth's, which means your weight will be lighter, and the force you need to overcome with your leg muscles will be smaller. With the same force, you can jump higher. This is also why astronauts can jump easily on the Moon.">月球的重力只有地球的1/6，這意味著你的體重會變輕，同時你腿部肌肉需要克服的重力也變小了。同樣的力量下，你能跳得更高。這也是為什麼太空人在月球上能輕鬆跳躍的原因。</p>
+                </div>
+                
+                <div id="jumpVisual" class="moon-visual">
+                    <div class="moon-surface"></div>
+                    <div class="person" id="jumper"></div>
+                </div>
+                
+                <div id="jumpResult" class="jump-result"></div>
+            </div>
+        </div>
+    </div>
+    
+    <script>
+        // 手风琴菜单功能
+        const accordions = document.querySelectorAll(".accordion");
+        const games = document.querySelectorAll(".game");
+        
+        for (let i = 0; i < accordions.length; i++) {
+            accordions[i].addEventListener("click", function() {
+                // 切换当前手风琴的活动状态
+                this.classList.toggle("active");
+                
+                // 切换面板显示/隐藏
+                const panel = this.nextElementSibling;
+                if (panel.style.maxHeight) {
+                    panel.style.maxHeight = null;
+                } else {
+                    panel.style.maxHeight = panel.scrollHeight + "px";
+                }
+                
+                // 激活相应的游戏
+                for (let j = 0; j < games.length; j++) {
+                    games[j].classList.remove("active");
+                }
+                games[i].classList.add("active");
+                
+                // 设置其他手风琴为非活动状态
+                for (let j = 0; j < accordions.length; j++) {
+                    if (j !== i) {
+                        accordions[j].classList.remove("active");
+                        const otherPanel = accordions[j].nextElementSibling;
+                        otherPanel.style.maxHeight = null;
+                    }
+                }
+            });
+        }
+        
+        // 星球重力相对于地球的比例 (已移除冥王星)
+        const gravityRatios = {
+            "水星": 0.38,
+            "金星": 0.91,
+            "地球": 1.00,
+            "月球": 0.166,
+            "火星": 0.38,
+            "木星": 2.34,
+            "土星": 0.93,
+            "天王星": 0.92,
+            "海王星": 1.12
+        };
+        
+        // 体重计算功能
+        document.getElementById("calculateWeight").addEventListener("click", function() {
+            const earthWeight = parseFloat(document.getElementById("earthWeight").value);
+            
+            if (isNaN(earthWeight) || earthWeight <= 0) {
+                alert("請輸入有效的體重！");
+                return;
+            }
+            
+            const resultsDiv = document.getElementById("weightResults");
+            resultsDiv.innerHTML = "";
+            
+            for (const [planet, ratio] of Object.entries(gravityRatios)) {
+                const planetWeight = (earthWeight * ratio).toFixed(1);
+                
+                const planetDiv = document.createElement("div");
+                planetDiv.classList.add("planet-weight");
+                
+                planetDiv.innerHTML = `
+                    <div class="planet-icon">${planet.charAt(0)}</div>
+                    <div class="planet-info">
+                        <div class="planet-name">${planet}</div>
+                        <div class="weight-value">${planetWeight} 公斤</div>
+                    </div>
+                `;
+                
+                resultsDiv.appendChild(planetDiv);
+            }
+        });
+        
+        // 跳高计算功能
+        document.getElementById("calculateJump").addEventListener("click", function() {
+            const earthJump = parseFloat(document.getElementById("earthJump").value);
+            
+            if (isNaN(earthJump) || earthJump <= 0) {
+                alert("請輸入有效的跳躍高度！");
+                return;
+            }
+            
+            // 月球重力是地球的1/6，所以跳高高度是地球的6倍
+            const moonJump = (earthJump * (1/gravityRatios.月球)).toFixed(1);
+            
+            const resultDiv = document.getElementById("jumpResult");
+            resultDiv.innerHTML = `
+                在地球上您能跳 <span class="highlight">${earthJump}</span> 公分高，
+                在月球上您能跳 <span class="highlight">${moonJump}</span> 公分高！
+            `;
+            
+            // 动画跳跃效果
+            const jumper = document.getElementById("jumper");
+            const maxHeight = 160; // 视觉区域的最大高度限制
+            const jumpHeight = Math.min(moonJump, maxHeight);
+            
+            // 重置跳跃者位置
+            jumper.style.transition = "none";
+            jumper.style.bottom = "40px";
+            
+            setTimeout(() => {
+                jumper.style.transition = "bottom 1s ease-out";
+                jumper.style.bottom = (40 + parseInt(jumpHeight)) + "px";
+                
+                setTimeout(() => {
+                    jumper.style.transition = "bottom 1s ease-in";
+                    jumper.style.bottom = "40px";
+                }, 1000);
+            }, 50);
+        });
+        
+        // 初始化面板
+        const firstPanel = document.querySelector(".panel");
+        firstPanel.style.maxHeight = firstPanel.scrollHeight + "px";
+
+        // 语言切换功能
+        function updateLanguage(lang) {
+            console.log('Updating language to:', lang); // 添加调试日志
+            const elements = document.querySelectorAll('[data-zh-tw], [data-en]');
+            elements.forEach(element => {
+                if (lang === 'zh-tw' || lang === 'zh') {
+                    element.textContent = element.getAttribute('data-zh-tw');
+                } else {
+                    element.textContent = element.getAttribute('data-en');
+                }
+            });
+        }
+
+        // 监听来自父窗口的消息
+        window.addEventListener('message', function(event) {
+            if (event.data.type === 'setLanguage') {
+                updateLanguage(event.data.lang);
+            }
+        });
+
+        // 页面加载时请求父页面发送当前语言
+        window.addEventListener('DOMContentLoaded', () => {
+            console.log('Requesting current language from parent'); // 添加调试日志
+            window.parent.postMessage({ type: 'requestLanguage' }, '*');
+        });
+    </script>
+</body>
+</html>
