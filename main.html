@@ -161,7 +161,7 @@ iframe {
 
 <!-- iframe 容器 -->
 <div id="iframeContainer">
-    <iframe id="contentFrame" src=""></iframe>
+    <iframe id="contentFrame" src="https://i.postimg.cc/3W5rYSZ5/moon-416973-1920.jpg" style="object-fit: cover;"></iframe>
 </div>
 
 <!-- AI Assistant iframe -->
@@ -204,7 +204,7 @@ document.getElementById('assistantFrame').addEventListener('load', function() {
                 console.log('Initialized assistant language:', currentLang);
             } catch (e) {
                 console.error('Failed to initialize assistant language:', e);
-            }
+    }
         }
     }, 1000);
 });
@@ -265,13 +265,13 @@ const contentFrame = document.getElementById('contentFrame');
 functionButtons.forEach((button, index) => {
     button.addEventListener('click', () => {
         const functionNumber = index + 1;
-        const urls = [
+          const urls = [
             'news.html', // function1
             'assembling.html', // function2
             'facts.html', // function3
             'game.html', // function4
             'spacecraft.html' // function5
-        ];
+          ];
         // 检查索引是否在数组范围内
         if(index >= 0 && index < urls.length) {
             contentFrame.src = urls[index];
