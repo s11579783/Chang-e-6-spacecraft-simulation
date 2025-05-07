@@ -190,7 +190,6 @@
         <p>嫦娥六號在月球背面工作期間，主要依靠太陽能發電系統和自身攜帶的蓄電池提供電力。雖然從地球觀察時月球呈現月牙狀，但此時太陽光正好直射月球背面，為探測器提供了充足的能源。</p>
         
                     <img src="https://www.cnsa.gov.cn/n6758823/n6758844/n10518102/n10518157/c10570760/part/10570776.png" alt="中國探月工程" class="content-image">
-" alt="中國探月工程" class="content-image">
 
         <h3 style="color: #e60000; margin: 20px 0 10px; font-size: 1.2rem;">月球樣品採集方式</h3>
         <p>嫦娥六號採用兩種科學採樣方式：</p>
@@ -331,24 +330,37 @@
             });
         }
 
-        // 语言切换功能
-        function updateLanguage(lang) {
-            console.log('Updating language to:', lang); // 添加调试日志
-            const elements = document.querySelectorAll('[data-zh-tw], [data-en]');
-            elements.forEach(element => {
-                if (lang === 'zh-tw' || lang === 'zh') {
-                    element.textContent = element.getAttribute('data-zh-tw');
-                } else {
-                    element.textContent = element.getAttribute('data-en');
-                }
-            });
-        }
+        // 添加语言切换功能
+        const texts = {
+            en: {
+                title: "Fun Facts About Chang'e-6",
+                sampleCollection: "Sample Collection Methods",
+                // ... 其他英文文本
+            },
+            zh: {
+                title: "嫦娥六號趣味知識",
+                sampleCollection: "月球樣品採集方式",
+                // ... 其他繁体中文文本
+            }
+        };
 
-        // 监听来自父窗口的消息
+        // 监听语言切换消息
         window.addEventListener('message', function(event) {
-            if (event.data.type === 'setLanguage') {
+            if (event.data && event.data.type === 'setLanguage') {
                 updateLanguage(event.data.lang);
             }
+        });
+
+        // 更新页面语言
+        function updateLanguage(lang) {
+            document.querySelector('h2').textContent = texts[lang].title;
+            document.querySelector('h3').textContent = texts[lang].sampleCollection;
+            // ... 更新其他文本元素
+        }
+
+        // 请求当前语言
+        window.addEventListener('load', function() {
+            window.parent.postMessage({ type: 'requestLanguage' }, '*');
         });
     </script>
 </body>
