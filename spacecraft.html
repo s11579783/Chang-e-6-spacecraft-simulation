@@ -436,32 +436,46 @@
     // 监听语言切换消息
     window.addEventListener('message', function(event) {
         if (event.data && event.data.type === 'setLanguage') {
+            console.log('Received language switch event:', event.data.lang);
             let lang = event.data.lang;
+            
             // 处理语言代码映射
-            if (lang === 'zh-tw') {
-                lang = 'zh';
-            } else if (lang === 'zh-cn') {
-                lang = 'zh_cn';
+            switch(lang) {
+                case 'zh-tw':
+                    lang = 'zh';
+                    break;
+                case 'zh-cn':
+                    lang = 'zh_cn';
+                    break;
+                case 'en':
+                    lang = 'en';
+                    break;
             }
+            console.log('Mapped language code:', lang);
             updateLanguage(lang);
         }
     });
 
     // 更新页面语言
     function updateLanguage(lang) {
+        console.log('Updating language to:', lang);
+        
         // 更新 HTML 的 lang 属性
         document.documentElement.lang = lang === 'zh' ? 'zh-Hant' : lang === 'zh_cn' ? 'zh-Hans' : 'en';
         
         // 更新所有带有data属性的元素
         document.querySelectorAll('[data-zh-tw], [data-zh-cn], [data-en]').forEach(element => {
-            if (element.dataset[lang]) {
-                element.textContent = element.dataset[lang];
+            const dataKey = lang === 'zh' ? 'zh-tw' : lang;
+            if (element.dataset[dataKey]) {
+                console.log('Updating element:', element, 'with text:', element.dataset[dataKey]);
+                element.textContent = element.dataset[dataKey];
             }
         });
     }
 
     // 请求当前语言
     window.addEventListener('load', function() {
+        console.log('Page loaded, requesting current language');
         window.parent.postMessage({ type: 'requestLanguage' }, '*');
     });
     </script>
