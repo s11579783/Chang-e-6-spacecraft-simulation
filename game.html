@@ -535,32 +535,68 @@
 
         // 更新页面语言
         function updateLanguage(lang) {
-            document.querySelector('h1').textContent = texts[lang].title;
-            document.querySelector('h2').textContent = texts[lang].chooseGame;
+            // 更新标题
+            const titleElement = document.querySelector('h1');
+            if (titleElement) {
+                titleElement.textContent = texts[lang].title;
+            }
+
+            // 更新选择游戏标题
+            const chooseGameElement = document.querySelector('h2');
+            if (chooseGameElement) {
+                chooseGameElement.textContent = texts[lang].chooseGame;
+            }
             
             // 更新侧边栏
-            document.querySelector('.accordion:nth-child(1)').textContent = texts[lang].weightCalculator;
-            document.querySelector('.panel:nth-child(2) p').textContent = texts[lang].weightCalculatorDesc;
-            document.querySelector('.accordion:nth-child(3)').textContent = texts[lang].moonJump;
-            document.querySelector('.panel:nth-child(4) p').textContent = texts[lang].moonJumpDesc;
+            const weightCalculatorBtn = document.querySelector('.accordion:nth-child(1)');
+            const weightCalculatorDesc = document.querySelector('.panel:nth-child(2) p');
+            const moonJumpBtn = document.querySelector('.accordion:nth-child(3)');
+            const moonJumpDesc = document.querySelector('.panel:nth-child(4) p');
+
+            if (weightCalculatorBtn) weightCalculatorBtn.textContent = texts[lang].weightCalculator;
+            if (weightCalculatorDesc) weightCalculatorDesc.textContent = texts[lang].weightCalculatorDesc;
+            if (moonJumpBtn) moonJumpBtn.textContent = texts[lang].moonJump;
+            if (moonJumpDesc) moonJumpDesc.textContent = texts[lang].moonJumpDesc;
             
             // 更新体重计算器
-            document.querySelector('#weightGame h2').textContent = texts[lang].weightTitle;
-            document.querySelector('#weightGame p').textContent = texts[lang].weightDesc;
-            document.querySelector('#weightGame label').textContent = texts[lang].weightLabel;
-            document.querySelector('#earthWeight').placeholder = texts[lang].weightPlaceholder;
-            document.querySelector('#calculateWeight').textContent = texts[lang].calculateWeight;
-            document.querySelector('#weightGame .knowledge-title').textContent = texts[lang].weightExplanation;
-            document.querySelector('#weightGame .knowledge-box p').textContent = texts[lang].weightExplanationContent;
+            const weightGame = document.querySelector('#weightGame');
+            if (weightGame) {
+                const weightTitle = weightGame.querySelector('h2');
+                const weightDesc = weightGame.querySelector('p');
+                const weightLabel = weightGame.querySelector('label');
+                const weightInput = weightGame.querySelector('#earthWeight');
+                const calculateBtn = weightGame.querySelector('#calculateWeight');
+                const knowledgeTitle = weightGame.querySelector('.knowledge-title');
+                const knowledgeContent = weightGame.querySelector('.knowledge-box p');
+
+                if (weightTitle) weightTitle.textContent = texts[lang].weightTitle;
+                if (weightDesc) weightDesc.textContent = texts[lang].weightDesc;
+                if (weightLabel) weightLabel.textContent = texts[lang].weightLabel;
+                if (weightInput) weightInput.placeholder = texts[lang].weightPlaceholder;
+                if (calculateBtn) calculateBtn.textContent = texts[lang].calculateWeight;
+                if (knowledgeTitle) knowledgeTitle.textContent = texts[lang].weightExplanation;
+                if (knowledgeContent) knowledgeContent.textContent = texts[lang].weightExplanationContent;
+            }
             
             // 更新跳高模拟器
-            document.querySelector('#jumpGame h2').textContent = texts[lang].jumpTitle;
-            document.querySelector('#jumpGame p').textContent = texts[lang].jumpDesc;
-            document.querySelector('#jumpGame label').textContent = texts[lang].jumpLabel;
-            document.querySelector('#earthJump').placeholder = texts[lang].jumpPlaceholder;
-            document.querySelector('#calculateJump').textContent = texts[lang].calculateJump;
-            document.querySelector('#jumpGame .knowledge-title').textContent = texts[lang].jumpExplanation;
-            document.querySelector('#jumpGame .knowledge-box p').textContent = texts[lang].jumpExplanationContent;
+            const jumpGame = document.querySelector('#jumpGame');
+            if (jumpGame) {
+                const jumpTitle = jumpGame.querySelector('h2');
+                const jumpDesc = jumpGame.querySelector('p');
+                const jumpLabel = jumpGame.querySelector('label');
+                const jumpInput = jumpGame.querySelector('#earthJump');
+                const calculateBtn = jumpGame.querySelector('#calculateJump');
+                const knowledgeTitle = jumpGame.querySelector('.knowledge-title');
+                const knowledgeContent = jumpGame.querySelector('.knowledge-box p');
+
+                if (jumpTitle) jumpTitle.textContent = texts[lang].jumpTitle;
+                if (jumpDesc) jumpDesc.textContent = texts[lang].jumpDesc;
+                if (jumpLabel) jumpLabel.textContent = texts[lang].jumpLabel;
+                if (jumpInput) jumpInput.placeholder = texts[lang].jumpPlaceholder;
+                if (calculateBtn) calculateBtn.textContent = texts[lang].calculateJump;
+                if (knowledgeTitle) knowledgeTitle.textContent = texts[lang].jumpExplanation;
+                if (knowledgeContent) knowledgeContent.textContent = texts[lang].jumpExplanationContent;
+            }
         }
 
         // 请求当前语言
