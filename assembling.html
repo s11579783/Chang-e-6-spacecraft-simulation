@@ -1101,6 +1101,17 @@ function initializeGame() {
             resetButton: "重置遊戲",
             languageLabel: "語言：" ,
             hintButton: "💡 提示"
+        },
+        zh_cn: {
+            welcomeTitle: "嫦娥六号探月工程",
+            welcomeMessage: "亲爱的小工程师们，我们的探月工程已经来到了第四期，这次的任务是帮助嫦娥六号完成探月之旅，准备好开启这次的探险了吗！",
+            startButton: "开始游戏",
+            title: "嫦娥六号：月球背面的旅程",
+            correctMessage: "正确！您已成功组装嫦娥六号太空船！",
+            incorrectMessage: "错误！请再试一次。",
+            resetButton: "重置游戏",
+            languageLabel: "语言：" ,
+            hintButton: "💡 提示"
         }
     };
     // 当前语言
@@ -1428,6 +1439,12 @@ function updateNameLabels() {
             lander: '着陸器',
             returner: '返回器',
             orbiter: '軌道器'
+        },
+        zh_cn: {
+            ascender: '上升器',
+            lander: '着陆器',
+            returner: '返回器',
+            orbiter: '轨道器'
         }
     };
 
@@ -1493,18 +1510,33 @@ launchButton.onmouseleave = function() {
 
 function updateLaunchButtonText(lang) {
     const rocketEmoji = '<span style="font-size: 24px; margin-left: 8px;">🚀</span>';
-    launchButton.innerHTML = (lang === 'zh' ? '進入發射' : 'Go to Launch') + rocketEmoji;
+    if (lang === 'zh') {
+        launchButton.innerHTML = '進入發射' + rocketEmoji;
+    } else if (lang === 'zh_cn') {
+        launchButton.innerHTML = '进入发射' + rocketEmoji;
+    } else {
+        launchButton.innerHTML = 'Go to Launch' + rocketEmoji;
+    }
 }
 
 function updateCompletionDialogLanguage(lang) {
     const completionTitle = document.getElementById('completionTitle');
     const completionMessage = document.getElementById('completionMessage');
     const completionButton = document.getElementById('completionButton');
-    completionTitle.textContent = lang === 'zh' ? '闯关成功！' : 'Congratulations!';
-    completionMessage.textContent = lang === 'zh'
-        ? '太棒了！您成功地組裝了嫦娥六號飛行器，這是我們探月工程中的第一步，這是嫦娥六號的結構圖，你也可以返回主頁，拖動你的鼠標查看3D版。'
-        : 'Awesome! You have successfully assembled the Chang\'e-6 spacecraft, which is the first step in our lunar exploration project. This is the structural diagram of Chang\'e-6. You can also return to the homepage and drag your mouse to view the 3D version.';
-    completionButton.textContent = lang === 'zh' ? '確定' : 'OK';
+    
+    if (lang === 'zh') {
+        completionTitle.textContent = '闖關成功！';
+        completionMessage.textContent = '太棒了！您成功地組裝了嫦娥六號飛行器，這是我們探月工程中的第一步，這是嫦娥六號的結構圖，你也可以返回主頁，拖動你的鼠標查看3D版。';
+        completionButton.textContent = '確定';
+    } else if (lang === 'zh_cn') {
+        completionTitle.textContent = '闯关成功！';
+        completionMessage.textContent = '太棒了！您成功地组装了嫦娥六号飞行器，这是我们探月工程中的第一步，这是嫦娥六号的结构图，你也可以返回主页，拖动你的鼠标查看3D版。';
+        completionButton.textContent = '确定';
+    } else {
+        completionTitle.textContent = 'Congratulations!';
+        completionMessage.textContent = 'Awesome! You have successfully assembled the Chang\'e-6 spacecraft, which is the first step in our lunar exploration project. This is the structural diagram of Chang\'e-6. You can also return to the homepage and drag your mouse to view the 3D version.';
+        completionButton.textContent = 'OK';
+    }
 }
 
 // 点击resetButton时隐藏跳转按钮
