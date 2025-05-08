@@ -162,6 +162,7 @@ iframe {
 <div id="languageButtons">
     <button id="englishButton">English</button>
     <button id="chineseButton">繁體中文</button>
+    <button id="simplifiedChineseButton">简体中文</button>
 </div>
 
 <!-- 功能按钮 -->
@@ -205,6 +206,14 @@ const texts = {
         function3: "趣味知識",
         function4: "模擬遊戲",
         function5: "航空項目"
+    },
+    zh_cn: {
+        title: "嫦娥六号：月球背面的旅程",
+        function1: "简介",
+        function2: "嫦娥六号模拟",
+        function3: "趣味知识",
+        function4: "模拟游戏",
+        function5: "航空项目"
     }
 };
 
@@ -267,6 +276,20 @@ document.getElementById('chineseButton').addEventListener('click', () => {
         try {
             assistantFrame.contentWindow.updateAssistantLanguage('zh');
             console.log('Changed assistant language to Chinese');
+        } catch (e) {
+            console.error('Failed to change assistant language:', e);
+        }
+    }
+});
+
+document.getElementById('simplifiedChineseButton').addEventListener('click', () => {
+    changeLanguage('zh_cn');
+    // 直接调用 iframe 中的语言切换函数
+    const assistantFrame = document.getElementById('assistantFrame');
+    if (assistantFrame.contentWindow) {
+        try {
+            assistantFrame.contentWindow.updateAssistantLanguage('zh_cn');
+            console.log('Changed assistant language to Simplified Chinese');
         } catch (e) {
             console.error('Failed to change assistant language:', e);
         }
