@@ -395,6 +395,38 @@
                 videoSource: "來源：國家航天局新聞宣傳中心 | ",
                 viewWebpage: "查看網頁",
                 footer: "© 2025 嫦娥六號探月工程資訊網站 | 資料來源：中國國家航天局"
+            },
+            zh_cn: {
+                title: "嫦娥六号趣味知识",
+                rockFlag: "岩石'绣'出来的国旗？",
+                rockFlagContent: "在嫦娥六号完成月表取样后，由武汉纺织大学研制的'石头版'五星红旗在月球背面成功展开。这面国旗是由玄武岩纤维制成，能够耐受高真空、高低温循环、强剂量紫外辐照等极端环境，是中国首次在月球背面独立动态展示国旗。",
+                rockFlagContent2: "针对月背极端环境要求，武汉纺织大学徐卫林院士团队选用与月壤化学成分相近的玄武岩材料，历时近4年攻克了玄武岩超细纤维纺丝、纺纱、织造及色彩构建等难题。团队研发出直径仅为头发丝三分之一的超细玄武岩纤维，最终制成的国旗重量仅有11.3克，比嫦娥五号国旗还轻0.5克。",
+                rockFlagContent3: "这面'石头版'国旗不仅是科技实力的展示，也是月球资源原位利用的一种探索。未来建造月球基地时，可就地取材，将月球玄武岩做成建材用于建造，大幅节省成本。",
+                moonSampling: "月背「挖土」「广寒」探秘",
+                energySystem: "嫦娥六号的能源系统",
+                energySystemContent: "嫦娥六号在月球背面工作期间，主要依靠太阳能发电系统和自身携带的蓄电池提供电力。虽然从地球观察时月球呈现月牙状，但此时太阳光正好直射月球背面，为探测器提供了充足的能源。",
+                sampleCollection: "月球样品采集方式",
+                sampleCollectionContent: "嫦娥六号采用两种科学采样方式：",
+                drillSampling: "钻取采样 - 使用钻具获取月表下深层样品",
+                surfaceSampling: "表取采样 - 通过机械臂收集月表风化层样品",
+                drillDevice: "钻取采样装置的钻杆",
+                surfaceDevice: "表取装置取样器和机械臂",
+                returnProcess: "样品返回过程",
+                returnProcessContent: "嫦娥六号完成五个关键步骤：",
+                step1: "发射升空进入地月转移轨道",
+                step2: "月背软着陆并采集样品",
+                step3: "上升器从月背起飞",
+                step4: "月球轨道交会对接",
+                step5: "返回器携样品返回地球",
+                scientistNote: "科学家曾从嫦娥五号带回的月壤中发现新矿物「嫦娥石」，这次月背样品可能包含更古老的月球物质，将帮助我们了解月球的形成与演化。",
+                videoTitle: "《嫦小六探月》",
+                episode1: "第一集",
+                episode2: "第二集",
+                episode3: "第三集",
+                episode4: "第四集",
+                videoSource: "来源：国家航天局新闻宣传中心 | ",
+                viewWebpage: "查看网页",
+                footer: "© 2025 嫦娥六号探月工程信息网站 | 资料来源：中国国家航天局"
             }
         };
 
@@ -486,7 +518,8 @@
         // 监听语言切换消息
         window.addEventListener('message', function(event) {
             if (event.data && event.data.type === 'setLanguage') {
-                updateLanguage(event.data.lang);
+                const lang = event.data.lang === 'zh-tw' ? 'zh' : event.data.lang;
+                updateLanguage(lang);
             }
         });
 
