@@ -436,7 +436,13 @@
     // 监听语言切换消息
     window.addEventListener('message', function(event) {
         if (event.data && event.data.type === 'setLanguage') {
-            const lang = event.data.lang === 'zh-tw' ? 'zh' : event.data.lang;
+            let lang = event.data.lang;
+            // 处理语言代码映射
+            if (lang === 'zh-tw') {
+                lang = 'zh';
+            } else if (lang === 'zh-cn') {
+                lang = 'zh_cn';
+            }
             updateLanguage(lang);
         }
     });
