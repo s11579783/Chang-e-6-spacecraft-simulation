@@ -1281,7 +1281,7 @@ function drop(e) {
             mistakeCount++;
             const partIndex = correctOrder.indexOf(id);
             const partName = partNames[lang][partIndex];
-            const msg = lang === 'zh'
+            const msg = lang === 'zh' || lang === 'zh_cn'
                 ? `錯誤！這裏應該放置${partName}`
                 : `Incorrect! ${partName} should be placed here.`;
             showMessage(false, msg);
@@ -1293,7 +1293,7 @@ function drop(e) {
     // 正确提示
     const partIndex = correctOrder.indexOf(id);
     const partName = partNames[lang][partIndex];
-    const msg = lang === 'zh'
+    const msg = lang === 'zh' || lang === 'zh_cn'
         ? `正確！${partName}已被正確放置`
         : `Correct! ${partName} has been placed correctly.`;
     showMessage(true, msg);
@@ -1314,7 +1314,9 @@ function checkAssembly() {
             showNameLabels(); // 显示名称标签和虚线
             // 组装完成提示
             const lang = document.documentElement.lang || 'en';
-            const msg = lang === 'zh' ? '全部正確，恭喜完成組裝！' : 'All correct! Congratulations on completing the assembly!';
+            const msg = lang === 'zh' || lang === 'zh_cn' 
+                ? '全部正確，恭喜完成組裝！' 
+                : 'All correct! Congratulations on completing the assembly!';
             showMessage(true, msg);
             enableRotation();
             showCompletionDialog(); // 确保调用
@@ -1390,11 +1392,11 @@ function showCompletionDialog() {
 
     // 根据语言设置标题和按钮文本
     const lang = document.documentElement.lang || 'en';
-    completionTitle.textContent = lang === 'zh' ? '闖關成功！' : 'Congratulations!';
-    completionMessage.textContent = lang === 'zh'
+    completionTitle.textContent = lang === 'zh' || lang === 'zh_cn' ? '闖關成功！' : 'Congratulations!';
+    completionMessage.textContent = lang === 'zh' || lang === 'zh_cn'
         ? '太棒了！您成功地組裝了嫦娥六號飛行器，這是我們探月工程中的第一步，這是嫦娥六號的結構圖，你也可以返回主頁，拖動你的鼠標查看3D版。'
         : 'Awesome! You have successfully assembled the Chang\'e-6 spacecraft, which is the first step in our lunar exploration project. This is the structural diagram of Chang\'e-6. You can also return to the homepage and drag your mouse to view the 3D version.';
-    completionButton.textContent = lang === 'zh' ? '确定' : 'OK';
+    completionButton.textContent = lang === 'zh' || lang === 'zh_cn' ? '确定' : 'OK';
 
     // 根据mistakeCount点亮星星
     stars.forEach((star, idx) => star.classList.remove('active'));
