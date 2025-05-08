@@ -443,6 +443,9 @@
 
     // 更新页面语言
     function updateLanguage(lang) {
+        // 更新 HTML 的 lang 属性
+        document.documentElement.lang = lang === 'zh' ? 'zh-Hant' : lang === 'zh_cn' ? 'zh-Hans' : 'en';
+        
         // 更新所有带有data属性的元素
         document.querySelectorAll('[data-zh-tw], [data-zh-cn], [data-en]').forEach(element => {
             if (element.dataset[lang]) {
