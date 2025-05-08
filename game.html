@@ -500,13 +500,36 @@
                 calculateJump: "計算跳高",
                 jumpExplanation: "為什麼在月球上能跳得更高？",
                 jumpExplanationContent: "月球的重力只有地球的1/6，這意味著你的體重會變輕，同時你腿部肌肉需要克服的重力也變小了。同樣的力量下，你能跳得更高。這也是為什麼太空人在月球上能輕鬆跳躍的原因。"
+            },
+            zh_cn: {
+                title: "嫦娥六号探月任务",
+                chooseGame: "选择游戏",
+                weightCalculator: "星球体重计算器",
+                weightCalculatorDesc: "了解您在不同星球上的体重差异",
+                moonJump: "月球跳高模拟器",
+                moonJumpDesc: "计算您在月球上能跳多高",
+                weightTitle: "星球体重计算器",
+                weightDesc: "请输入您在地球上的体重，了解在太阳系不同星球上的体重差异。",
+                weightLabel: "您在地球上的体重 (公斤)：",
+                weightPlaceholder: "例如：70",
+                calculateWeight: "计算体重",
+                weightExplanation: "为什么在不同星球上体重会不同？",
+                weightExplanationContent: "体重是物体受到的重力大小，而重力大小取决于星体的质量和半径。质量越大的星球重力越强，但半径越大重力反而会减弱。例如木星质量很大，所以重力是地球的2.34倍；而月球质量小，重力只有地球的1/6。",
+                jumpTitle: "月球跳高模拟器",
+                jumpDesc: "请输入您在地球上能跳多高，计算在月球上的跳跃高度。",
+                jumpLabel: "您在地球上能跳多高 (厘米)：",
+                jumpPlaceholder: "例如：40",
+                calculateJump: "计算跳高",
+                jumpExplanation: "为什么在月球上能跳得更高？",
+                jumpExplanationContent: "月球的重力只有地球的1/6，这意味着你的体重会变轻，同时你腿部肌肉需要克服的重力也变小了。同样的力量下，你能跳得更高。这也是为什么宇航员在月球上能轻松跳跃的原因。"
             }
         };
 
         // 监听语言切换消息
         window.addEventListener('message', function(event) {
             if (event.data && event.data.type === 'setLanguage') {
-                updateLanguage(event.data.lang);
+                const lang = event.data.lang === 'zh-tw' ? 'zh' : event.data.lang;
+                updateLanguage(lang);
             }
         });
 
