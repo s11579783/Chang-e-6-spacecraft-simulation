@@ -270,64 +270,51 @@
     </footer>
 
     <script>
-        document.addEventListener('DOMContentLoaded', function() {
-            const accordionHeaders = document.querySelectorAll('.accordion-header');
-            
-            accordionHeaders.forEach(header => {
-                header.addEventListener('click', function() {
-                    const content = this.nextElementSibling;
-                    content.classList.toggle('active');
-                    
-                    const allContents = document.querySelectorAll('.accordion-content');
-                    allContents.forEach(item => {
-                        if (item !== content) {
-                            item.classList.remove('active');
-                        }
-                    });
+        // 处理折叠栏的点击事件
+        document.querySelectorAll('.accordion-header').forEach(header => {
+            header.addEventListener('click', () => {
+                const content = header.nextElementSibling;
+                const isActive = content.classList.contains('active');
+                
+                // 关闭所有其他折叠栏
+                document.querySelectorAll('.accordion-content').forEach(item => {
+                    item.classList.remove('active');
                 });
+                
+                // 如果当前折叠栏未激活，则打开它
+                if (!isActive) {
+                    content.classList.add('active');
+                }
             });
-            
-            if (accordionHeaders.length > 0) {
-                accordionHeaders[0].nextElementSibling.classList.add('active');
-            }
         });
 
+        // 处理视频切换
         function changeVideo(episode) {
-            const videoSources = [
-                {
-                    src: "https://www.sastind.gov.cn/video/0626exlty1.mp4",
-                    link: "https://www.cnsa.gov.cn/n6758968/n6758973/c10566103/content.html"
-                },
-                {
-                    src: "https://www.sastind.gov.cn/video/0626exlty2.m4v",
-                    link: "https://www.cnsa.gov.cn/n6758968/n6758973/c10566171/content.html"
-                },
-                {
-                    src: "https://www.sastind.gov.cn/video/0626exlty3.mp4",
-                    link: "https://www.cnsa.gov.cn/n6758968/n6758973/c10566210/content.html"
-                },
-                {
-                    src: "https://www.sastind.gov.cn/video/0626exlty4.mp4",
-                    link: "https://www.cnsa.gov.cn/n6758968/n6758973/c10566241/content.html"
-                }
-            ];
-
-            const videoElement = document.getElementById('current-video');
-            const videoSource = videoSources[episode-1];
+            const video = document.getElementById('current-video');
+            const tabs = document.querySelectorAll('.video-tab');
             
-            videoElement.src = videoSource.src;
-            videoElement.load();
+            // 更新视频源
+            switch(episode) {
+                case 1:
+                    video.src = "https://www.sastind.gov.cn/video/0626exlty1.mp4";
+                    break;
+                case 2:
+                    video.src = "https://www.sastind.gov.cn/video/0626exlty2.mp4";
+                    break;
+                case 3:
+                    video.src = "https://www.sastind.gov.cn/video/0626exlty3.mp4";
+                    break;
+                case 4:
+                    video.src = "https://www.sastind.gov.cn/video/0626exlty4.mp4";
+                    break;
+            }
             
-            const sourceLink = document.querySelector('.video-source a');
-            sourceLink.href = videoSource.link;
+            // 更新标签状态
+            tabs.forEach(tab => tab.classList.remove('active'));
+            tabs[episode - 1].classList.add('active');
             
-            document.querySelectorAll('.video-tab').forEach((tab, index) => {
-                if(index === episode-1) {
-                    tab.classList.add('active');
-                } else {
-                    tab.classList.remove('active');
-                }
-            });
+            // 重新加载视频
+            video.load();
         }
 
         // 添加语言切换功能
