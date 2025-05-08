@@ -83,12 +83,17 @@
             border: 1px solid rgba(0, 0, 0, 0.1);
             border-radius: 0 0 5px 5px;
             margin-bottom: 15px;
-        }
-        .accordion-content p {
-            margin-bottom: 15px;
+            max-height: 0;
+            overflow: hidden;
+            transition: max-height 0.3s ease-out;
         }
         .accordion-content.active {
             display: block;
+            max-height: 2000px;
+            transition: max-height 0.5s ease-in;
+        }
+        .accordion-content p {
+            margin-bottom: 15px;
         }
         .image-placeholder {
             width: 100%;
@@ -271,21 +276,29 @@
 
     <script>
         // 处理折叠栏的点击事件
-        document.querySelectorAll('.accordion-header').forEach(header => {
-            header.addEventListener('click', () => {
-                const content = header.nextElementSibling;
-                const isActive = content.classList.contains('active');
-                
-                // 关闭所有其他折叠栏
-                document.querySelectorAll('.accordion-content').forEach(item => {
-                    item.classList.remove('active');
+        document.addEventListener('DOMContentLoaded', function() {
+            document.querySelectorAll('.accordion-header').forEach(header => {
+                header.addEventListener('click', () => {
+                    const content = header.nextElementSibling;
+                    const isActive = content.classList.contains('active');
+                    
+                    // 关闭所有其他折叠栏
+                    document.querySelectorAll('.accordion-content').forEach(item => {
+                        item.classList.remove('active');
+                    });
+                    
+                    // 如果当前折叠栏未激活，则打开它
+                    if (!isActive) {
+                        content.classList.add('active');
+                    }
                 });
-                
-                // 如果当前折叠栏未激活，则打开它
-                if (!isActive) {
-                    content.classList.add('active');
-                }
             });
+
+            // 默认打开第一个折叠栏
+            const firstContent = document.querySelector('.accordion-content');
+            if (firstContent) {
+                firstContent.classList.add('active');
+            }
         });
 
         // 处理视频切换
