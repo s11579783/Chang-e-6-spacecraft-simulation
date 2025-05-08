@@ -392,20 +392,6 @@
             <footer>
                 <p data-zh-tw="© 2024 中國航天科技集團。保留所有權利。" data-en="© 2024 China Aerospace Science and Technology Corporation. All rights reserved." data-zh-cn="© 2024 中国航天科技集团。保留所有权利。">© 2024 中國航天科技集團。保留所有權利。</p>
             </footer>
-            
-            <script>
-                function updateLanguage(lang) {
-                    // Convert zh-tw to zh for Traditional Chinese
-                    if (lang === 'zh-tw') {
-                        lang = 'zh';
-                    }
-                    
-                    // Update all elements with data attributes
-                    document.querySelectorAll('[data-' + lang + ']').forEach(element => {
-                        element.textContent = element.getAttribute('data-' + lang);
-                    });
-                }
-            </script>
         </div>
     </div>
 
@@ -421,67 +407,7 @@
             longMarch: "Long March Series",
             shenzhou: "Shenzhou Series",
             tianzhou: "Tianzhou Series",
-            comparison: "Series Comparison",
-            overviewContent: "China's space program began in 1956 and has developed into an important force in the world's aerospace field after several decades. China's space projects cover multiple areas including satellite launches, manned spaceflight, lunar exploration, and Mars exploration, forming a complete aerospace system.",
-            overviewContent2: "This article will focus on China's five major space project series: the Chang'e Series (lunar exploration), Yutu Series (lunar rovers), Long March Series (launch vehicles), Shenzhou Series (manned spacecraft), and Tianzhou Series (cargo spacecraft).",
-            changEContent: "The Chang'e Series is the code name for China's lunar exploration program, named after the moon goddess 'Chang'e' from Chinese mythology. The main goal of this series is to achieve lunar orbiting, landing, and sample return.",
-            changEAchievements: "Major Achievements",
-            changEAchievementsContent: "The Chang'e series missions have realized China's 'orbit, land, return' three-step lunar exploration strategy, making China the third country after the US and Soviet Union to achieve lunar sample return. The Chang'e-5 lunar probe achieved sample return from the moon, while Chang'e-6 completed the first sample return mission from the far side of the moon, making history.",
-            yuTuContent: "The Yutu Series is a series of lunar rovers in China's lunar exploration program, named after the Jade Rabbit from Chinese mythology. These rovers conduct scientific exploration and experiments on the lunar surface.",
-            yuTu1: "Yutu-1",
-            yuTu1Content: "Landed on the moon with Chang'e-3 in 2013, China's first lunar rover. Designed for 3 months of operation, it actually worked for 31 months, far exceeding expectations.",
-            yuTu2: "Yutu-2",
-            yuTu2Content: "Landed on the far side of the moon with Chang'e-4 in 2018, becoming the first rover to work on the far side of the moon in human history. Still working as of 2023, it has become the longest-operating lunar rover.",
-            yuTuTech: "Technical Features",
-            yuTuTechContent: "The Yutu series rovers use six-wheel independent drive, have autonomous navigation and obstacle avoidance capabilities, carry multiple scientific instruments, and can conduct scientific exploration of lunar surface morphology and material composition analysis.",
-            longMarchContent: "The Long March Series is China's independently developed launch vehicle series, undertaking China's space launch missions. Since the first flight of Long March-1 in 1970, multiple models have been developed, capable of launching satellites and spacecraft of different orbits and weights.",
-            longMarchModels: "Main Models",
-            longMarchModelsList: [
-                "Long March 2 Series: China's earliest mature launch vehicle, undertaking initial satellite launches and manned space missions",
-                "Long March 3 Series: Mainly used for launching geosynchronous orbit satellites",
-                "Long March 5: China's current largest launch vehicle, known as 'Fat Five', undertaking major missions such as lunar exploration phase III and space station construction",
-                "Long March 7: New generation medium launch vehicle, mainly used for launching Tianzhou cargo spacecraft"
-            ],
-            longMarchTech: "Technical Breakthroughs",
-            longMarchTechContent: "The Long March series rockets have continuously upgraded, from early conventional fuels to clean energy sources such as liquid oxygen-kerosene and liquid hydrogen-liquid oxygen, with continuously improving payload capacity and reliability reaching world advanced levels.",
-            shenzhouContent: "The Shenzhou Series is China's independently developed manned spacecraft, with a name meaning 'Divine Vessel'.",
-            shenzhouHistory: "Development History",
-            shenzhouHistoryList: [
-                "1999: Shenzhou-1 unmanned test spacecraft successfully launched",
-                "2003: Shenzhou-5 carried Yang Liwei to complete China's first manned spaceflight",
-                "2008: Shenzhou-7 achieved China's first spacewalk",
-                "2012: Shenzhou-9 completed first manned rendezvous and docking mission",
-                "2021: Shenzhou-12 sent astronauts to China's space station Tianhe core module"
-            ],
-            shenzhouStructure: "Spacecraft Structure",
-            shenzhouStructureContent: "The Shenzhou spacecraft consists of three parts: the orbital module, reentry module, and propulsion module. It can carry three astronauts and has complete functions including autonomous flight, rendezvous and docking, and return landing.",
-            tianzhouContent: "The Tianzhou Series is China's independently developed cargo spacecraft, mainly used for transporting supplies and propellant to the space station.",
-            tianzhouTasks: "Main Tasks",
-            tianzhouTasksList: [
-                "Transporting food, water, oxygen and other living supplies to the space station",
-                "Transporting scientific experiment equipment and replacement parts",
-                "Replenishing propellant for the space station to maintain orbital altitude",
-                "Transporting astronauts' personal items and mail"
-            ],
-            tianzhouTech: "Technical Features",
-            tianzhouTechContent: "The Tianzhou cargo spacecraft consists of a cargo module and propulsion module, with a maximum uplink payload capacity of 6.5 tons. It uses fully autonomous rapid rendezvous and docking technology, capable of completing docking with the space station within 6.5 hours.",
-            comparisonContent: "The table below summarizes the main features and differences of the five series: Chang'e, Yutu, Long March, Shenzhou, and Tianzhou:",
-            comparisonTable: {
-                project: "Project",
-                mainFunction: "Main Function",
-                firstLaunch: "First Launch",
-                latestModel: "Latest Model",
-                keyTech: "Key Technology"
-            },
-            comparisonRelations: "Interrelationships",
-            comparisonRelationsContent: "These projects are interconnected, together forming China's complete aerospace system:",
-            comparisonRelationsList: [
-                "Long March rockets are the basic launch vehicles for all space missions",
-                "Chang'e probes and Yutu rovers together complete lunar exploration missions",
-                "Shenzhou spacecraft and Tianzhou cargo spacecraft together support the construction and operation of China's space station"
-            ],
-            footer: "© 2023 Chinese Space Projects News | Data Source: China National Space Administration (CNSA)",
-            lastUpdate: "Last Updated: June 2023"
+            comparison: "Series Comparison"
         },
         zh: {
             title: "中國太空項目介紹",
@@ -492,67 +418,7 @@
             longMarch: "長征系列",
             shenzhou: "神舟系列",
             tianzhou: "天舟系列",
-            comparison: "各系列比較",
-            overviewContent: "中國太空計劃始於1956年，經過幾十年的發展，已成為世界航天領域的重要力量。中國的太空項目涵蓋了衛星發射、載人航天、月球探測、火星探測等多個領域，形成了完整的航天體系。",
-            overviewContent2: "本文將重點介紹中國的五大太空項目系列：嫦娥系列（月球探測）、玉兔系列（月球車）、長征系列（運載火箭）、神舟系列（載人飛船）和天舟系列（貨運飛船）。",
-            changEContent: "嫦娥系列是中國月球探測工程的代號，以中國古代神話中的月亮女神\"嫦娥\"命名。該系列任務主要目標是實現月球環繞、著陸和採樣返回。",
-            changEAchievements: "主要成就",
-            changEAchievementsContent: "嫦娥系列任務實現了中國月球探測\"繞、落、回\"三步走戰略，使中國成為繼美蘇之後第三個實現月球採樣返回的國家。嫦娥五號月球探測器實現了從月球的採樣返回，嫦娥六號則完成了首次從月球背面採樣返回任務，開創了歷史。",
-            yuTuContent: "玉兔系列是中國月球車的代號，以嫦娥的寵物\"玉兔\"命名，是嫦娥系列任務的重要組成部分。",
-            yuTu1: "玉兔號",
-            yuTu1Content: "2013年隨嫦娥三號登陸月球，是中國首輛月球車。設計壽命3個月，實際工作31個月，遠超預期。",
-            yuTu2: "玉兔二號",
-            yuTu2Content: "2018年隨嫦娥四號登陸月球背面，是人類歷史上第一輛在月球背面工作的月球車。截至2023年仍在工作，成為月球上工作時間最長的月球車。",
-            yuTuTech: "技術特點",
-            yuTuTechContent: "玉兔系列月球車採用六輪獨立驅動，具備自主導航和避障能力，攜帶多種科學儀器，可進行月表形貌探測、物質成分分析等科學探測。",
-            longMarchContent: "長征系列是中國自主研製的運載火箭家族，承擔著將各類航天器送入太空的重任。",
-            longMarchModels: "主要型號",
-            longMarchModelsList: [
-                "長征二號系列：中國最早成熟的運載火箭，承擔了初期衛星發射和載人航天任務",
-                "長征三號系列：主要用於發射地球同步軌道衛星",
-                "長征五號：中國目前運載能力最大的火箭，被稱為\"胖五\"，承擔探月三期、空間站建設等重大任務",
-                "長征七號：新一代中型運載火箭，主要用於發射天舟貨運飛船"
-            ],
-            longMarchTech: "技術突破",
-            longMarchTechContent: "長征系列火箭不斷升級，從早期的常規燃料發展到液氧煤油、液氫液氧等清潔能源，運載能力不斷提升，可靠性達到世界先進水平。",
-            shenzhouContent: "神舟系列是中國自主研製的載人飛船，名稱意為\"神奇的天河之舟\"。",
-            shenzhouHistory: "發展歷程",
-            shenzhouHistoryList: [
-                "1999年：神舟一號無人試驗飛船成功發射",
-                "2003年：神舟五號搭載楊利偉完成中國首次載人航天飛行",
-                "2008年：神舟七號實現中國航天員首次太空行走",
-                "2012年：神舟九號完成首次載人交會對接任務",
-                "2021年：神舟十二號將航天員送入中國空間站天和核心艙"
-            ],
-            shenzhouStructure: "飛船結構",
-            shenzhouStructureContent: "神舟飛船由軌道艙、返回艙和推進艙三部分組成，可搭載3名航天員，具備自主飛行、交會對接、返回著陸等完整功能。",
-            tianzhouContent: "天舟系列是中國自主研製的貨運飛船，主要用於向空間站運送補給物資和推進劑。",
-            tianzhouTasks: "主要任務",
-            tianzhouTasksList: [
-                "為空間站運送食物、水、氧氣等生活物資",
-                "運送科學實驗設備和更換部件",
-                "為空間站補充推進劑，維持軌道高度",
-                "運送航天員個人物品和郵件"
-            ],
-            tianzhouTech: "技術特點",
-            tianzhouTechContent: "天舟貨運飛船由貨物艙和推進艙組成，最大上行運載能力達6.5噸，採用全自主快速交會對接技術，可在6.5小時內完成與空間站的對接。",
-            comparisonContent: "下表總結了嫦娥、玉兔、長征、神舟和天舟五個系列的主要特點和區別：",
-            comparisonTable: {
-                project: "項目",
-                mainFunction: "主要功能",
-                firstLaunch: "首次發射時間",
-                latestModel: "最新型號",
-                keyTech: "關鍵技術"
-            },
-            comparisonRelations: "相互關係",
-            comparisonRelationsContent: "這些項目相互關聯，共同構成了中國完整的航天體系：",
-            comparisonRelationsList: [
-                "長征火箭是所有太空任務的基礎運載工具",
-                "嫦娥探測器和玉兔月球車共同完成月球探測任務",
-                "神舟飛船和天舟貨運飛船共同支持中國空間站的建設和運營"
-            ],
-            footer: "© 2023 中國太空項目新聞 | 數據來源：中國國家航天局(CNSA)",
-            lastUpdate: "最後更新：2023年6月"
+            comparison: "各系列比較"
         },
         zh_cn: {
             title: "中国太空项目介绍",
@@ -563,67 +429,7 @@
             longMarch: "长征系列",
             shenzhou: "神舟系列",
             tianzhou: "天舟系列",
-            comparison: "各系列比较",
-            overviewContent: "中国太空计划始于1956年，经过几十年的发展，已成为世界航天领域的重要力量。中国的太空项目涵盖了卫星发射、载人航天、月球探测、火星探测等多个领域，形成了完整的航天体系。",
-            overviewContent2: "本文将重点介绍中国的五大太空项目系列：嫦娥系列（月球探测）、玉兔系列（月球车）、长征系列（运载火箭）、神舟系列（载人飞船）和天舟系列（货运飞船）。",
-            changEContent: "嫦娥系列是中国月球探测工程的代号，以中国古代神话中的月亮女神\"嫦娥\"命名。该系列任务主要目标是实现月球环绕、着陆和采样返回。",
-            changEAchievements: "主要成就",
-            changEAchievementsContent: "嫦娥系列任务实现了中国月球探测\"绕、落、回\"三步走战略，使中国成为继美苏之后第三个实现月球采样返回的国家。嫦娥五号月球探测器实现了从月球的采样返回，嫦娥六号则完成了首次从月球背面采样返回任务，开创了历史。",
-            yuTuContent: "玉兔系列是中国月球车的代号，以嫦娥的宠物\"玉兔\"命名，是嫦娥系列任务的重要组成部分。",
-            yuTu1: "玉兔号",
-            yuTu1Content: "2013年随嫦娥三号登陆月球，是中国首辆月球车。设计寿命3个月，实际工作31个月，远超预期。",
-            yuTu2: "玉兔二号",
-            yuTu2Content: "2018年随嫦娥四号登陆月球背面，是人类历史上第一辆在月球背面工作的月球车。截至2023年仍在工作，成为月球上工作时间最长的月球车。",
-            yuTuTech: "技术特点",
-            yuTuTechContent: "玉兔系列月球车采用六轮独立驱动，具备自主导航和避障能力，携带多种科学仪器，可进行月表形貌探测、物质成分分析等科学探测。",
-            longMarchContent: "长征系列是中国自主研制的运载火箭家族，承担着将各类航天器送入太空的重任。",
-            longMarchModels: "主要型号",
-            longMarchModelsList: [
-                "长征二号系列：中国最早成熟的运载火箭，承担了初期卫星发射和载人航天任务",
-                "长征三号系列：主要用于发射地球同步轨道卫星",
-                "长征五号：中国目前运载能力最大的火箭，被称为\"胖五\"，承担探月三期、空间站建设等重大任务",
-                "长征七号：新一代中型运载火箭，主要用于发射天舟货运飞船"
-            ],
-            longMarchTech: "技术突破",
-            longMarchTechContent: "长征系列火箭不断升级，从早期的常规燃料发展到液氧煤油、液氢液氧等清洁能源，运载能力不断提升，可靠性达到世界先进水平。",
-            shenzhouContent: "神舟系列是中国自主研制的载人飞船，名称意为\"神奇的天河之舟\"。",
-            shenzhouHistory: "发展历程",
-            shenzhouHistoryList: [
-                "1999年：神舟一号无人试验飞船成功发射",
-                "2003年：神舟五号搭载杨利伟完成中国首次载人航天飞行",
-                "2008年：神舟七号实现中国航天员首次太空行走",
-                "2012年：神舟九号完成首次载人交会对接任务",
-                "2021年：神舟十二号将航天员送入中国空间站天和核心舱"
-            ],
-            shenzhouStructure: "飞船结构",
-            shenzhouStructureContent: "神舟飞船由轨道舱、返回舱和推进舱三部分组成，可搭载3名航天员，具备自主飞行、交会对接、返回着陆等完整功能。",
-            tianzhouContent: "天舟系列是中国自主研制的货运飞船，主要用于向空间站运送补给物资和推进剂。",
-            tianzhouTasks: "主要任务",
-            tianzhouTasksList: [
-                "为空间站运送食物、水、氧气等生活物资",
-                "运送科学实验设备和更换部件",
-                "为空间站补充推进剂，维持轨道高度",
-                "运送航天员个人物品和邮件"
-            ],
-            tianzhouTech: "技术特点",
-            tianzhouTechContent: "天舟货运飞船由货物舱和推进舱组成，最大上行运载能力达6.5吨，采用全自主快速交会对接技术，可在6.5小时内完成与空间站的对接。",
-            comparisonContent: "下表总结了嫦娥、玉兔、长征、神舟和天舟五个系列的主要特点和区别：",
-            comparisonTable: {
-                project: "项目",
-                mainFunction: "主要功能",
-                firstLaunch: "首次发射时间",
-                latestModel: "最新型号",
-                keyTech: "关键技术"
-            },
-            comparisonRelations: "相互关系",
-            comparisonRelationsContent: "这些项目相互关联，共同构成了中国完整的航天体系：",
-            comparisonRelationsList: [
-                "长征火箭是所有太空任务的基础运载工具",
-                "嫦娥探测器和玉兔月球车共同完成月球探测任务",
-                "神舟飞船和天舟货运飞船共同支持中国空间站的建设和运营"
-            ],
-            footer: "© 2023 中国太空项目新闻 | 数据来源：中国国家航天局(CNSA)",
-            lastUpdate: "最后更新：2023年6月"
+            comparison: "各系列比较"
         }
     };
 
