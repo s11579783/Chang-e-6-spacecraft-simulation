@@ -400,32 +400,87 @@
 
         // 更新页面语言
         function updateLanguage(lang) {
-            document.querySelector('h1').textContent = texts[lang].title;
-            document.querySelector('.accordion-header:nth-child(1)').textContent = texts[lang].rockFlag;
-            document.querySelector('.accordion-content:nth-child(2) p:nth-child(1)').textContent = texts[lang].rockFlagContent;
-            document.querySelector('.accordion-content:nth-child(2) p:nth-child(2)').textContent = texts[lang].rockFlagContent2;
-            document.querySelector('.accordion-content:nth-child(2) p:nth-child(4)').textContent = texts[lang].rockFlagContent3;
-            
-            document.querySelector('.accordion-header:nth-child(3)').textContent = texts[lang].moonSampling;
-            document.querySelector('h3:nth-child(1)').textContent = texts[lang].energySystem;
-            document.querySelector('h3:nth-child(1) + p').textContent = texts[lang].energySystemContent;
-            
-            document.querySelector('h3:nth-child(3)').textContent = texts[lang].sampleCollection;
-            document.querySelector('h3:nth-child(3) + p').textContent = texts[lang].sampleCollectionContent;
-            document.querySelector('ul li:nth-child(1) strong').textContent = texts[lang].drillSampling;
-            document.querySelector('ul li:nth-child(2) strong').textContent = texts[lang].surfaceSampling;
-            
-            document.querySelector('.accordion-header:nth-child(5)').textContent = texts[lang].videoTitle;
-            document.querySelector('.video-tab:nth-child(1)').textContent = texts[lang].episode1;
-            document.querySelector('.video-tab:nth-child(2)').textContent = texts[lang].episode2;
-            document.querySelector('.video-tab:nth-child(3)').textContent = texts[lang].episode3;
-            document.querySelector('.video-tab:nth-child(4)').textContent = texts[lang].episode4;
-            
-            document.querySelector('.video-source').innerHTML = texts[lang].videoSource + 
-                '<a href="https://www.cnsa.gov.cn/n6758968/n6758973/c10566103/content.html" target="_blank">' + 
-                texts[lang].viewWebpage + '</a>';
-            
-            document.querySelector('footer p').textContent = texts[lang].footer;
+            // 更新标题
+            const titleElement = document.querySelector('h1');
+            if (titleElement) {
+                titleElement.textContent = texts[lang].title;
+            }
+
+            // 更新第一个折叠栏
+            const firstHeader = document.querySelector('.accordion-header');
+            const firstContent = document.querySelector('.accordion-content');
+            if (firstHeader) {
+                firstHeader.textContent = texts[lang].rockFlag;
+            }
+            if (firstContent) {
+                const paragraphs = firstContent.querySelectorAll('p');
+                if (paragraphs[0]) paragraphs[0].textContent = texts[lang].rockFlagContent;
+                if (paragraphs[1]) paragraphs[1].textContent = texts[lang].rockFlagContent2;
+                if (paragraphs[3]) paragraphs[3].textContent = texts[lang].rockFlagContent3;
+            }
+
+            // 更新第二个折叠栏
+            const secondHeader = document.querySelectorAll('.accordion-header')[1];
+            if (secondHeader) {
+                secondHeader.textContent = texts[lang].moonSampling;
+            }
+
+            // 更新能源系统部分
+            const energySystemTitle = document.querySelector('h3');
+            const energySystemContent = energySystemTitle?.nextElementSibling;
+            if (energySystemTitle) {
+                energySystemTitle.textContent = texts[lang].energySystem;
+            }
+            if (energySystemContent) {
+                energySystemContent.textContent = texts[lang].energySystemContent;
+            }
+
+            // 更新采样方式部分
+            const sampleCollectionTitle = document.querySelectorAll('h3')[2];
+            const sampleCollectionContent = sampleCollectionTitle?.nextElementSibling;
+            if (sampleCollectionTitle) {
+                sampleCollectionTitle.textContent = texts[lang].sampleCollection;
+            }
+            if (sampleCollectionContent) {
+                sampleCollectionContent.textContent = texts[lang].sampleCollectionContent;
+            }
+
+            // 更新采样方式列表
+            const drillSampling = document.querySelector('ul li:nth-child(1) strong');
+            const surfaceSampling = document.querySelector('ul li:nth-child(2) strong');
+            if (drillSampling) {
+                drillSampling.textContent = texts[lang].drillSampling;
+            }
+            if (surfaceSampling) {
+                surfaceSampling.textContent = texts[lang].surfaceSampling;
+            }
+
+            // 更新视频部分
+            const videoTitle = document.querySelectorAll('.accordion-header')[2];
+            const videoTabs = document.querySelectorAll('.video-tab');
+            if (videoTitle) {
+                videoTitle.textContent = texts[lang].videoTitle;
+            }
+            if (videoTabs.length >= 4) {
+                videoTabs[0].textContent = texts[lang].episode1;
+                videoTabs[1].textContent = texts[lang].episode2;
+                videoTabs[2].textContent = texts[lang].episode3;
+                videoTabs[3].textContent = texts[lang].episode4;
+            }
+
+            // 更新视频来源
+            const videoSource = document.querySelector('.video-source');
+            if (videoSource) {
+                videoSource.innerHTML = texts[lang].videoSource + 
+                    '<a href="https://www.cnsa.gov.cn/n6758968/n6758973/c10566103/content.html" target="_blank">' + 
+                    texts[lang].viewWebpage + '</a>';
+            }
+
+            // 更新页脚
+            const footer = document.querySelector('footer p');
+            if (footer) {
+                footer.textContent = texts[lang].footer;
+            }
         }
 
         // 监听语言切换消息
