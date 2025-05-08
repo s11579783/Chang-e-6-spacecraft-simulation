@@ -444,7 +444,7 @@
     // 更新页面语言
     function updateLanguage(lang) {
         // 更新所有带有data属性的元素
-        document.querySelectorAll('[data-zh-tw]').forEach(element => {
+        document.querySelectorAll('[data-zh-tw], [data-zh-cn], [data-en]').forEach(element => {
             if (element.dataset[lang]) {
                 element.textContent = element.dataset[lang];
             }
