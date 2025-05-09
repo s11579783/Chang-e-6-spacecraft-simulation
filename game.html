@@ -422,7 +422,8 @@
             }
 
             // 自动刷新体重结果（跟随语言切换）
-            const earthWeightValue = parseFloat(document.getElementById('earthWeight').value);
+            const earthWeightInput = document.getElementById('earthWeight');
+            const earthWeightValue = parseFloat(earthWeightInput.value);
             const updateLangKey = getTextLangKey(lang);
             if (!isNaN(earthWeightValue) && earthWeightValue > 0) {
                 resultsDiv.innerHTML = '';
