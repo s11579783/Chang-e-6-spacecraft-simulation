@@ -691,6 +691,11 @@
                 if (langKey === 'zh-cn' || langKey === 'zh_cn') langKey = 'zh_cn';
                 jumpResultDiv.innerHTML = jumpResultTexts[langKey](earthJump, moonJump);
             }
+
+            // 更新体重结果（随语言切换）
+            const earthWeightInput = document.getElementById('earthWeight');
+            const earthWeightValue = parseFloat(earthWeightInput.value);
+            renderWeightResults(earthWeightValue, lang);
         }
 
         // 请求当前语言
