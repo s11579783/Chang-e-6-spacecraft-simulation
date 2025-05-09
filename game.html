@@ -591,20 +591,13 @@
                 chooseGameElement.textContent = chooseGameElement.getAttribute(`data-${lang}`) || texts[lang].chooseGame;
             }
             
-            // 更新侧边栏
-            const weightCalculatorBtn = document.querySelector('.accordion:nth-child(1)');
-            const weightCalculatorDesc = document.querySelector('.panel:nth-child(2) p');
-            const moonJumpBtn = document.querySelector('.accordion:nth-child(3)');
-            const moonJumpDesc = document.querySelector('.panel:nth-child(4) p');
-
-            if (weightCalculatorBtn) weightCalculatorBtn.textContent = texts[lang].weightCalculator;
-            if (weightCalculatorDesc) {
-                weightCalculatorDesc.textContent = weightCalculatorDesc.getAttribute(`data-${lang}`) || texts[lang].weightCalculatorDesc;
-            }
-            if (moonJumpBtn) moonJumpBtn.textContent = texts[lang].moonJump;
-            if (moonJumpDesc) {
-                moonJumpDesc.textContent = moonJumpDesc.getAttribute(`data-${lang}`) || texts[lang].moonJumpDesc;
-            }
+            // 更新侧边栏所有按钮和描述
+            document.querySelectorAll('.accordion').forEach(btn => {
+                btn.textContent = btn.getAttribute(`data-${lang}`) || btn.textContent;
+            });
+            document.querySelectorAll('.panel p').forEach(p => {
+                p.textContent = p.getAttribute(`data-${lang}`) || p.textContent;
+            });
             
             // 更新体重计算器
             const weightGame = document.querySelector('#weightGame');
