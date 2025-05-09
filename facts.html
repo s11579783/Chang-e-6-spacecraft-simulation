@@ -170,7 +170,7 @@
         }
     </style>
 </head>
-<body>
+<body style="visibility:hidden;">
 
     <div class="container">
         <div class="left-column">
@@ -284,7 +284,7 @@
                     
                     // 关闭所有其他折叠栏
                     document.querySelectorAll('.accordion-content').forEach(item => {
-                        item.classList.remove('active');
+                            item.classList.remove('active');
                     });
                     
                     // 如果当前折叠栏未激活，则打开它
@@ -293,7 +293,7 @@
                     }
                 });
             });
-
+            
             // 默认打开第一个折叠栏
             const firstContent = document.querySelector('.accordion-content');
             if (firstContent) {
@@ -432,6 +432,10 @@
 
         // 更新页面语言
         function updateLanguage(lang) {
+            // 统一 lang key
+            if (lang === 'zh' || lang === 'zh-tw' || lang === 'zh_TW') lang = 'zh';
+            if (lang === 'zh-cn' || lang === 'zh_cn' || lang === 'zh-CN') lang = 'zh_cn';
+            if (!texts[lang]) lang = 'zh';
             // 更新标题
             const titleElement = document.querySelector('h1');
             if (titleElement) {
@@ -513,13 +517,15 @@
             if (footer) {
                 footer.textContent = texts[lang].footer;
             }
+
+            // 显示页面内容
+            document.body.style.visibility = 'visible';
         }
 
         // 监听语言切换消息
         window.addEventListener('message', function(event) {
             if (event.data && event.data.type === 'setLanguage') {
-                const lang = event.data.lang === 'zh-tw' ? 'zh' : event.data.lang;
-                updateLanguage(lang);
+                updateLanguage(event.data.lang);
             }
         });
 
