@@ -398,11 +398,11 @@
             // 创建新的结果
             for (const key in gravityRatios) {
                 const planet = gravityRatios[key];
-                // 兼容 currentLang 可能为 zh-tw/zh_cn/en
-                let langKey = currentLang;
-                if (langKey === 'zh-tw' || langKey === 'zh') langKey = 'zh';
-                if (langKey === 'zh-cn' || langKey === 'zh_cn') langKey = 'zh_cn';
-                const planetName = planet[langKey] || planet['zh'];
+                // planet 名称用 gravityRatios 的 key，单位用 texts[currentLang].weightUnit
+                let planetLangKey = currentLang;
+                if (planetLangKey === 'zh-tw' || planetLangKey === 'zh') planetLangKey = 'zh';
+                if (planetLangKey === 'zh-cn' || planetLangKey === 'zh_cn') planetLangKey = 'zh_cn';
+                const planetName = planet[planetLangKey] || planet['zh'];
                 const planetWeight = (earthWeight * planet.ratio).toFixed(1);
                 const planetDiv = document.createElement("div");
                 planetDiv.classList.add("planet-weight");
@@ -410,10 +410,37 @@
                     <div class="planet-icon">${planetName}</div>
                     <div class="planet-info">
                         <div class="planet-name">${planetName}</div>
-                        <div class="weight-value">${planetWeight} ${texts[langKey].weightUnit || '公斤'}</div>
+                        <div class="weight-value">${planetWeight} ${texts[currentLang].weightUnit || '公斤'}</div>
                     </div>
                 `;
                 resultsDiv.appendChild(planetDiv);
+            }
+
+            // 自动刷新体重结果（跟随语言切换）
+            const earthWeightValue = parseFloat(document.getElementById('earthWeight').value);
+            if (!isNaN(earthWeightValue) && earthWeightValue > 0) {
+                resultsDiv.innerHTML = '';
+                for (const key in gravityRatios) {
+                    const planet = gravityRatios[key];
+                    // planet 名称用 gravityRatios 的 key，单位用 texts[currentLang].weightUnit
+                    let planetLangKey = currentLang;
+                    if (planetLangKey === 'zh-tw' || planetLangKey === 'zh') planetLangKey = 'zh';
+                    if (planetLangKey === 'zh-cn' || planetLangKey === 'zh_cn') planetLangKey = 'zh_cn';
+                    const planetName = planet[planetLangKey] || planet['zh'];
+                    const planetWeight = (earthWeightValue * planet.ratio).toFixed(1);
+                    const planetDiv = document.createElement('div');
+                    planetDiv.classList.add('planet-weight');
+                    planetDiv.innerHTML = `
+                        <div class="planet-icon">${planetName}</div>
+                        <div class="planet-info">
+                            <div class="planet-name">${planetName}</div>
+                            <div class="weight-value">${planetWeight} ${texts[currentLang].weightUnit || '公斤'}</div>
+                        </div>
+                    `;
+                    resultsDiv.appendChild(planetDiv);
+                }
+            } else {
+                resultsDiv.innerHTML = '';
             }
         });
         
