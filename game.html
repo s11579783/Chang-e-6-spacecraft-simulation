@@ -651,6 +651,23 @@
                 if (knowledgeTitle) knowledgeTitle.textContent = texts[lang].jumpExplanation;
                 if (knowledgeContent) knowledgeContent.textContent = knowledgeContent.getAttribute(`data-${lang}`) || texts[lang].jumpExplanationContent;
             }
+
+            // 更新跳高结果
+            const jumpResultDiv = document.getElementById('jumpResult');
+            const earthJumpInput = document.getElementById('earthJump');
+            const earthJump = parseFloat(earthJumpInput.value);
+            if (jumpResultDiv && !isNaN(earthJump) && earthJump > 0) {
+                // 重新计算月球跳高
+                let moonRatio = 0.166;
+                if (gravityRatios['moon'] && gravityRatios['moon'].ratio) {
+                    moonRatio = gravityRatios['moon'].ratio;
+                }
+                const moonJump = (earthJump * (1/moonRatio)).toFixed(1);
+                let langKey = lang;
+                if (langKey === 'zh-tw' || langKey === 'zh') langKey = 'zh-tw';
+                if (langKey === 'zh-cn' || langKey === 'zh_cn') langKey = 'zh_cn';
+                jumpResultDiv.innerHTML = jumpResultTexts[langKey](earthJump, moonJump);
+            }
         }
 
         // 请求当前语言
