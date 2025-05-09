@@ -599,8 +599,8 @@
         // 监听语言切换消息
         window.addEventListener('message', function(event) {
             if (event.data && event.data.type === 'setLanguage') {
-                const lang = event.data.lang === 'zh-tw' ? 'zh' : event.data.lang;
-                updateLanguage(lang);
+                // 直接使用 zh-tw, zh_cn, en
+                updateLanguage(event.data.lang);
             }
         });
 
@@ -609,21 +609,13 @@
             // 更新标题
             const titleElement = document.querySelector('h1');
             if (titleElement) {
-                if (lang === 'zh_cn') {
-                    titleElement.textContent = texts[lang].title;
-                } else {
-                    titleElement.textContent = titleElement.getAttribute(`data-${lang}`) || texts[lang].title;
-                }
+                titleElement.textContent = titleElement.getAttribute(`data-${lang}`) || texts[lang].title;
             }
 
             // 更新选择游戏标题
             const chooseGameElement = document.querySelector('h2');
             if (chooseGameElement) {
-                if (lang === 'zh_cn') {
-                    chooseGameElement.textContent = texts[lang].chooseGame;
-                } else {
-                    chooseGameElement.textContent = chooseGameElement.getAttribute(`data-${lang}`) || texts[lang].chooseGame;
-                }
+                chooseGameElement.textContent = chooseGameElement.getAttribute(`data-${lang}`) || texts[lang].chooseGame;
             }
             
             // 更新侧边栏
@@ -634,19 +626,11 @@
 
             if (weightCalculatorBtn) weightCalculatorBtn.textContent = texts[lang].weightCalculator;
             if (weightCalculatorDesc) {
-                if (lang === 'zh_cn') {
-                    weightCalculatorDesc.textContent = texts[lang].weightCalculatorDesc;
-                } else {
-                    weightCalculatorDesc.textContent = weightCalculatorDesc.getAttribute(`data-${lang}`) || texts[lang].weightCalculatorDesc;
-                }
+                weightCalculatorDesc.textContent = weightCalculatorDesc.getAttribute(`data-${lang}`) || texts[lang].weightCalculatorDesc;
             }
             if (moonJumpBtn) moonJumpBtn.textContent = texts[lang].moonJump;
             if (moonJumpDesc) {
-                if (lang === 'zh_cn') {
-                    moonJumpDesc.textContent = texts[lang].moonJumpDesc;
-                } else {
-                    moonJumpDesc.textContent = moonJumpDesc.getAttribute(`data-${lang}`) || texts[lang].moonJumpDesc;
-                }
+                moonJumpDesc.textContent = moonJumpDesc.getAttribute(`data-${lang}`) || texts[lang].moonJumpDesc;
             }
             
             // 更新体重计算器
@@ -661,30 +645,12 @@
                 const knowledgeContent = weightGame.querySelector('.knowledge-box p');
 
                 if (weightTitle) weightTitle.textContent = texts[lang].weightTitle;
-                if (weightDesc) {
-                    if (lang === 'zh_cn') {
-                        weightDesc.textContent = texts[lang].weightDesc;
-                    } else {
-                        weightDesc.textContent = weightDesc.getAttribute(`data-${lang}`) || texts[lang].weightDesc;
-                    }
-                }
-                if (weightLabel) {
-                    if (lang === 'zh_cn') {
-                        weightLabel.textContent = texts[lang].weightLabel;
-                    } else {
-                        weightLabel.textContent = weightLabel.getAttribute(`data-${lang}`) || texts[lang].weightLabel;
-                    }
-                }
+                if (weightDesc) weightDesc.textContent = weightDesc.getAttribute(`data-${lang}`) || texts[lang].weightDesc;
+                if (weightLabel) weightLabel.textContent = weightLabel.getAttribute(`data-${lang}`) || texts[lang].weightLabel;
                 if (weightInput) weightInput.placeholder = texts[lang].weightPlaceholder;
                 if (calculateBtn) calculateBtn.textContent = texts[lang].calculateWeight;
                 if (knowledgeTitle) knowledgeTitle.textContent = texts[lang].weightExplanation;
-                if (knowledgeContent) {
-                    if (lang === 'zh_cn') {
-                        knowledgeContent.textContent = texts[lang].weightExplanationContent;
-                    } else {
-                        knowledgeContent.textContent = knowledgeContent.getAttribute(`data-${lang}`) || texts[lang].weightExplanationContent;
-                    }
-                }
+                if (knowledgeContent) knowledgeContent.textContent = knowledgeContent.getAttribute(`data-${lang}`) || texts[lang].weightExplanationContent;
             }
             
             // 更新跳高模拟器
@@ -699,30 +665,12 @@
                 const knowledgeContent = jumpGame.querySelector('.knowledge-box p');
 
                 if (jumpTitle) jumpTitle.textContent = texts[lang].jumpTitle;
-                if (jumpDesc) {
-                    if (lang === 'zh_cn') {
-                        jumpDesc.textContent = texts[lang].jumpDesc;
-                    } else {
-                        jumpDesc.textContent = jumpDesc.getAttribute(`data-${lang}`) || texts[lang].jumpDesc;
-                    }
-                }
-                if (jumpLabel) {
-                    if (lang === 'zh_cn') {
-                        jumpLabel.textContent = texts[lang].jumpLabel;
-                    } else {
-                        jumpLabel.textContent = jumpLabel.getAttribute(`data-${lang}`) || texts[lang].jumpLabel;
-                    }
-                }
+                if (jumpDesc) jumpDesc.textContent = jumpDesc.getAttribute(`data-${lang}`) || texts[lang].jumpDesc;
+                if (jumpLabel) jumpLabel.textContent = jumpLabel.getAttribute(`data-${lang}`) || texts[lang].jumpLabel;
                 if (jumpInput) jumpInput.placeholder = texts[lang].jumpPlaceholder;
                 if (calculateBtn) calculateBtn.textContent = texts[lang].calculateJump;
                 if (knowledgeTitle) knowledgeTitle.textContent = texts[lang].jumpExplanation;
-                if (knowledgeContent) {
-                    if (lang === 'zh_cn') {
-                        knowledgeContent.textContent = texts[lang].jumpExplanationContent;
-                    } else {
-                        knowledgeContent.textContent = knowledgeContent.getAttribute(`data-${lang}`) || texts[lang].jumpExplanationContent;
-                    }
-                }
+                if (knowledgeContent) knowledgeContent.textContent = knowledgeContent.getAttribute(`data-${lang}`) || texts[lang].jumpExplanationContent;
             }
         }
 
