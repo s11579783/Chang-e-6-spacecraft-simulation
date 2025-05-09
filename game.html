@@ -392,6 +392,31 @@
             return 'zh-tw'; // fallback
         }
 
+        // 渲染体重结果的通用函数
+        function renderWeightResults(weight, lang) {
+            const resultsDiv = document.getElementById("weightResults");
+            const langKey = getTextLangKey(lang);
+            if (!isNaN(weight) && weight > 0) {
+                resultsDiv.innerHTML = '';
+                for (const key in gravityRatios) {
+                    const planet = gravityRatios[key];
+                    let planetLangKey = langKey;
+                    if (planetLangKey === 'zh-tw' || planetLangKey === 'zh') planetLangKey = 'zh';
+                    if (planetLangKey === 'zh-cn' || planetLangKey === 'zh_cn') planetLangKey = 'zh_cn';
+                    const planetName = planet[planetLangKey] || planet['zh'];
+                    const planetWeight = (weight * planet.ratio).toFixed(1);
+                    const planetDiv = document.createElement("div");
+                    planetDiv.classList.add("planet-weight");
+                    planetDiv.innerHTML = `
+                        <div class=\"planet-icon\">${planetName}</div>
+                        <div class=\"planet-info\">\n                            <div class=\"planet-name\">${planetName}</div>\n                            <div class=\"weight-value\">${planetWeight} ${texts[langKey].weightUnit || '公斤'}</div>\n                        </div>\n                    `;
+                    resultsDiv.appendChild(planetDiv);
+                }
+            } else {
+                resultsDiv.innerHTML = '';
+            }
+        }
+
         // 体重计算功能
         document.getElementById("calculateWeight").addEventListener("click", function() {
             const earthWeight = parseFloat(document.getElementById("earthWeight").value);
@@ -400,53 +425,7 @@
                 alert(texts[weightLangKey]?.weightInputError || "請輸入有效的體重！");
                 return;
             }
-            const resultsDiv = document.getElementById("weightResults");
-            // 清除之前的结果
-            resultsDiv.innerHTML = "";
-            
-            // 创建新的结果
-            for (const key in gravityRatios) {
-                const planet = gravityRatios[key];
-                // planet 名称用 gravityRatios 的 key，单位用 texts[weightLangKey].weightUnit
-                let planetLangKey = weightLangKey;
-                if (planetLangKey === 'zh-tw' || planetLangKey === 'zh') planetLangKey = 'zh';
-                if (planetLangKey === 'zh-cn' || planetLangKey === 'zh_cn') planetLangKey = 'zh_cn';
-                const planetName = planet[planetLangKey] || planet['zh'];
-                const planetWeight = (earthWeight * planet.ratio).toFixed(1);
-                const planetDiv = document.createElement("div");
-                planetDiv.classList.add("planet-weight");
-                planetDiv.innerHTML = `
-                    <div class=\"planet-icon\">${planetName}</div>
-                    <div class=\"planet-info\">\n                        <div class=\"planet-name\">${planetName}</div>\n                        <div class=\"weight-value\">${planetWeight} ${texts[weightLangKey].weightUnit || '公斤'}</div>\n                    </div>\n                `;
-                resultsDiv.appendChild(planetDiv);
-            }
-
-            // 只在 updateLanguage 函数作用域内用 lang
-            if (typeof lang !== 'undefined') {
-                const earthWeightInput = document.getElementById('earthWeight');
-                const earthWeightValue = parseFloat(earthWeightInput.value);
-                const updateLangKey = getTextLangKey(lang);
-                if (!isNaN(earthWeightValue) && earthWeightValue > 0) {
-                    resultsDiv.innerHTML = '';
-                    for (const key in gravityRatios) {
-                        const planet = gravityRatios[key];
-                        // planet 名称用 gravityRatios 的 key，单位用 texts[updateLangKey].weightUnit
-                        let planetLangKey = updateLangKey;
-                        if (planetLangKey === 'zh-tw' || planetLangKey === 'zh') planetLangKey = 'zh';
-                        if (planetLangKey === 'zh-cn' || planetLangKey === 'zh_cn') planetLangKey = 'zh_cn';
-                        const planetName = planet[planetLangKey] || planet['zh'];
-                        const planetWeight = (earthWeightValue * planet.ratio).toFixed(1);
-                        const planetDiv = document.createElement('div');
-                        planetDiv.classList.add('planet-weight');
-                        planetDiv.innerHTML = `
-                            <div class=\"planet-icon\">${planetName}</div>
-                            <div class=\"planet-info\">\n                                <div class=\"planet-name\">${planetName}</div>\n                                <div class=\"weight-value\">${planetWeight} ${texts[updateLangKey].weightUnit || '公斤'}</div>\n                            </div>\n                        `;
-                        resultsDiv.appendChild(planetDiv);
-                    }
-                } else {
-                    resultsDiv.innerHTML = '';
-                }
-            }
+            renderWeightResults(earthWeight, currentLang);
         });
         
         // 月球跳高模拟器多语言结果
