@@ -410,7 +410,7 @@
                     <div class="planet-icon">${planetName}</div>
                     <div class="planet-info">
                         <div class="planet-name">${planetName}</div>
-                        <div class="weight-value">${planetWeight} ${texts[langKey].meters || '公斤'}</div>
+                        <div class="weight-value">${planetWeight} ${texts[langKey].weightUnit || '公斤'}</div>
                     </div>
                 `;
                 resultsDiv.appendChild(planetDiv);
@@ -496,6 +496,7 @@
                 gravity: '重力加速度：',
                 currentHeight: '當前高度：',
                 meters: '米',
+                weightUnit: '公斤',
                 currentSpeed: '當前速度：',
                 selectTargetPlanet: '選擇目標星球',
                 moon: '月球',
@@ -534,6 +535,7 @@
                 gravity: '重力加速度：',
                 currentHeight: '当前高度：',
                 meters: '米',
+                weightUnit: '公斤',
                 currentSpeed: '当前速度：',
                 selectTargetPlanet: '选择目标星球',
                 moon: '月球',
@@ -572,6 +574,7 @@
                 gravity: "Gravity: ",
                 currentHeight: "Current Height: ",
                 meters: "meters",
+                weightUnit: 'kg',
                 currentSpeed: "Current Speed: ",
                 selectTargetPlanet: "Select Target Planet",
                 moon: "Moon",
