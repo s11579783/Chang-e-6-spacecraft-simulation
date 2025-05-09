@@ -470,18 +470,13 @@
 
     // 更新页面语言
     function updateLanguage(lang) {
-        console.log('Updating language to:', lang);
-        
-        // 更新 HTML 的 lang 属性
         document.documentElement.lang = lang === 'zh' ? 'zh-Hant' : lang === 'zh_cn' ? 'zh-Hans' : 'en';
-        
-        // 更新所有带有data属性的元素
         document.querySelectorAll('[data-zh-tw], [data-zh-cn], [data-en]').forEach(element => {
-            const dataKey = lang === 'zh' ? 'zh-tw' : lang;
-            if (element.dataset[dataKey]) {
-                console.log('Updating element:', element, 'with text:', element.dataset[dataKey]);
-                element.textContent = element.dataset[dataKey];
-            }
+            let attr = 'data-zh-tw';
+            if (lang === 'zh_cn') attr = 'data-zh-cn';
+            if (lang === 'en') attr = 'data-en';
+            const value = element.getAttribute(attr);
+            if (value) element.textContent = value;
         });
     }
 
