@@ -372,43 +372,39 @@
         
         // 星球重力相对于地球的比例 (已移除冥王星)
         const gravityRatios = {
-            "水星": 0.38,
-            "金星": 0.91,
-            "地球": 1.00,
-            "月球": 0.166,
-            "火星": 0.38,
-            "木星": 2.34,
-            "土星": 0.93,
-            "天王星": 0.92,
-            "海王星": 1.12
+            'earth': { zh: '地球', zh_cn: '地球', en: 'Earth', ratio: 1.00 },
+            'moon': { zh: '月球', zh_cn: '月球', en: 'Moon', ratio: 0.166 },
+            'mars': { zh: '火星', zh_cn: '火星', en: 'Mars', ratio: 0.38 },
+            'venus': { zh: '金星', zh_cn: '金星', en: 'Venus', ratio: 0.91 },
+            'jupiter': { zh: '木星', zh_cn: '木星', en: 'Jupiter', ratio: 2.34 },
+            'mercury': { zh: '水星', zh_cn: '水星', en: 'Mercury', ratio: 0.38 },
+            'saturn': { zh: '土星', zh_cn: '土星', en: 'Saturn', ratio: 0.93 },
+            'uranus': { zh: '天王星', zh_cn: '天王星', en: 'Uranus', ratio: 0.92 },
+            'neptune': { zh: '海王星', zh_cn: '海王星', en: 'Neptune', ratio: 1.12 }
         };
-        
+        let currentLang = 'zh-tw';
+
         // 体重计算功能
         document.getElementById("calculateWeight").addEventListener("click", function() {
             const earthWeight = parseFloat(document.getElementById("earthWeight").value);
-            
             if (isNaN(earthWeight) || earthWeight <= 0) {
                 alert("請輸入有效的體重！");
                 return;
             }
-            
             const resultsDiv = document.getElementById("weightResults");
             resultsDiv.innerHTML = "";
-            
-            for (const [planet, ratio] of Object.entries(gravityRatios)) {
-                const planetWeight = (earthWeight * ratio).toFixed(1);
-                
+            for (const key in gravityRatios) {
+                const planet = gravityRatios[key];
+                const planetWeight = (earthWeight * planet.ratio).toFixed(1);
                 const planetDiv = document.createElement("div");
                 planetDiv.classList.add("planet-weight");
-                
                 planetDiv.innerHTML = `
-                    <div class="planet-icon">${planet.charAt(0)}</div>
+                    <div class="planet-icon">${planet[currentLang]}</div>
                     <div class="planet-info">
-                        <div class="planet-name">${planet}</div>
-                        <div class="weight-value">${planetWeight} 公斤</div>
+                        <div class="planet-name">${planet[currentLang]}</div>
+                        <div class="weight-value">${planetWeight} ${texts[currentLang].meters || '公斤'}</div>
                     </div>
                 `;
-                
                 resultsDiv.appendChild(planetDiv);
             }
         });
@@ -423,7 +419,7 @@
             }
             
             // 月球重力是地球的1/6，所以跳高高度是地球的6倍
-            const moonJump = (earthJump * (1/gravityRatios.月球)).toFixed(1);
+            const moonJump = (earthJump * (1/gravityRatios.月球.ratio)).toFixed(1);
             
             const resultDiv = document.getElementById("jumpResult");
             resultDiv.innerHTML = `
@@ -576,8 +572,8 @@
         // 监听语言切换消息
         window.addEventListener('message', function(event) {
             if (event.data && event.data.type === 'setLanguage') {
-                // 直接使用 zh-tw, zh_cn, en
-                updateLanguage(event.data.lang);
+                currentLang = event.data.lang;
+                updateLanguage(currentLang);
             }
         });
 
