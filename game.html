@@ -579,6 +579,11 @@
 
         // 更新页面语言
         function updateLanguage(lang) {
+            // 统一 lang key
+            if (lang === 'zh' || lang === 'zh-tw' || lang === 'zh_TW') lang = 'zh-tw';
+            if (lang === 'zh-cn' || lang === 'zh_cn' || lang === 'zh-CN') lang = 'zh_cn';
+            if (lang !== 'zh-tw' && lang !== 'zh_cn' && lang !== 'en') lang = 'zh-tw';
+
             // 更新标题
             const titleElement = document.querySelector('h1');
             if (titleElement) {
