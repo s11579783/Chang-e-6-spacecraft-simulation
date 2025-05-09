@@ -392,7 +392,10 @@
                 return;
             }
             const resultsDiv = document.getElementById("weightResults");
+            // 清除之前的结果
             resultsDiv.innerHTML = "";
+            
+            // 创建新的结果
             for (const key in gravityRatios) {
                 const planet = gravityRatios[key];
                 // 兼容 currentLang 可能为 zh-tw/zh_cn/en
