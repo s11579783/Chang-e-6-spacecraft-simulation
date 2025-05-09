@@ -416,14 +416,11 @@
                 alert("請輸入有效的跳躍高度！");
                 return;
             }
-            // 获取当前语言下的月球 key
-            let moonKey = 'moon';
-            // 兼容旧数据结构
-            if (!gravityRatios[moonKey]) {
-                moonKey = Object.keys(gravityRatios).find(k => gravityRatios[k].en === 'Moon');
+            // 健壮获取月球重力比
+            let moonRatio = 0.166;
+            if (gravityRatios['moon'] && gravityRatios['moon'].ratio) {
+                moonRatio = gravityRatios['moon'].ratio;
             }
-            const moonRatio = gravityRatios[moonKey]?.ratio || 0.166;
-            // 月球重力是地球的1/6，所以跳高高度是地球的6倍
             const moonJump = (earthJump * (1/moonRatio)).toFixed(1);
             const resultDiv = document.getElementById("jumpResult");
             resultDiv.innerHTML = `
