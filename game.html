@@ -287,6 +287,13 @@
             <div class="panel">
                 <p data-zh-tw="計算您在月球上能跳多高" data-en="Calculate how high you can jump on the moon" data-zh-cn="计算您在月球上能跳多高">計算您在月球上能跳多高</p>
             </div>
+            <div class="nav-title" data-translate="navigationMenu">導航菜單</div>
+            <ul class="nav-list">
+                <li><a href="assembling.html" data-translate="assemblyGame">組裝遊戲</a></li>
+                <li><a href="launching.html" data-translate="launchGame">發射遊戲</a></li>
+                <li><a href="spacecraft.html" data-translate="spacecraftIntro">太空船介紹</a></li>
+                <li><a href="facts.html" data-translate="spaceFacts">太空知識</a></li>
+            </ul>
         </div>
         
         <div class="main-content">
@@ -331,6 +338,22 @@
                 </div>
                 
                 <div id="jumpResult" class="jump-result"></div>
+            </div>
+            <div class="planet-info">
+                <h3 data-translate="planetInfo">星球信息</h3>
+                <p><span data-translate="currentPlanet">當前星球：</span><span id="current-planet" data-translate="earth">地球</span></p>
+                <p><span data-translate="gravity">重力加速度：</span><span id="gravity" data-zh-tw="9.8 m/s²" data-en="9.8 m/s²" data-zh-cn="9.8 m/s²">9.8 m/s²</span></p>
+                <p><span data-translate="currentHeight">當前高度：</span><span id="height" data-zh-tw="0 米" data-en="0 meters" data-zh-cn="0 米">0 米</span></p>
+                <p><span data-translate="currentSpeed">當前速度：</span><span id="speed" data-zh-tw="0 m/s" data-en="0 m/s" data-zh-cn="0 m/s">0 m/s</span></p>
+            </div>
+            <div class="planet-selection">
+                <h3 data-translate="selectTargetPlanet">選擇目標星球</h3>
+                <select id="planet-select">
+                    <option value="earth" data-translate="earth">地球</option>
+                    <option value="moon" data-translate="moon">月球</option>
+                    <option value="mars" data-translate="mars">火星</option>
+                    <option value="venus" data-translate="venus">金星</option>
+                </select>
             </div>
         </div>
     </div>
@@ -457,29 +480,7 @@
 
         // 添加语言切换功能
         const texts = {
-            en: {
-                title: "Chang'e-6 Lunar Mission",
-                chooseGame: "Choose Game",
-                weightCalculator: "Planet Weight Calculator",
-                weightCalculatorDesc: "Learn about your weight on different planets",
-                moonJump: "Moon Jump Simulator",
-                moonJumpDesc: "Calculate how high you can jump on the moon",
-                weightTitle: "Planet Weight Calculator",
-                weightDesc: "Enter your weight on Earth to learn about your weight on different planets in the solar system.",
-                weightLabel: "Your weight on Earth (kilograms):",
-                weightPlaceholder: "Example: 70",
-                calculateWeight: "Calculate Weight",
-                weightExplanation: "Why is weight different on different planets?",
-                weightExplanationContent: "Weight is the force of gravity acting on an object, and it depends on the mass and radius of the celestial body. The larger the mass, the stronger the gravity, but the larger the radius, the weaker the gravity. For example, Jupiter is much more massive than Earth, so its gravity is 2.34 times stronger than Earth's; while the Moon is much smaller, its gravity is only 1/6 of Earth's.",
-                jumpTitle: "Moon Jump Simulator",
-                jumpDesc: "Enter how high you can jump on Earth to calculate your jump height on the Moon.",
-                jumpLabel: "Your jump height on Earth (centimeters):",
-                jumpPlaceholder: "Example: 40",
-                calculateJump: "Calculate Jump",
-                jumpExplanation: "Why can you jump higher on the Moon?",
-                jumpExplanationContent: "The Moon's gravity is only 1/6 of Earth's, which means your weight will be lighter, and the force you need to overcome with your leg muscles will be smaller. With the same force, you can jump higher. This is also why astronauts can jump easily on the Moon."
-            },
-            zh: {
+            'zh-tw': {
                 title: "嫦娥六號探月任務",
                 chooseGame: "選擇遊戲",
                 weightCalculator: "星球體重計算器",
@@ -499,9 +500,25 @@
                 jumpPlaceholder: "例如：40",
                 calculateJump: "計算跳高",
                 jumpExplanation: "為什麼在月球上能跳得更高？",
-                jumpExplanationContent: "月球的重力只有地球的1/6，這意味著你的體重會變輕，同時你腿部肌肉需要克服的重力也變小了。同樣的力量下，你能跳得更高。這也是為什麼太空人在月球上能輕鬆跳躍的原因。"
+                jumpExplanationContent: "月球的重力只有地球的1/6，這意味著你的體重會變輕，同時你腿部肌肉需要克服的重力也變小了。同樣的力量下，你能跳得更高。這也是為什麼太空人在月球上能輕鬆跳躍的原因。",
+                navigationMenu: '導航菜單',
+                assemblyGame: '組裝遊戲',
+                launchGame: '發射遊戲',
+                spacecraftIntro: '太空船介紹',
+                spaceFacts: '太空知識',
+                planetInfo: '星球信息',
+                currentPlanet: '當前星球：',
+                earth: '地球',
+                gravity: '重力加速度：',
+                currentHeight: '當前高度：',
+                meters: '米',
+                currentSpeed: '當前速度：',
+                selectTargetPlanet: '選擇目標星球',
+                moon: '月球',
+                mars: '火星',
+                venus: '金星'
             },
-            zh_cn: {
+            'zh_cn': {
                 title: "嫦娥六号探月任务",
                 chooseGame: "选择游戏",
                 weightCalculator: "星球体重计算器",
@@ -521,7 +538,61 @@
                 jumpPlaceholder: "例如：40",
                 calculateJump: "计算跳高",
                 jumpExplanation: "为什么在月球上能跳得更高？",
-                jumpExplanationContent: "月球的重力只有地球的1/6，这意味着你的体重会变轻，同时你腿部肌肉需要克服的重力也变小了。同样的力量下，你能跳得更高。这也是为什么宇航员在月球上能轻松跳跃的原因。"
+                jumpExplanationContent: "月球的重力只有地球的1/6，这意味着你的体重会变轻，同时你腿部肌肉需要克服的重力也变小了。同样的力量下，你能跳得更高。这也是为什么宇航员在月球上能轻松跳跃的原因。",
+                navigationMenu: '导航菜单',
+                assemblyGame: '组装游戏',
+                launchGame: '发射游戏',
+                spacecraftIntro: '太空船介绍',
+                spaceFacts: '太空知识',
+                planetInfo: '星球信息',
+                currentPlanet: '当前星球：',
+                earth: '地球',
+                gravity: '重力加速度：',
+                currentHeight: '当前高度：',
+                meters: '米',
+                currentSpeed: '当前速度：',
+                selectTargetPlanet: '选择目标星球',
+                moon: '月球',
+                mars: '火星',
+                venus: '金星'
+            },
+            'en': {
+                title: "Chang'e-6 Lunar Mission",
+                chooseGame: "Choose Game",
+                weightCalculator: "Planet Weight Calculator",
+                weightCalculatorDesc: "Learn about your weight on different planets",
+                moonJump: "Moon Jump Simulator",
+                moonJumpDesc: "Calculate how high you can jump on the moon",
+                weightTitle: "Planet Weight Calculator",
+                weightDesc: "Enter your weight on Earth to learn about your weight on different planets in the solar system.",
+                weightLabel: "Your weight on Earth (kilograms):",
+                weightPlaceholder: "Example: 70",
+                calculateWeight: "Calculate Weight",
+                weightExplanation: "Why is weight different on different planets?",
+                weightExplanationContent: "Weight is the force of gravity acting on an object, and it depends on the mass and radius of the celestial body. The larger the mass, the stronger the gravity, but the larger the radius, the weaker the gravity. For example, Jupiter is much more massive than Earth, so its gravity is 2.34 times stronger than Earth's; while the Moon is much smaller, its gravity is only 1/6 of Earth's.",
+                jumpTitle: "Moon Jump Simulator",
+                jumpDesc: "Enter how high you can jump on Earth to calculate your jump height on the Moon.",
+                jumpLabel: "Your jump height on Earth (centimeters):",
+                jumpPlaceholder: "Example: 40",
+                calculateJump: "Calculate Jump",
+                jumpExplanation: "Why can you jump higher on the Moon?",
+                jumpExplanationContent: "The Moon's gravity is only 1/6 of Earth's, which means your weight will be lighter, and the force you need to overcome with your leg muscles will be smaller. With the same force, you can jump higher. This is also why astronauts can jump easily on the Moon.",
+                navigationMenu: "Navigation Menu",
+                assemblyGame: "Assembly Game",
+                launchGame: "Launch Game",
+                spacecraftIntro: "Spacecraft Introduction",
+                spaceFacts: "Space Facts",
+                planetInfo: "Planet Information",
+                currentPlanet: "Current Planet: ",
+                earth: "Earth",
+                gravity: "Gravity: ",
+                currentHeight: "Current Height: ",
+                meters: "meters",
+                currentSpeed: "Current Speed: ",
+                selectTargetPlanet: "Select Target Planet",
+                moon: "Moon",
+                mars: "Mars",
+                venus: "Venus"
             }
         };
 
