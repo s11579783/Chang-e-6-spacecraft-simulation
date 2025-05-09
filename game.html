@@ -607,15 +607,21 @@
             // 更新选择游戏标题
             const chooseGameElement = document.querySelector('h2');
             if (chooseGameElement) {
-                chooseGameElement.textContent = chooseGameElement.getAttribute(`data-${lang}`) || texts[lang].chooseGame;
+                let dataAttr = lang;
+                if (lang === 'zh_cn') dataAttr = 'zh-cn';
+                chooseGameElement.textContent = chooseGameElement.getAttribute(`data-${dataAttr}`) || texts[lang].chooseGame;
             }
             
             // 更新侧边栏所有按钮和描述
             document.querySelectorAll('.accordion').forEach(btn => {
-                btn.textContent = btn.getAttribute(`data-${lang}`) || btn.textContent;
+                let dataAttr = lang;
+                if (lang === 'zh_cn') dataAttr = 'zh-cn';
+                btn.textContent = btn.getAttribute(`data-${dataAttr}`) || btn.textContent;
             });
             document.querySelectorAll('.panel p').forEach(p => {
-                p.textContent = p.getAttribute(`data-${lang}`) || p.textContent;
+                let dataAttr = lang;
+                if (lang === 'zh_cn') dataAttr = 'zh-cn';
+                p.textContent = p.getAttribute(`data-${dataAttr}`) || p.textContent;
             });
             
             // 更新体重计算器
