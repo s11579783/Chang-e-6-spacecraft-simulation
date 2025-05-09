@@ -384,11 +384,20 @@
         };
         let currentLang = 'zh-tw';
 
+        // 工具函数：统一 texts 语言 key
+        function getTextLangKey(lang) {
+            if (lang === 'zh' || lang === 'zh-tw' || lang === 'zh_TW') return 'zh-tw';
+            if (lang === 'zh-cn' || lang === 'zh_cn' || lang === 'zh-CN') return 'zh_cn';
+            if (lang === 'en') return 'en';
+            return 'zh-tw'; // fallback
+        }
+
         // 体重计算功能
         document.getElementById("calculateWeight").addEventListener("click", function() {
             const earthWeight = parseFloat(document.getElementById("earthWeight").value);
+            const weightLangKey = getTextLangKey(currentLang);
             if (isNaN(earthWeight) || earthWeight <= 0) {
-                alert(texts[currentLang]?.weightInputError || "請輸入有效的體重！");
+                alert(texts[weightLangKey]?.weightInputError || "請輸入有效的體重！");
                 return;
             }
             const resultsDiv = document.getElementById("weightResults");
@@ -398,8 +407,8 @@
             // 创建新的结果
             for (const key in gravityRatios) {
                 const planet = gravityRatios[key];
-                // planet 名称用 gravityRatios 的 key，单位用 texts[currentLang].weightUnit
-                let planetLangKey = currentLang;
+                // planet 名称用 gravityRatios 的 key，单位用 texts[weightLangKey].weightUnit
+                let planetLangKey = weightLangKey;
                 if (planetLangKey === 'zh-tw' || planetLangKey === 'zh') planetLangKey = 'zh';
                 if (planetLangKey === 'zh-cn' || planetLangKey === 'zh_cn') planetLangKey = 'zh_cn';
                 const planetName = planet[planetLangKey] || planet['zh'];
@@ -407,23 +416,20 @@
                 const planetDiv = document.createElement("div");
                 planetDiv.classList.add("planet-weight");
                 planetDiv.innerHTML = `
-                    <div class="planet-icon">${planetName}</div>
-                    <div class="planet-info">
-                        <div class="planet-name">${planetName}</div>
-                        <div class="weight-value">${planetWeight} ${texts[currentLang].weightUnit || '公斤'}</div>
-                    </div>
-                `;
+                    <div class=\"planet-icon\">${planetName}</div>
+                    <div class=\"planet-info\">\n                        <div class=\"planet-name\">${planetName}</div>\n                        <div class=\"weight-value\">${planetWeight} ${texts[weightLangKey].weightUnit || '公斤'}</div>\n                    </div>\n                `;
                 resultsDiv.appendChild(planetDiv);
             }
 
             // 自动刷新体重结果（跟随语言切换）
             const earthWeightValue = parseFloat(document.getElementById('earthWeight').value);
+            const updateLangKey = getTextLangKey(lang);
             if (!isNaN(earthWeightValue) && earthWeightValue > 0) {
                 resultsDiv.innerHTML = '';
                 for (const key in gravityRatios) {
                     const planet = gravityRatios[key];
-                    // planet 名称用 gravityRatios 的 key，单位用 texts[currentLang].weightUnit
-                    let planetLangKey = currentLang;
+                    // planet 名称用 gravityRatios 的 key，单位用 texts[updateLangKey].weightUnit
+                    let planetLangKey = updateLangKey;
                     if (planetLangKey === 'zh-tw' || planetLangKey === 'zh') planetLangKey = 'zh';
                     if (planetLangKey === 'zh-cn' || planetLangKey === 'zh_cn') planetLangKey = 'zh_cn';
                     const planetName = planet[planetLangKey] || planet['zh'];
@@ -434,7 +440,7 @@
                         <div class="planet-icon">${planetName}</div>
                         <div class="planet-info">
                             <div class="planet-name">${planetName}</div>
-                            <div class="weight-value">${planetWeight} ${texts[currentLang].weightUnit || '公斤'}</div>
+                            <div class="weight-value">${planetWeight} ${texts[updateLangKey].weightUnit || '公斤'}</div>
                         </div>
                     `;
                     resultsDiv.appendChild(planetDiv);
